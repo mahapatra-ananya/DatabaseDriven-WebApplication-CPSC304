@@ -6,6 +6,6 @@ ZOOM LINK: https://us06web.zoom.us/j/3138857595
 
 Test Commit User c6n7z
 
-Test Commit User w2z8i
+Test Commit User w2z8i from student account
 
 Test Commit User p3z3e
