@@ -4,7 +4,7 @@ Our project is a communication application modeling user interactions through me
 Milestone 3 Check in at 3:00pm Oct. 30
 ZOOM LINK: https://us06web.zoom.us/j/3138857595
 
-Test Commit User c6n7z
+Test Commit User c6n7z - set up 11/10
 
 Test Commit User w2z8i from student account
 
