@@ -9,3 +9,4 @@ GROUP BY EXTRACT(YEAR FROM EventDateTime);
 SELECT to_char(MessageDateTime, 'DD-MM-YYYY'), count(distinct MessageID)
 FROM Message
 GROUP BY to_char(MessageDateTime, 'DD-MM-YYYY');
+

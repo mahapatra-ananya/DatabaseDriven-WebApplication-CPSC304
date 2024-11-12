@@ -21,3 +21,5 @@ WHERE NOT EXISTS((SELECT distinct CalendarID
                   FROM Event e1, PostedTo p
                   WHERE e.EventID = e1.EventID AND e1.EventID = p.EventID));
 
+
+
