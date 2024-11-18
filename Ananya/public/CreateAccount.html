@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CreateAccount</title>
+</head>
+<body>
+
+<h2>Please enter your details to create an account</h2>
+<form id="createAccountTable">
+    Username*: <input type="text" id="Username" placeholder="Enter Username" required maxlength="30"> <br><br>
+    Password*: <input type="password" id="Password" placeholder="Enter Password" required maxlength="50"> <br><br>
+    Display Name: <input type="text" id="DisplayName" placeholder="Enter Display Name" maxlength="30"> <br><br>
+    Bio: <input type="text" id="Bio" placeholder="Enter Bio (max 250 char)" maxlength="250"> <br><br>
+    Region: <input type="text" id="Region" placeholder="Placeholder until dropdowns" maxlength="50"> <br><br>
+<!--    We don't need country because region will give us country-->
+    <p>Choose an avatar:</p>
+
+    <button> <img src="generic_pfp.jpg" alt="Avatar1" width="50" height="50"> </button>
+    <button> <img src="generic_pfp.jpg" alt="Avatar2" width="50" height="50"> </button>
+    <button> <img src="generic_pfp.jpg" alt="Avatar3" width="50" height="50"> </button>
+    <button> <img src="generic_pfp.jpg" alt="Avatar4" width="50" height="50"> </button>
+    <button> <img src="generic_pfp.jpg" alt="Avatar5" width="50" height="50"> </button>
+    <button> <img src="generic_pfp.jpg" alt="Avatar10" width="50" height="50"> </button>
+<br>
+    <br> <br>
+    <button type="submit"> Create Account </button> <br>
+    <p>OR</p>
+    <button type="submit"> Log In </button> <br>
+
+
+
+    <!-- must have error handling for existing usernames -->
+
+</form>
+
+</body>
+</html>
