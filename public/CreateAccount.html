@@ -12,8 +12,19 @@
     Password*: <input type="password" id="Password" placeholder="Enter Password" required maxlength="50"> <br><br>
     Display Name: <input type="text" id="DisplayName" placeholder="Enter Display Name" maxlength="30"> <br><br>
     Bio: <input type="text" id="Bio" placeholder="Enter Bio (max 250 char)" maxlength="250"> <br><br>
-    Region: <input type="text" id="Region" placeholder="Placeholder until dropdowns" maxlength="50"> <br><br>
-<!--    We don't need country because region will give us country-->
+    <!--    Region: <input type="text" id="Region" placeholder="Placeholder until dropdowns" maxlength="50"> <br><br>-->
+    <!--    We don't need country because region will give us country-->
+
+    <label for="region">Choose a region:</label>
+    <select name="Region" id="region">
+        <option value="Select">Select</option>
+        <option value="Vancouver">Vancouver</option>
+        <option value="Burnaby">Burnaby</option>
+        <option value="Ottawa">Ottawa</option>
+        <option value="Virginia">Virginia</option>
+        <option value="Odisha">Odisha</option>
+    </select>
+
     <p>Choose an avatar:</p>
 
     <button> <img src="generic_pfp.jpg" alt="Avatar1" width="50" height="50"> </button>
