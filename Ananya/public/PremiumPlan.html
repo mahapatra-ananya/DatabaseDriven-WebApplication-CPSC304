@@ -1,31 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
+<style>
+    table, th, td {
+        border:1px solid black;
+    }
+</style>
 <head>
     <meta charset="UTF-8">
     <title>Premium Plan</title>
 </head>
 <body>
+
+<div>
+    <a href="Home.html">
+        <button>
+            <img src="home_icon.png" alt="HomeIcon" width="50" height="50">
+        </button>
+    </a>
+</div>
+
+
 <h3>Your current plan ID is: Current PlanID</h3>
 
 <div>
     <p>Purchase a new plan:</p>
-    <form action="/action_page.php">
-        <input type="radio" id="plan1" name="plan" value="Plan 1">
-        <label for="plan1">Plan 1</label><br><br>
-        <input type="radio" id="plan2" name="plan" value="Plan 2">
-        <label for="plan2">Plan 2</label><br><br>
-        <input type="radio" id="plan3" name="plan" value="Plan 3">
-        <label for="plan3">Plan 3</label><br><br>
-        <input type="radio" id="plan4" name="plan" value="Plan 4">
-        <label for="plan4">Plan 4</label><br><br>
-        <input type="radio" id="plan5" name="plan" value="Plan 5">
-        <label for="plan5">Plan 5</label><br><br>
-        <input type="radio" id="plan11" name="plan" value="Plan 11">
-        <label for="plan11">Plan 11</label><br><br>
-        <input type="radio" id="plan12" name="plan" value="Plan 12">
-        <label for="plan12">Plan 12</label><br><br>
-        <input type="radio" id="plan21" name="plan" value="Plan 21">
-        <label for="plan21">Plan 21</label><br><br>
+    <form>
+        <table>
+            <tr>
+                <th></th>
+                <th>PlanID</th>
+                <th>Tier</th>
+                <th>Base Price</th>
+                <th>Payment Interval</th>
+                <th>Subscription Payment</th>
+                <th>Member Limit</th>
+                <th>Theme</th>
+            </tr>
+            <tr>
+                <td><input type="radio" id="plan1" name="plan" value="Plan 1"></td>
+                <td><label for="plan1">1</label></td>
+                <td>Basic</td>
+                <td>12</td>
+                <td>1</td>
+                <td>1</td>
+                <td>10</td>
+                <td>#000000</td>
+            </tr>
+            <tr>
+                <td><input type="radio" id="plan2" name="plan" value="Plan 2"></td>
+                <td><label for="plan2">2</label></td>
+                <td>Silver</td>
+                <td>24</td>
+                <td>1</td>
+                <td>1</td>
+                <td>50</td>
+                <td>#111111</td>
+            </tr>
+            <tr>
+                <td><input type="radio" id="plan3" name="plan" value="Plan 3"></td>
+                <td><label for="plan3">3</label></td>
+                <td>Gold</td>
+                <td>60</td>
+                <td>6</td>
+                <td>1</td>
+                <td>100</td>
+                <td>#000000</td>
+            </tr>
+            <tr>
+                <td><input type="radio" id="plan4" name="plan" value="Plan 4"></td>
+                <td><label for="plan4">4</label></td>
+                <td>Platinum</td>
+                <td>120</td>
+                <td>12</td>
+                <td>12</td>
+                <td>150</td>
+                <td>#FFFFFF</td>
+            </tr>
+            <tr>
+                <td><input type="radio" id="plan5" name="plan" value="Plan 5"></td>
+                <td><label for="plan5">5</label></td>
+                <td>Royal</td>
+                <td>180</td>
+                <td>12</td>
+                <td>12</td>
+                <td>200</td>
+                <td>#CCCCCC</td>
+            </tr>
+            <tr>
+                <td><input type="radio" id="plan11" name="plan" value="Plan 11"></td>
+                <td><label for="plan11">11</label></td>
+                <td>Basic</td>
+                <td>12</td>
+                <td>6</td>
+                <td>1</td>
+                <td>50</td>
+                <td>#FFFFFF</td>
+            </tr>
+            <tr>
+                <td><input type="radio" id="plan12" name="plan" value="Plan 12"></td>
+                <td><label for="plan12">12</label></td>
+                <td>Basic</td>
+                <td>12</td>
+                <td>12</td>
+                <td>12</td>
+                <td>60</td>
+                <td>#123456</td>
+            </tr>
+            <tr>
+                <td><input type="radio" id="plan21" name="plan" value="Plan 21"></td>
+                <td><label for="plan21">21</label></td>
+                <td>Gold</td>
+                <td>60</td>
+                <td>6</td>
+                <td>1</td>
+                <td>150</td>
+                <td>#AAAAAA</td>
+            </tr>
+        </table>
+        <br>
         <button type="submit"> Purchase </button> <br>
 
     </form>
