@@ -1,5 +1,5 @@
 const express = require('express');
-const appService = require('./appService');
+const appService = require('./karenappService');
 
 const router = express.Router();
 
@@ -15,13 +15,13 @@ router.get('/check-db-connection', async (req, res) => {
     }
 });
 
-router.get('/demotable', async (req, res) => {
-    const tableContent = await appService.fetchDemotableFromDb();
+router.get('/Calendartable', async (req, res) => {
+    const tableContent = await appService.fetchCalendartableFromDb();
     res.json({data: tableContent});
 });
 
-router.post("/initiate-demotable", async (req, res) => {
-    const initiateResult = await appService.initiateDemotable();
+router.post("/initiate-Calendartable", async (req, res) => {
+    const initiateResult = await appService.initiateCalendartable();
     if (initiateResult) {
         res.json({ success: true });
     } else {
@@ -29,9 +29,9 @@ router.post("/initiate-demotable", async (req, res) => {
     }
 });
 
-router.post("/insert-demotable", async (req, res) => {
-    const { id, name } = req.body;
-    const insertResult = await appService.insertDemotable(id, name);
+router.post("/insert-Calendartable", async (req, res) => {
+    const { CalendarID, CalendarName, UserName } = req.body;
+    const insertResult = await appService.insertCalendartable(CalendarID, CalendarName, UserName);
     if (insertResult) {
         res.json({ success: true });
     } else {
@@ -39,9 +39,9 @@ router.post("/insert-demotable", async (req, res) => {
     }
 });
 
-router.post("/update-name-demotable", async (req, res) => {
+router.post("/update-name-Calendartable", async (req, res) => {
     const { oldName, newName } = req.body;
-    const updateResult = await appService.updateNameDemotable(oldName, newName);
+    const updateResult = await appService.updateNameCalendartable(oldName, newName);
     if (updateResult) {
         res.json({ success: true });
     } else {
@@ -49,8 +49,8 @@ router.post("/update-name-demotable", async (req, res) => {
     }
 });
 
-router.get('/count-demotable', async (req, res) => {
-    const tableCount = await appService.countDemotable();
+router.get('/count-Calendartable', async (req, res) => {
+    const tableCount = await appService.countCalendartable();
     if (tableCount >= 0) {
         res.json({ 
             success: true,  

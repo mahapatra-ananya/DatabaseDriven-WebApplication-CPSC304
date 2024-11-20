@@ -76,27 +76,28 @@ async function testOracleConnection() {
     });
 }
 
-async function fetchDemotableFromDb() {
+async function fetchCalendartableFromDb() {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute('SELECT * FROM DEMOTABLE');
+        const result = await connection.execute('SELECT * FROM CALENDAR');
         return result.rows;
     }).catch(() => {
         return [];
     });
 }
 
-async function initiateDemotable() {
+async function initiateCalendartable() {
     return await withOracleDB(async (connection) => {
         try {
-            await connection.execute(`DROP TABLE DEMOTABLE`);
+            await connection.execute(`DROP TABLE CALENDAR`);
         } catch(err) {
             console.log('Table might not exist, proceeding to create...');
         }
 
         const result = await connection.execute(`
-            CREATE TABLE DEMOTABLE (
-                id NUMBER PRIMARY KEY,
-                name VARCHAR2(20)
+            CREATE TABLE CALENDAR (
+                CalendarID NUMBER PRIMARY KEY,
+                CalendarName VARCHAR2(20),
+                UserName VARCHAR2(20)
             )
         `);
         return true;
@@ -105,11 +106,11 @@ async function initiateDemotable() {
     });
 }
 
-async function insertDemotable(id, name) {
+async function insertCalendartable(CalendarID, CalendarName, UserName) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `INSERT INTO DEMOTABLE (id, name) VALUES (:id, :name)`,
-            [id, name],
+            `INSERT INTO CALENDAR (CalendarID, CalendarName, UserName) VALUES (:CalendarID, :CalendarName, :UserName)`,
+            [CalendarID, CalendarName, UserName],
             { autoCommit: true }
         );
 
@@ -119,10 +120,10 @@ async function insertDemotable(id, name) {
     });
 }
 
-async function updateNameDemotable(oldName, newName) {
+async function updateNameCalendartable(oldName, newName) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `UPDATE DEMOTABLE SET name=:newName where name=:oldName`,
+            `UPDATE CALENDAR SET CalendarName=:newName where CalendarName=:oldName`,
             [newName, oldName],
             { autoCommit: true }
         );
@@ -133,20 +134,22 @@ async function updateNameDemotable(oldName, newName) {
     });
 }
 
-async function countDemotable() {
+async function countCalendartable() {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute('SELECT Count(*) FROM DEMOTABLE');
+        const result = await connection.execute('SELECT Count(*) FROM CALENDAR');
         return result.rows[0][0];
     }).catch(() => {
         return -1;
     });
 }
 
+
+
 module.exports = {
     testOracleConnection,
-    fetchDemotableFromDb,
-    initiateDemotable, 
-    insertDemotable, 
-    updateNameDemotable, 
-    countDemotable
+    fetchCalendartableFromDb,
+    initiateCalendartable,
+    insertCalendartable,
+    updateNameCalendartable,
+    countCalendartable
 };
