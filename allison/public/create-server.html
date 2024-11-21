@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create a Server</title>
+    <link rel="stylesheet" href="./all-server.css"/>
+    <link rel="stylesheet" href="./create-server.css"/>
+</head>
+<body>
+<nav id="allison-nav">
+    <a href="./index.html">Index</a>
+    <a href="./create-server.html">Create a Server</a>
+    <a href="./server.html">Server</a>
+    <a href="./join-server.html">Join a Server</a>
+    <a href="./server-admin-metrics.html">Server Admin Metrics</a>
+</nav>
+    <h1>Create a Server</h1>
+<form id="insertServer">
+    <div class="formComponent">
+        <label for="insertServerName" style="display:block">Enter a Server Name</label>
+        <input type="text" id="insertServerName" placeholder="Server Name" required>
+    </div>
+    <div class="formComponent">
+        <label for="insertAvatar">Select a Server Avatar</label>
+        <div id="insertAvatar">
+            <input type="radio" id="circleAvatar" name="avatar" value="Circle"/>
+            <label for="circleAvatar">Circle</label>
+            <input type="radio" id="triangleAvatar" name="avatar" value="Triangle"/>
+            <label for="triangleAvatar">Triangle</label>
+            <input type="radio" id="rectangleAvatar" name="avatar" value="Rectangle"/>
+            <label for="rectangleAvatar">Rectangle</label>
+        </div>
+    </div>
+    <div class="formComponent">
+        <label for="insertChannelGroup">Add Channels</label>
+        <div id="insertChannelGroup">
+            <input type="text" id="newChannel" placeholder="Channel Name" required/>
+        </div>
+        <a href='#' id="addChannelBtn">+ Channel</a>
+    </div>
+    <button id="createServerBtn" type="submit">Create Server</button>
+</form>
+
+<hr/>
+<ul>
+    <h4>TODO</h4>
+    <li>Need to disable this page if the user is already the admin of a server</li>
+    <li>GET Server Avatars -> Display theme</li>
+    <li></li>
+</ul>
+
+<script src="./create-server-script.js"></script>
+</body>
+</html>

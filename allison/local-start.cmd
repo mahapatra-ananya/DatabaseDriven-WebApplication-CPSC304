@@ -4,7 +4,7 @@
 cd %~dp0
 
 :: Configure the oracle instant client env variable
-set PATH=%PATH%;""C:\Users\allis\OneDrive\3 Comp Sci Stuff\instantclient_19_20""
+set PATH=%PATH%;""
 
 :: Start Node application
 node server.js
