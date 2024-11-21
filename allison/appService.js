@@ -96,8 +96,8 @@ async function initiateDemotable() {
 
         const result = await connection.execute(`
             CREATE TABLE DEMOTABLE (
-                id NUMBER PRIMARY KEY,
-                name VARCHAR2(20)
+                                       id NUMBER PRIMARY KEY,
+                                       name VARCHAR2(20)
             )
         `);
         return true;
@@ -146,8 +146,8 @@ async function countDemotable() {
 module.exports = {
     testOracleConnection,
     fetchDemotableFromDb,
-    initiateDemotable, 
-    insertDemotable, 
-    updateNameDemotable, 
+    initiateDemotable,
+    insertDemotable,
+    updateNameDemotable,
     countDemotable
 };
