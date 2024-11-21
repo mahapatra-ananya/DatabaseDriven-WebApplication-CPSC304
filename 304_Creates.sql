@@ -10,23 +10,21 @@
 --
 --  First drop any existing tables. Any errors are ignored.
 --
---drop table student cascade constraints;
---drop table faculty cascade constraints;
---drop table class cascade constraints;
---drop table enrolled cascade constraints;
---drop table emp cascade constraints;
---drop table works cascade constraints;
---drop table dept cascade constraints;
---drop table flights cascade constraints;
---drop table aircraft cascade constraints;
---drop table certified cascade constraints;
---drop table employees cascade constraints;
---drop table suppliers cascade constraints;
---drop table parts cascade constraints;
---drop table catalog cascade constraints;
---drop table sailors cascade constraints;
---drop table boats cascade constraints;
---drop table reserves cascade constraints;
+drop table Joins cascade constraints;
+drop table PostedTo cascade constraints;
+drop table Message cascade constraints;
+drop table Administrator cascade constraints;
+drop table GeneralMember cascade constraints;
+drop table Channel cascade constraints;
+drop table Server cascade constraints;
+drop table Event cascade constraints;
+drop table Calendar cascade constraints;
+drop table UserAccount cascade constraints;
+drop table Avatar cascade constraints;
+drop table Location cascade constraints;
+drop table PremiumPlan cascade constraints;
+drop table Tier cascade constraints;
+drop table Payment cascade constraints;
 
 --
 -- Add each table to the Message App

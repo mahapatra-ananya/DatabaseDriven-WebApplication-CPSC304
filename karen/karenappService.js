@@ -76,6 +76,7 @@ async function testOracleConnection() {
     });
 }
 
+//TODO: CALENDAR
 async function fetchCalendartableFromDb() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute('SELECT * FROM CALENDAR');
@@ -109,7 +110,8 @@ async function initiateCalendartable() {
 async function insertCalendartable(CalendarID, CalendarName, UserName) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `INSERT INTO CALENDAR (CalendarID, CalendarName, UserName) VALUES (:CalendarID, :CalendarName, :UserName)`,
+            `INSERT INTO CALENDAR (CalendarID, CalendarName, UserName) 
+            VALUES (:CalendarID, :CalendarName, :UserName)`,
             [CalendarID, CalendarName, UserName],
             { autoCommit: true }
         );
@@ -143,13 +145,79 @@ async function countCalendartable() {
     });
 }
 
+//TODO: EVENT
+async function fetchEventtableFromDb() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT * FROM EVENT');
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
 
+async function initiateEventtable() {
+    return await withOracleDB(async (connection) => {
+        try {
+            await connection.execute(`DROP TABLE EVENT`);
+        } catch(err) {
+            console.log('Table might not exist, proceeding to create...');
+        }
+
+        const result = await connection.execute(`
+            CREATE TABLE EVENT (
+                EventID NUMBER PRIMARY KEY,
+                EventName VARCHAR2(20),
+                EventDateTime TIMESTAMP,
+                Duration NUMBER,
+                Details VARCHAR2 (250),
+                Username VARCHAR2(20)
+            )
+        `);
+        return true;
+    }).catch(() => {
+        return false;
+    });
+}
+
+async function insertEventtable(EventID, EventName, EventDateTime, Duration, Details, EventUsername) {
+
+    const testTime = new Date(EventDateTime);
+
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `INSERT INTO EVENT (EventID, EventName, EventDateTime, Duration, Details, Username) 
+            VALUES (:EventID, :EventName, :testTime, :Duration, :Details, :EventUsername)`,
+            [EventID, EventName, testTime, Duration, Details, EventUsername],
+            { autoCommit: true }
+        );
+        console.log(testTime);
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        console.log(testTime);
+        return false;
+    });
+}
+
+async function countEventtable() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT Count(*) FROM EVENT');
+        return result.rows[0][0];
+    }).catch(() => {
+        return -1;
+    });
+}
 
 module.exports = {
     testOracleConnection,
+
     fetchCalendartableFromDb,
     initiateCalendartable,
     insertCalendartable,
     updateNameCalendartable,
-    countCalendartable
+    countCalendartable,
+
+    fetchEventtableFromDb,
+    initiateEventtable,
+    insertEventtable,
+    countEventtable
 };

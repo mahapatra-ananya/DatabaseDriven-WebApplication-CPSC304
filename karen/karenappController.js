@@ -15,6 +15,7 @@ router.get('/check-db-connection', async (req, res) => {
     }
 });
 
+// TODO: calendar routes
 router.get('/Calendartable', async (req, res) => {
     const tableContent = await appService.fetchCalendartableFromDb();
     res.json({data: tableContent});
@@ -59,6 +60,49 @@ router.get('/count-Calendartable', async (req, res) => {
     } else {
         res.status(500).json({ 
             success: false, 
+            count: tableCount
+        });
+    }
+});
+
+
+//TODO: Event routes
+router.get('/Eventtable', async (req, res) => {
+    const tableContent = await appService.fetchEventtableFromDb();
+    res.json({data: tableContent});
+});
+
+router.post("/initiate-Eventtable", async (req, res) => {
+    const initiateResult = await appService.initiateEventtable();
+    if (initiateResult) {
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
+router.post("/insert-Eventtable", async (req, res) => {
+    const { EventID, EventName, EventDateTime, Duration, Details, EventUsername } = req.body;
+    const insertResult = await appService.insertEventtable(
+        EventID, EventName, EventDateTime, Duration, Details, EventUsername);
+    if (insertResult) {
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
+        console.log(EventDateTime);
+    }
+});
+
+router.get('/count-Eventtable', async (req, res) => {
+    const tableCount = await appService.countEventtable();
+    if (tableCount >= 0) {
+        res.json({
+            success: true,
+            count: tableCount
+        });
+    } else {
+        res.status(500).json({
+            success: false,
             count: tableCount
         });
     }

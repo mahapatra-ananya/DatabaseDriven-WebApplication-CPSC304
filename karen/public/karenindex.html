@@ -88,6 +88,58 @@
     <br><br>
 
 
+    <!--  TODO: Event setup-->
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <!-- Show 'Eventtable'.
+        Data will be fetched and inserted here dynamically using JavaScript. -->
+    <h2>Show Event table</h2>
+    <table id="Eventtable" border="1">
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>EventID</th>
+            <th>EventName</th>
+            <th>EventTime</th>
+            <th>EventDuration</th>
+            <th>EventDetails</th>
+            <th>EventUserName</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <h2>Reset Event table</h2>
+    <p>If you wish to reset the table press on the reset button. If this is the first time you're running this page, you MUST use reset</p>
+    <button id="resetEventtable"> reset </button> <br>
+    <!-- A placeholder to display messages related to the reset operation. -->
+    <div id="EventresetResultMsg"></div>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <h2> Insert Values into Calendar table </h2>
+    <form id="insertEventtable">
+        EventID: <input type="number" step="1" id="insertEventId" placeholder="Enter Event ID" required> <br><br>
+        EventName: <input type="text" id="insertEventName" placeholder="Enter Event Name" maxlength="20"> <br><br>
+        EventDateTime: <input type="datetime-local" id="insertEventTime" placeholder="Enter Event Start" maxlength="20"> <br><br>
+        Duration: <input type="number" id="insertEventDuration" placeholder="Enter Event Duration"> <br><br>
+        Details: <input type="text" id="insertEventDetail" placeholder="Enter Event Details" maxlength="250"> <br><br>
+        EventUserName: <input type="text" id="insertEventUserName" placeholder="Enter Event User Name" maxlength="20"> <br><br>
+        <button type="submit"> insert </button> <br>
+    </form>
+    <div id="EventinsertResultMsg"></div>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <h2>Count the Tuples in Event Table</h2>
+    <button id="countEventtable"> count </button> <br><br>
+    <!-- A placeholder to display the count result. -->
+    <div id="countEventResultMsg"></div> <br>
+
+
     <!-- ===================================================================================== -->
     <!-- External JavaScript file that contains the functionality/logic for the operations above. -->
     <script src="karenscripts.js"></script>
