@@ -157,6 +157,59 @@ async function countDemotable() {
     }
 }
 
+// -----------------------------fetch tables--------------
+async function fetchAndDisplayServers() {
+    const tableElement = document.getElementById('servertable');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/servertable', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const tableContent = responseData.data;
+    console.log(`severtable content: ${tableContent}`)
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    tableContent.forEach(user => {
+        const row = tableBody.insertRow();
+        user.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
+async function fetchAndDisplayPremiumPlans() {
+    const tableElement = document.getElementById('premiumplantable');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/premiumplantable', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const tableContent = responseData.data;
+    console.log(`premiumplantable content: ${tableContent}`)
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    tableContent.forEach(user => {
+        const row = tableBody.insertRow();
+        user.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
 
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
@@ -174,4 +227,6 @@ window.onload = function() {
 // You can invoke this after any table-modifying operation to keep consistency.
 function fetchTableData() {
     fetchAndDisplayUsers();
+    fetchAndDisplayServers();
+    fetchAndDisplayPremiumPlans();
 }

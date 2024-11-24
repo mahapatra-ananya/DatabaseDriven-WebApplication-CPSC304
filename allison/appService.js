@@ -159,13 +159,18 @@ async function initiateAllTables() {
             console.log('SQL script loaded from file successfully')
 
             // Add ach SQL script into an array
-            const sqlStatements = sqlScript.split(';');
+            const sqlStatements = sqlScript.split(';').map(statement => statement.trim());
 
             // Execute each SQL statement
             for (const statement of sqlStatements) {
                 if (statement.length > 0) {
                     console.log(`Executing statement: ${statement}`);
-                    await connection.execute(statement)
+                    if (statement.includes('INSERT')) {
+                        await connection.execute(statement, [] ,{autoCommit: true})
+                    } else {
+                        await connection.execute(statement)
+                    }
+
                 }
             }
 
@@ -200,6 +205,7 @@ async function fetchTierTableFromDb() {
 async function fetchPremiumPlanTableFromDb() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute('SELECT * FROM PREMIUMPLAN');
+        console.log(`premiumplanresult: ${result}`)
         return result.rows;
     }).catch(() => {
         return [];
@@ -254,6 +260,7 @@ async function fetchEventTableFromDb() {
 async function fetchServerTableFromDb() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute('SELECT * FROM SERVER');
+        console.log(`fetchservertablefromdb: ${result.rows}`)
         return result.rows;
     }).catch(() => {
         return [];

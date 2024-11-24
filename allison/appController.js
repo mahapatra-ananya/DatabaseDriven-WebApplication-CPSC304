@@ -63,7 +63,7 @@ router.get('/count-demotable', async (req, res) => {
             count: tableCount
         });
     }
-
+});
     ///////////////////////////////////////////////////////////////////////////////////////////////
     /*GET endpoints*/
     router.get('/paymenttable', async (req, res) => {
@@ -126,7 +126,5 @@ router.get('/count-demotable', async (req, res) => {
         const tableContent = await appService.fetchJoinsTableFromDb();
         res.json({data: tableContent});
     });
-});
-
 
 module.exports = router;
