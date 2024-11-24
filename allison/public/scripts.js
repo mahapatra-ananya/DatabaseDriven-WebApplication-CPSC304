@@ -47,6 +47,7 @@ async function fetchAndDisplayUsers() {
 
     const responseData = await response.json();
     const demotableContent = responseData.data;
+    console.log(demotableContent)
 
     // Always clear old, already fetched data before new fetching process.
     if (tableBody) {
@@ -84,6 +85,7 @@ async function insertDemotable(event) {
 
     const idValue = document.getElementById('insertId').value;
     const nameValue = document.getElementById('insertName').value;
+    const colorValue = document.getElementById('insertColor').value;
 
     const response = await fetch('/insert-demotable', {
         method: 'POST',
@@ -92,7 +94,8 @@ async function insertDemotable(event) {
         },
         body: JSON.stringify({
             id: idValue,
-            name: nameValue
+            name: nameValue,
+            color: colorValue
         })
     });
 
