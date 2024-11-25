@@ -292,7 +292,8 @@ async function fetchAdministratorTableFromDb() {
     });
 }
 
-async function fetchMessageTableFromDb() {
+async function fetchMessageTableFromDb()
+{
     return await withOracleDB(async (connection) => {
         const result = await connection.execute('SELECT * FROM MESSAGE');
         return result.rows;
