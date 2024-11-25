@@ -36,29 +36,26 @@ async function checkDbConnection() {
     });
 }
 
-// Fetches data from the demotable and displays it.
-async function fetchAndDisplayUsers() {
-    const tableElement = document.getElementById('demotable');
+// Fetches data from the calendar table and displays it.
+async function fetchAndDisplayCalendar() {
+    const tableElement = document.getElementById('Calendartable');
     const tableBody = tableElement.querySelector('tbody');
 
-    const response = await fetch('/demotable', {
+    const response = await fetch('/Calendartable', {
         method: 'GET'
     });
 
     const responseData = await response.json();
-    const demotableContent = responseData.data;
-    // console.log(demotableContent)
+    const CalendartableContent = responseData.data;
 
     // Always clear old, already fetched data before new fetching process.
     if (tableBody) {
         tableBody.innerHTML = '';
     }
 
-    demotableContent.forEach(user => {
-        console.log(user)
+    CalendartableContent.forEach(user => {
         const row = tableBody.insertRow();
         user.forEach((field, index) => {
-            console.log(`field: ${field}; index: ${index}`)
             const cell = row.insertCell(index);
             cell.textContent = field;
         });
@@ -66,38 +63,38 @@ async function fetchAndDisplayUsers() {
 }
 
 // This function resets or initializes the demotable.
-async function resetDemotable() {
-    const response = await fetch("/initiate-demotable", {
+async function resetCalendartable() {
+    const response = await fetch("/initiate-Calendartable", {
         method: 'POST'
     });
     const responseData = await response.json();
 
     if (responseData.success) {
         const messageElement = document.getElementById('resetResultMsg');
-        messageElement.textContent = "demotable initiated successfully!";
-        fetchTableData();
+        messageElement.textContent = "Calendar initiated successfully!";
+        fetchCalendarTableData();
     } else {
-        alert("Error initiating table!");
+        alert("Error initiating Calendar!");
     }
 }
 
 // Inserts new records into the demotable.
-async function insertDemotable(event) {
+async function insertCalendartable(event) {
     event.preventDefault();
 
-    const idValue = document.getElementById('insertId').value;
-    const nameValue = document.getElementById('insertName').value;
-    const colorValue = document.getElementById('insertColor').value;
+    const idValue = document.getElementById('insertCalendarId').value;
+    const nameValue = document.getElementById('insertCalendarName').value;
+    const UsernameValue = document.getElementById('insertUserName').value;
 
-    const response = await fetch('/insert-demotable', {
+    const response = await fetch('/insert-Calendartable', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            id: idValue,
-            name: nameValue,
-            color: colorValue
+            CalendarID: idValue,
+            CalendarName: nameValue,
+            UserName: UsernameValue
         })
     });
 
@@ -106,20 +103,20 @@ async function insertDemotable(event) {
 
     if (responseData.success) {
         messageElement.textContent = "Data inserted successfully!";
-        fetchTableData();
+        fetchCalendarTableData();
     } else {
         messageElement.textContent = "Error inserting data!";
     }
 }
 
-// Updates names in the demotable.
-async function updateNameDemotable(event) {
+// Updates names in the calendar table.
+async function updateNameCalendartable(event) {
     event.preventDefault();
 
     const oldNameValue = document.getElementById('updateOldName').value;
     const newNameValue = document.getElementById('updateNewName').value;
 
-    const response = await fetch('/update-name-demotable', {
+    const response = await fetch('/update-name-Calendartable', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -135,7 +132,7 @@ async function updateNameDemotable(event) {
 
     if (responseData.success) {
         messageElement.textContent = "Name updated successfully!";
-        fetchTableData();
+        fetchCalendarTableData();
     } else {
         messageElement.textContent = "Error updating name!";
     }
@@ -143,8 +140,8 @@ async function updateNameDemotable(event) {
 
 // Counts rows in the demotable.
 // Modify the function accordingly if using different aggregate functions or procedures.
-async function countDemotable() {
-    const response = await fetch("/count-demotable", {
+async function countCalendartable() {
+    const response = await fetch("/count-Calendartable", {
         method: 'GET'
     });
 
@@ -153,82 +150,26 @@ async function countDemotable() {
 
     if (responseData.success) {
         const tupleCount = responseData.count;
-        messageElement.textContent = `The number of tuples in demotable: ${tupleCount}`;
+        messageElement.textContent = `The number of tuples in calendar table: ${tupleCount}`;
     } else {
-        alert("Error in count demotable!");
+        alert("Error in count calendar table!");
     }
 }
-
-// -----------------------------fetch tables--------------
-async function fetchAndDisplayServers() {
-    const tableElement = document.getElementById('servertable');
-    const tableBody = tableElement.querySelector('tbody');
-
-    const response = await fetch('/servertable', {
-        method: 'GET'
-    });
-
-    const responseData = await response.json();
-    const tableContent = responseData.data;
-    // console.log(`severtable content: ${tableContent}`)
-
-    // Always clear old, already fetched data before new fetching process.
-    if (tableBody) {
-        tableBody.innerHTML = '';
-    }
-
-    tableContent.forEach(user => {
-        const row = tableBody.insertRow();
-        user.forEach((field, index) => {
-            const cell = row.insertCell(index);
-            cell.textContent = field;
-        });
-    });
-}
-
-async function fetchAndDisplayPremiumPlans() {
-    const tableElement = document.getElementById('premiumplantable');
-    const tableBody = tableElement.querySelector('tbody');
-
-    const response = await fetch('/premiumplantable', {
-        method: 'GET'
-    });
-
-    const responseData = await response.json();
-    const tableContent = responseData.data;
-    // console.log(`premiumplantable content: ${tableContent}`)
-
-    // Always clear old, already fetched data before new fetching process.
-    if (tableBody) {
-        tableBody.innerHTML = '';
-    }
-
-    tableContent.forEach(user => {
-        const row = tableBody.insertRow();
-        user.forEach((field, index) => {
-            const cell = row.insertCell(index);
-            cell.textContent = field;
-        });
-    });
-}
-
 
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
 // Add or remove event listeners based on the desired functionalities.
 window.onload = function() {
     checkDbConnection();
-    fetchTableData();
-    document.getElementById("resetDemotable").addEventListener("click", resetDemotable);
-    document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
-    document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
-    document.getElementById("countDemotable").addEventListener("click", countDemotable);
+    fetchCalendarTableData();
+    document.getElementById("resetCalendartable").addEventListener("click", resetCalendartable);
+    document.getElementById("insertCalendartable").addEventListener("submit", insertCalendartable);
+    document.getElementById("updataNameCalendartable").addEventListener("submit", updateNameCalendartable);
+    document.getElementById("countCalendartable").addEventListener("click", countCalendartable);
 };
 
 // General function to refresh the displayed table data. 
 // You can invoke this after any table-modifying operation to keep consistency.
-function fetchTableData() {
-    fetchAndDisplayUsers();
-    fetchAndDisplayServers();
-    fetchAndDisplayPremiumPlans();
+function fetchCalendarTableData() {
+    fetchAndDisplayCalendar();
 }

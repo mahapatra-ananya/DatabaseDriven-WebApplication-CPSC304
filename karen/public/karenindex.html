@@ -22,25 +22,18 @@
         <img id="loadingGif" class="loading-gif" src="loading_100px.gif" alt="Loading...">
     </h1>
 
-    <ul id="allison-nav">
-        <li><a href="./index.html">Index</a></li>
-        <li><a href="./create-server.html">Create a Server</a></li>
-        <li><a href="./server.html">Server</a></li>
-        <li><a href="./join-server.html">Join a Server</a></li>
-        <li><a href="./server-admin-metrics.html">Server Admin Metrics</a></li>
-    </ul>
-
     <br><hr><br> <!-- ========================================================================= -->
 
     <!-- Show 'Demotable'. 
         Data will be fetched and inserted here dynamically using JavaScript. -->
-    <h2>Show Demotable</h2>
-    <table id="demotable" border="1">
+    <h2>Show Calendar table</h2>
+    <table id="Calendartable" border="1">
         <thead>
             <tr>
                 <!--Table head, need to be adjusted accordingly to align with your own.-->
-                <th>ID</th>
-                <th>Name</th>
+                <th>CalendarID</th>
+                <th>CalendarName</th>
+                <th>UserName</th>
             </tr>
         </thead>
         <tbody>
@@ -49,30 +42,30 @@
 
     <br><hr><br> <!-- ========================================================================= -->
 
-    <h2>Reset Demotable</h2>
+    <h2>Reset Calendar table</h2>
     <p>If you wish to reset the table press on the reset button. If this is the first time you're running this page, you MUST use reset</p>
-    <button id="resetDemotable"> reset </button> <br>
+    <button id="resetCalendartable"> reset </button> <br>
     <!-- A placeholder to display messages related to the reset operation. -->
     <div id="resetResultMsg"></div>
 
     <br><hr><br> <!-- ========================================================================= -->
 
-    <h2> Insert Values into DemoTable </h2>
-    <form id="insertDemotable">
-        ID: <input type="number" id="insertId" placeholder="Enter ID" required> <br><br>
-        Name: <input type="text" id="insertName" placeholder="Enter Name" maxlength="20"> <br><br>
-
+    <h2> Insert Values into Calendar table </h2>
+    <form id="insertCalendartable">
+        CalendarID: <input type="number" step="1" id="insertCalendarId" placeholder="Enter Calendar ID" required> <br><br>
+        CalendarName: <input type="text" id="insertCalendarName" placeholder="Enter Calendar Name" maxlength="20"> <br><br>
+        UserName: <input type="text" id="insertUserName" placeholder="Enter User Name" maxlength="20"> <br><br>
         <button type="submit"> insert </button> <br>
     </form>
     <div id="insertResultMsg"></div>
 
     <br><hr><br> <!-- ========================================================================= -->
 
-    <h2>Update Name in DemoTable</h2>
+    <h2>Update Name in Calendar table</h2>
     <p>The values are case sensitive and if you enter in the wrong case, the update statement will not do anything.</p>
-    <form id="updataNameDemotable">
-        Old Name: <input type="text" id="updateOldName" placeholder="Enter Old Name" required> <br><br>
-        New Name: <input type="text" id="updateNewName" placeholder="Enter New Name" maxlength="20"> <br><br>
+    <form id="updataNameCalendartable">
+        Old Name: <input type="text" id="updateOldName" placeholder="Enter Old Calendar Name" required> <br><br>
+        New Name: <input type="text" id="updateNewName" placeholder="Enter New Calendar Name" maxlength="20"> <br><br>
 
         <button type="submit"> update </button> <br>
     </form>
@@ -81,13 +74,22 @@
 
     <br><hr><br> <!-- ========================================================================= -->
 
-    <h2>Count the Tuples in DemoTable</h2>
-    <button id="countDemotable"> count </button> <br><br>
+    <h2>Count the Tuples in Calendar Table</h2>
+    <button id="countCalendartable"> count </button> <br><br>
     <!-- A placeholder to display the count result. -->
     <div id="countResultMsg"></div> <br>
 
+    <!--  TODO -->
+    <br><hr><br> <!-- ========================================================================= -->
+    <h2>Go To Calendar</h2>
+    <a href="karenCalendar.html">
+        <button id = "goToCalendar">View Calendar </button> </a>
+
+    <br><br>
+
+
     <!-- ===================================================================================== -->
     <!-- External JavaScript file that contains the functionality/logic for the operations above. -->
-    <script src="scripts.js"></script>
+    <script src="karenscripts.js"></script>
 </body>
 </html>
