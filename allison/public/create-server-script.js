@@ -44,11 +44,6 @@ async function fetchAndDisplayAvatars() {
 
 }
 
-// async function insertServerTable() {
-//
-//
-// }
-
 async function insertAdministratorTable() {}
 
 async function insertChannelTable() {}
@@ -103,6 +98,17 @@ async function insertServerChannelAdminTables(event) {
     const channelResponse = await insertChannelTable();
 }
 
+async function homePage() {
+    try {
+        const response = await fetch('/home', {
+            method: 'GET'
+        });
+    } catch(err) {
+        console.log('homepage', err)
+    }
+
+}
+
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
 // Add or remove event listeners based on the desired functionalities.
@@ -115,7 +121,9 @@ window.onload = function() {
 
     addChannelBtn.addEventListener('click', addChannel);
     createServerBtn.addEventListener('click', insertServerChannelAdminTables)
+    //document.querySelector('#home').addEventListener('click', homePage);
 };
+
 
 // General function to refresh the displayed table data.
 // You can invoke this after any table-modifying operation to keep consistency.
