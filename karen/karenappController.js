@@ -15,14 +15,16 @@ router.get('/check-db-connection', async (req, res) => {
     }
 });
 
-// TODO: calendar routes
+///////////////////////////////// CALENDAR /////////////////////////////////
+
 router.get('/Calendartable', async (req, res) => {
     const tableContent = await appService.fetchCalendartableFromDb();
     res.json({data: tableContent});
 });
 
 router.post("/initiate-Calendartable", async (req, res) => {
-    const initiateResult = await appService.initiateCalendartable();
+    //const initiateResult = await appService.initiateCalendartable();
+    const initiateResult = await appService.initiateAllTables(); // TODO Added
     if (initiateResult) {
         res.json({ success: true });
     } else {

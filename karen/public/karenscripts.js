@@ -73,8 +73,9 @@ async function resetCalendartable() {
 
     if (responseData.success) {
         const messageElement = document.getElementById('resetResultMsg');
-        messageElement.textContent = "Calendar initiated successfully!";
-        fetchCalendarTableData();
+        messageElement.textContent = "Tables initiated successfully!";
+        //fetchCalendarTableData();
+        //fetchEventTableData(); //added to turn calendar reset into global reset
     } else {
         alert("Error initiating Calendar!");
     }

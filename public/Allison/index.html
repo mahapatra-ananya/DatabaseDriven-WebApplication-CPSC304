@@ -22,6 +22,15 @@
         <img id="loadingGif" class="loading-gif" src="loading_100px.gif" alt="Loading...">
     </h1>
 
+    <ul id="allison-nav">
+        <li><a href="./index.html">Index</a></li>
+        <li><a href="./all-tables.html">All Tables</a></li>
+        <li><a href="./create-server.html">Create a Server</a></li>
+        <li><a href="./server.html">Server</a></li>
+        <li><a href="./join-server.html">Join a Server</a></li>
+        <li><a href="./server-admin-metrics.html">Server Admin Metrics</a></li>
+    </ul>
+
     <br><hr><br> <!-- ========================================================================= -->
 
     <!-- Show 'Demotable'. 
@@ -33,11 +42,46 @@
                 <!--Table head, need to be adjusted accordingly to align with your own.-->
                 <th>ID</th>
                 <th>Name</th>
+                <th>Color</th>
             </tr>
         </thead>
         <tbody>
         </tbody>
     </table>
+
+    <h2>Server Table</h2>
+    <table id="servertable" border="1">
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>ID</th>
+            <th>Server</th>
+            <th>PlanID</th>
+            <th>CalendarID</th>
+            <th>AvatarID</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <br/>
+
+    <h2>PremiumPlan Table</h2>
+    <table id="premiumplantable" border="1">
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>PlanID</th>
+            <th>Tier</th>
+            <th>PaymentInterval</th>
+            <th>MemberLimit</th>
+            <th>Theme</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <br/>
 
     <br><hr><br> <!-- ========================================================================= -->
 
@@ -53,6 +97,7 @@
     <form id="insertDemotable">
         ID: <input type="number" id="insertId" placeholder="Enter ID" required> <br><br>
         Name: <input type="text" id="insertName" placeholder="Enter Name" maxlength="20"> <br><br>
+        Color: <input type="text" id="insertColor" placeholder="Enter Color" maxlength="20"> <br><br>
 
         <button type="submit"> insert </button> <br>
     </form>
@@ -77,9 +122,6 @@
     <button id="countDemotable"> count </button> <br><br>
     <!-- A placeholder to display the count result. -->
     <div id="countResultMsg"></div> <br>
-
-    <a href="./FrontEnd/Home.html">
-        <button id = "goToAnanya"> Go To Try </button> </a>
 
     <!-- ===================================================================================== -->
     <!-- External JavaScript file that contains the functionality/logic for the operations above. -->
