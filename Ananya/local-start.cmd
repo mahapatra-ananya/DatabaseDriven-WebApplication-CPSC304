@@ -7,6 +7,6 @@ cd %~dp0
 set PATH=%PATH%;"C:\Users\anany\OneDrive\Desktop\instantclient_19_20"
 
 :: Start Node application
-node server.js
+node ananyaServer.js
 
 exit /b 0
