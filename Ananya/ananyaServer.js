@@ -1,5 +1,5 @@
 const express = require('express');
-const appController = require('./appController');
+const appController = require('./ananyaAppController');
 require('dotenv').config();
 
 // Load environment variables from .env file
