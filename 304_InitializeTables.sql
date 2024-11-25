@@ -1,18 +1,19 @@
-    DROP TABLE Payment cascade constraints;
-    DROP TABLE Tier cascade constraints;
-    DROP TABLE PremiumPlan cascade constraints;
-    DROP TABLE Location cascade constraints;
-    DROP TABLE Avatar cascade constraints;
-    DROP TABLE UserAccount cascade constraints;
-    DROP TABLE Calendar cascade constraints;
-    DROP TABLE Event cascade constraints;
-    DROP TABLE Server cascade constraints;
-    DROP TABLE Channel cascade constraints;
-    DROP TABLE GeneralMember cascade constraints;
-    DROP TABLE Administrator cascade constraints;
-    DROP TABLE Message cascade constraints;
-    DROP TABLE PostedTo cascade constraints;
-    DROP TABLE Joins cascade constraints;
+DROP TABLE Payment cascade constraints;
+DROP TABLE Tier cascade constraints;
+DROP TABLE PremiumPlan cascade constraints;
+DROP TABLE Location cascade constraints;
+DROP TABLE Avatar cascade constraints;
+DROP TABLE UserAccount cascade constraints;
+DROP TABLE Calendar cascade constraints;
+DROP TABLE Event cascade constraints;
+DROP TABLE Server cascade constraints;
+DROP TABLE Channel cascade constraints;
+DROP TABLE GeneralMember cascade constraints;
+DROP TABLE Administrator cascade constraints;
+DROP TABLE Message cascade constraints;
+DROP TABLE PostedTo cascade constraints;
+DROP TABLE Joins cascade constraints;
+
 CREATE TABLE Payment (
                          PaymentInterval 		integer,
                          SubscriptionPayment 	integer,

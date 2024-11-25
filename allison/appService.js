@@ -1,6 +1,4 @@
 const oracledb = require('oracledb');
-const fs = require('fs')
-const path = require('path')
 const connection = require("oracledb/lib/connection");
 require('dotenv').config();
 

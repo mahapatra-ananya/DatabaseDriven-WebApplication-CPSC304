@@ -1,6 +1,6 @@
 /*Initializing All Tables*/
 async function initiateAllTables() {
-
+console.log(__dirname);
     const scriptPath = path.resolve(__dirname, '../304_InitializeTables.sql');
     return await withOracleDB(async (connection) => {
         try {

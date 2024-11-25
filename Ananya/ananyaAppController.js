@@ -1,5 +1,6 @@
 const express = require('express');
 const appService = require('./ananyaAppService');
+// const globalScript = require('../globalScript');
 
 const router = express.Router();
 
@@ -21,7 +22,7 @@ router.get('/demotable', async (req, res) => {
 });
 
 router.post("/initiate-demotable", async (req, res) => {
-    const initiateResult = await appService.initiateDemotable();
+    const initiateResult = await appService.initiateAllTables();
     if (initiateResult) {
         res.json({ success: true });
     } else {
