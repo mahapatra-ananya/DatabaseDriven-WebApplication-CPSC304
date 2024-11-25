@@ -47,6 +47,7 @@ async function fetchAndDisplayUsers() {
 
     const responseData = await response.json();
     const demotableContent = responseData.data;
+    // console.log(demotableContent)
 
     // Always clear old, already fetched data before new fetching process.
     if (tableBody) {
@@ -54,8 +55,10 @@ async function fetchAndDisplayUsers() {
     }
 
     demotableContent.forEach(user => {
+        console.log(user)
         const row = tableBody.insertRow();
         user.forEach((field, index) => {
+            console.log(`field: ${field}; index: ${index}`)
             const cell = row.insertCell(index);
             cell.textContent = field;
         });
@@ -84,6 +87,7 @@ async function insertDemotable(event) {
 
     const idValue = document.getElementById('insertId').value;
     const nameValue = document.getElementById('insertName').value;
+    const colorValue = document.getElementById('insertColor').value;
 
     const response = await fetch('/insert-demotable', {
         method: 'POST',
@@ -92,7 +96,8 @@ async function insertDemotable(event) {
         },
         body: JSON.stringify({
             id: idValue,
-            name: nameValue
+            name: nameValue,
+            color: colorValue
         })
     });
 
@@ -154,6 +159,59 @@ async function countDemotable() {
     }
 }
 
+// -----------------------------fetch tables--------------
+async function fetchAndDisplayServers() {
+    const tableElement = document.getElementById('servertable');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/servertable', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const tableContent = responseData.data;
+    // console.log(`severtable content: ${tableContent}`)
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    tableContent.forEach(user => {
+        const row = tableBody.insertRow();
+        user.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
+async function fetchAndDisplayPremiumPlans() {
+    const tableElement = document.getElementById('premiumplantable');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/premiumplantable', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const tableContent = responseData.data;
+    // console.log(`premiumplantable content: ${tableContent}`)
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    tableContent.forEach(user => {
+        const row = tableBody.insertRow();
+        user.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
 
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
@@ -171,4 +229,6 @@ window.onload = function() {
 // You can invoke this after any table-modifying operation to keep consistency.
 function fetchTableData() {
     fetchAndDisplayUsers();
+    fetchAndDisplayServers();
+    fetchAndDisplayPremiumPlans();
 }
