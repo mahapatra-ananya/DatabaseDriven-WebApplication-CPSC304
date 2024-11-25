@@ -47,7 +47,7 @@ async function fetchAndDisplayUsers() {
 
     const responseData = await response.json();
     const demotableContent = responseData.data;
-    console.log(demotableContent)
+    // console.log(demotableContent)
 
     // Always clear old, already fetched data before new fetching process.
     if (tableBody) {
@@ -55,8 +55,10 @@ async function fetchAndDisplayUsers() {
     }
 
     demotableContent.forEach(user => {
+        console.log(user)
         const row = tableBody.insertRow();
         user.forEach((field, index) => {
+            console.log(`field: ${field}; index: ${index}`)
             const cell = row.insertCell(index);
             cell.textContent = field;
         });
@@ -168,7 +170,7 @@ async function fetchAndDisplayServers() {
 
     const responseData = await response.json();
     const tableContent = responseData.data;
-    console.log(`severtable content: ${tableContent}`)
+    // console.log(`severtable content: ${tableContent}`)
 
     // Always clear old, already fetched data before new fetching process.
     if (tableBody) {
@@ -194,7 +196,7 @@ async function fetchAndDisplayPremiumPlans() {
 
     const responseData = await response.json();
     const tableContent = responseData.data;
-    console.log(`premiumplantable content: ${tableContent}`)
+    // console.log(`premiumplantable content: ${tableContent}`)
 
     // Always clear old, already fetched data before new fetching process.
     if (tableBody) {

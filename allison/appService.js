@@ -205,7 +205,6 @@ async function fetchTierTableFromDb() {
 async function fetchPremiumPlanTableFromDb() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute('SELECT * FROM PREMIUMPLAN');
-        console.log(`premiumplanresult: ${result}`)
         return result.rows;
     }).catch(() => {
         return [];
@@ -260,7 +259,6 @@ async function fetchEventTableFromDb() {
 async function fetchServerTableFromDb() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute('SELECT * FROM SERVER');
-        console.log(`fetchservertablefromdb: ${result.rows}`)
         return result.rows;
     }).catch(() => {
         return [];
@@ -321,6 +319,59 @@ async function fetchJoinsTableFromDb() {
     });
 }
 
+/***CREATE SERVER***/
+async function insertServerTable(serverId, serverName, premiumPlanId, calendarId, avatarId) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `INSERT INTO DEMOTABLE (ServerID, ServerName, PlanID, CalendarID, AvatarID) VALUES (:serverId, :serverName, :premiumPlanId, :calendarId, :avatarId)`,
+            [serverId, serverName, premiumPlanId, calendarId, avatarId],
+            { autoCommit: true }
+        );
+
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+async function generateServerId() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT MAX(SERVERID) FROM SERVER`
+        );
+
+        return result + 1;
+    }).catch(() => {
+        return false;
+    });
+}
+
+async function generateCalendarId() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT MAX(CALENDARID) FROM CALENDAR`
+        );
+
+        return result + 1;
+    }).catch(() => {
+        return false;
+    });
+}
+
+async function getAdminPlanID(currentUsername) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT PlanID FROM USERACCOUNT WHERE username=:currentUsername`, [currentUsername]
+        );
+
+        return result;
+    }).catch(() => {
+        return false;
+    });
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+
 module.exports = {
     testOracleConnection,
     fetchDemotableFromDb,
@@ -343,5 +394,9 @@ module.exports = {
     fetchAdministratorTableFromDb,
     fetchMessageTableFromDb,
     fetchPostedToTableFromDb,
-    fetchJoinsTableFromDb
+    fetchJoinsTableFromDb,
+    insertServerTable,
+    generateServerId,
+    generateCalendarId,
+    getAdminPlanID
 };

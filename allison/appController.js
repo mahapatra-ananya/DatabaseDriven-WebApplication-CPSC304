@@ -84,6 +84,7 @@ router.get('/count-demotable', async (req, res) => {
     });
     router.get('/avatartable', async (req, res) => {
         const tableContent = await appService.fetchAvatarTableFromDb();
+        console.log(`avatartable: ${tableContent}`)
         res.json({data: tableContent});
     });
     router.get('/useraccounttable', async (req, res) => {
@@ -126,5 +127,20 @@ router.get('/count-demotable', async (req, res) => {
         const tableContent = await appService.fetchJoinsTableFromDb();
         res.json({data: tableContent});
     });
+
+    ////////////////////////////////////////////////////////////////////////
+/*CREATE SERVER*/
+router.post("/insert-servertable/:username", async (req, res) => {
+    const { serverName, avatarId } = req.body;
+    const newServerId = await appService.generateServerId();
+    const newCalendarId = await appService.generateCalendarId();
+    const adminsPlan = await appService.getAdminPlanID(req.params['username']);
+    const insertResult = await appService.insertServerTable(newServerId, serverName, adminsPlan, newCalendarId, avatarId);
+    if (insertResult) {
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
 
 module.exports = router;
