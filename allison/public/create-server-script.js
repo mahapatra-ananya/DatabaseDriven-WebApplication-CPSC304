@@ -112,55 +112,55 @@ async function insertServerChannelAdminTables(event) {
     let newServerId;
 
     if (insertServerResponseData.success) {
-        newServerId = insertServerResponseData.serverId;
-        console.log(`Successfully created calendarid: ${newServerId}`);
+        newServerId = insertServerResponseData.serverID;
+        console.log(`Successfully created serverid: ${newServerId}`);
     } else {
         alert('Error Creating the Server')
         return;
     }
 
     // STEP 2: Insert into the Administrator Table
-    // const insertAdministratorResponse = await fetch('/insert-administrator-table', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify({
-    //         Username: this.username,
-    //         Tag: inputTag,
-    //         Signature: inputSignature,
-    //         ServerID: newServerId
-    //     })
-    // });
-    //
-    // const insertAdministratorResponseData = await insertAdministratorResponse.json();
-    //
-    // if (insertAdministratorResponseData.success) {
-    //     console.log('success inserting new administrator')
-    // } else {
-    //     alert('error inserting administrator')
-    //     return;
-    // }
-    //
+    const insertAdministratorResponse = await fetch('/insert-administrator-table', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            Username: currentUsername,
+            Tag: inputTag,
+            Signature: inputSignature,
+            ServerID: newServerId
+        })
+    });
+
+    const insertAdministratorResponseData = await insertAdministratorResponse.json();
+
+    if (insertAdministratorResponseData.success) {
+        console.log('success inserting new administrator')
+    } else {
+        alert('error inserting administrator')
+        return;
+    }
+
     // // STEP 3: Insert into the Channel Table
-    // const insertChannelResponse = await fetch('/insert-channel-table', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify({
-    //         channels: channels,
-    //         serverID: newServerId,
-    //     })
-    // });
-    //
-    // const insertChannelResponseData = await insertChannelResponse.json();
-    //
-    // if (insertChannelResponseData.success) {
-    //     console.log('success inserting the new channels')
-    // } else {
-    //     alert('error inserting the new channels')
-    // }
+    const insertChannelResponse = await fetch('/insert-channel-table', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            channels: channels,
+            serverID: newServerId,
+        })
+    });
+
+    const insertChannelResponseData = await insertChannelResponse.json();
+    if (insertChannelResponseData.success) {
+        console.log('success inserting the new channels')
+
+    } else {
+        alert('error inserting the new channels')
+    }
 
 }
 

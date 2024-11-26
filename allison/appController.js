@@ -169,11 +169,13 @@ router.post("/insert-administrator-table", async (req, res) => {
 });
 
 router.post("/insert-channel-table", async (req, res) => {
-    const { channels, serverId } = req.body;
+    const { channels, serverID } = req.body;
+    console.log(`requested channels ${channels}`)
     let channelID = 1;
     for (const channel of channels) {
         try {
-            await appService.insertChannelTable(channelID, channel, serverId);
+            console.log(channel)
+            await appService.insertChannelTable(channelID, channel, serverID);
             channelID++;
         } catch (err) {
             console.log('error inserting channel', err)

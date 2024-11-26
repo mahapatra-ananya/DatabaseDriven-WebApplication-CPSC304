@@ -373,7 +373,7 @@ async function getAdminPlanID(currentUsername) {
 async function insertAdministratorTable(Username, Tag, Signature, ServerID) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `INSERT INTO ADMINISTRATOR (Username, Tag, Signature, ServerID) VALUES (:Username, :Tag, :premiumPlanId, :calenSignaturedarId, :ServerID)`,
+            `INSERT INTO ADMINISTRATOR (Username, Tag, Signature, ServerID) VALUES (:Username, :Tag, :Signature, :ServerID)`,
             [Username, Tag, Signature, ServerID],
             { autoCommit: true }
         );
@@ -385,11 +385,11 @@ async function insertAdministratorTable(Username, Tag, Signature, ServerID) {
 }
 
 ///////**********INSERT CHANNEL TABLE**********//
-async function insertChannelTable(channelID, channel, serverId) {
+async function insertChannelTable(ChannelID, ChannelTitle, ServerID) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `INSERT INTO CHANNEL (channelId, channel, serverId) VALUES (:channelId, :channel, :serverId)`,
-            [channelID, channel, serverId],
+            `INSERT INTO CHANNEL (ChannelID, ChannelTitle, ServerID) VALUES (:ChannelID, :ChannelTitle, :ServerID)`,
+            [ChannelID, ChannelTitle, ServerID],
             { autoCommit: true }
         );
 
