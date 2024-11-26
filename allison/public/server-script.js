@@ -1,21 +1,11 @@
-// TODO: UPDATE username
-const USERNAME = 'ali123'
-
-const joinServerBtns = () => {
-    // get every join server button
-}
-
-//TODO: TEMPORARY JUST FOR SHOW
-document.querySelector(".joinServerBtn").addEventListener('click', () => {
-    alert("TODO: Implement Join Button Clicked")
-})
+const urlParam = new URLSearchParams(window.location.search);
+const SERVERID = urlParam.get('serverid');
 
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
 // Add or remove event listeners based on the desired functionalities.
 window.onload = function() {
     // checkDbConnection();
-    NEWSERVERID = '';
     fetchTableData();
 
     const addChannelBtn = document.querySelector('#addChannelBtn');
