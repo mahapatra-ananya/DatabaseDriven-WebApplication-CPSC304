@@ -62,10 +62,32 @@ async function insertServerChannelAdminTables(event) {
     const rawChannels = document.getElementsByClassName('newChannel')
     let channels = [];
     for (const channel of rawChannels) {
-        channels.push(channel.value)
+        if (channel.value.trim().length > 0) {
+            channels.push(channel.value)
+        }
     }
     const inputTag = document.getElementById('insertTag').value;
     const inputSignature = document.getElementById('insertSignature').value;
+
+    ////// USER INPUT CHECKING
+    let emptyInput = []
+
+    if (serverName === null || serverName === '') {
+        emptyInput.push("Server Name")
+    }
+
+    if (selectedAvatar === null || selectedAvatar === '' || selectedAvatar === undefined) {
+        emptyInput.push(" Select an Avatar")
+    }
+
+    if (channels === null || channels.length === 0) {
+        emptyInput.push(" Channels")
+    }
+
+    if (emptyInput.length > 0) {
+        alert(`Please fill out the following fields: ${emptyInput}`)
+        return;
+    }
 
     console.log(`serverName: ${serverName} \n 
     insertAvatar: ${selectedAvatar} \n 
@@ -157,11 +179,22 @@ async function insertServerChannelAdminTables(event) {
     const insertChannelResponseData = await insertChannelResponse.json();
     if (insertChannelResponseData.success) {
         console.log('success inserting the new channels')
-
+        const serverSuccess = document.querySelector('#onInsertServerSuccess')
+        serverSuccess.style.display = 'block';
+        const successServerName = document.querySelector('#successServerName');
+        successServerName.textContent = serverName;
     } else {
         alert('error inserting the new channels')
     }
 
+    // TODO: IF ANY OF THESE FAILS, NEED TO DELETE THE PREVIOUS INSERTS..........
+}
+
+async function goToServerPage(event) {
+    event.preventDefault();
+    const response = await fetch('/avatartable', {
+        method: 'GET'
+    });
 }
 
 // ---------------------------------------------------------------
@@ -173,9 +206,12 @@ window.onload = function() {
 
     const addChannelBtn = document.querySelector('#addChannelBtn');
     const createServerBtn = document.querySelector('#createServerBtn');
+    const nextBtn = document.querySelector('#nextBtn');
 
     addChannelBtn.addEventListener('click', addChannel);
     createServerBtn.addEventListener('click', insertServerChannelAdminTables)
+    nextBtn.addEventListener('click', goToServerPage);
+
 };
 
 

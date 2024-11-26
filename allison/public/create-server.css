@@ -25,3 +25,7 @@
 .formComponent {
     margin-top: 10px;
 }
+
+#onInsertServerSuccess {
+    display: none;
+}

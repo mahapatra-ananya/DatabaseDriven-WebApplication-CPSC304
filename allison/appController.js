@@ -189,4 +189,7 @@ router.post("/insert-channel-table", async (req, res) => {
     }
 });
 
+////////////////////GO TO A SERVER PAGE ////////////////////////////////////
+
+
 module.exports = router;
