@@ -89,6 +89,15 @@ async function fetchDemotableFromDb() {
     });
 }
 
+async function fetchAccountsFromDb() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT * FROM UserAccount');
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
 async function initiateDemotable() {
     return await withOracleDB(async (connection) => {
         try {
@@ -114,6 +123,21 @@ async function insertDemotable(id, name) {
         const result = await connection.execute(
             `INSERT INTO DEMOTABLE (id, name) VALUES (:id, :name)`,
             [id, name],
+            { autoCommit: true }
+        );
+
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+
+async function insertUserAccount(username, displayName, password, bio, region, avatar) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `INSERT INTO UserAccount(Username, DisplayName, UserPassword, Bio, Region, AvatarID, PlanID)
+                VALUES (:username, :displayName, :password, :bio, :region, :avatar, NULL)`,
+            [username, displayName, password, bio, region, avatar],
             { autoCommit: true }
         );
 
@@ -322,11 +346,15 @@ async function fetchJoinsTableFromDb() {
 module.exports = {
     testOracleConnection,
     fetchDemotableFromDb,
+    initiateAllTables,
+    insertUserAccount,
+    fetchAccountsFromDb,
+
     initiateDemotable, 
     insertDemotable, 
     updateNameDemotable, 
     countDemotable,
-    initiateAllTables,
+
     fetchPaymentTableFromDb,
     fetchTierTableFromDb,
     fetchPremiumPlanTableFromDb,
