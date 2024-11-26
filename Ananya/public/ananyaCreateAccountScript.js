@@ -49,20 +49,20 @@ async function fetchAndDisplayUsers() {
 }
 
 // This function resets or initializes the demotable.
-async function resetDemotable() {
-    const response = await fetch("/initiate-demotable", {
-        method: 'POST'
-    });
-    const responseData = await response.json();
-
-    if (responseData.success) {
-        const messageElement = document.getElementById('resetResultMsg');
-        messageElement.textContent = "demotable initiated successfully!";
-        fetchTableData();
-    } else {
-        alert("Error initiating table!");
-    }
-}
+// async function resetDemotable() {
+//     const response = await fetch("/initiate-demotable", {
+//         method: 'POST'
+//     });
+//     const responseData = await response.json();
+//
+//     if (responseData.success) {
+//         const messageElement = document.getElementById('resetResultMsg');
+//         messageElement.textContent = "demotable initiated successfully!";
+//         fetchTableData();
+//     } else {
+//         alert("Error initiating table!");
+//     }
+// }
 
 // // initialize all tables, do not display
 // async function initializeAllTables() {
@@ -91,6 +91,12 @@ async function insertUserAccount(event) {
     const regionValue = document.getElementById('Region').value;
     const avatarValue = document.getElementById('Avatar').value;
 
+
+    // const exists = await fetch('/check-userExists', {
+    //     method: "POST",
+    //
+    // });
+
     const response = await fetch('/insert-userAccount', {
         method: 'POST',
         headers: {
@@ -109,11 +115,24 @@ async function insertUserAccount(event) {
     const responseData = await response.json();
     const messageElement = document.getElementById('insertResultMsg');
 
+
     if (responseData.success) {
         messageElement.textContent = "Data inserted successfully!";
-        fetchAndDisplayUsers();
+        initialize();
     } else {
-        messageElement.textContent = "Error inserting data!";
+        if (responseData.val === 0) {
+            messageElement.textContent = "Username already exists!";
+        } else {
+            messageElement.textContent = "Error inserting data!";
+        }
+        // response.text()
+        //     .then((text) => {
+        //         messageElement.textContent = text;
+        //     })
+        //     .catch((error) => {
+        //         messageElement.textContent = "Error inserting data!";
+        //     });
+        //messageElement.textContent = "Error inserting data!";
     }
 }
 
