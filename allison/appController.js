@@ -130,14 +130,44 @@ router.get('/count-demotable', async (req, res) => {
 
     ////////////////////////////////////////////////////////////////////////
 /*CREATE SERVER*/
-router.post("/insert-servertable/:username", async (req, res) => {
-    const { serverName, avatarId } = req.body;
+router.post("/insert-server-table", async (req, res) => {
+    const { ServerName, AvatarID, Username } = req.body;
     const newServerId = await appService.generateServerId();
     const newCalendarId = await appService.generateCalendarId();
-    const adminsPlan = await appService.getAdminPlanID(req.params['username']);
-    const insertResult = await appService.insertServerTable(newServerId, serverName, adminsPlan, newCalendarId, avatarId);
+    // const adminsPlan = await appService.getAdminPlanID(req.params['username']);
+    const adminsPlan = await appService.getAdminPlanID(Username);
+    const insertResult = await appService.insertServerTable(newServerId, ServerName, adminsPlan, newCalendarId, AvatarID);
     if (insertResult) {
         res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
+router.post("/insert-administrator-table", async (req, res) => {
+    const { Username, Tag, Signature, ServerID } = req.body;
+    const insertResult = await appService.insertAdministratorTable(Username, Tag, Signature, ServerID);
+    if (insertResult) {
+        res.json({ success: true});
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
+router.post("/insert-channel-table", async (req, res) => {
+    const { channels, serverId } = req.body;
+    let channelID = 1;
+    for (const channel of channels) {
+        try {
+            await appService.insertChannelTable(channelID, channel, serverId);
+            channelID++;
+        } catch (err) {
+            console.log('error inserting channel', err)
+        }
+    }
+
+    if (channels.length === channelID-1) {
+        res.json({ success: true});
     } else {
         res.status(500).json({ success: false });
     }

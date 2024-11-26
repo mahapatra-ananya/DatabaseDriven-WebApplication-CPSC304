@@ -11,7 +11,8 @@
     margin-bottom: 10px;
 }
 
-#newChannel {
+.newChannel {
+    top: 5px;
     margin-bottom: 5px;
     width: 25%
 }
@@ -19,4 +20,8 @@
 #createServerBtn {
     margin-top: 15px;
     margin-bottom: 10px;
+}
+
+.formComponent {
+    margin-top: 10px;
 }

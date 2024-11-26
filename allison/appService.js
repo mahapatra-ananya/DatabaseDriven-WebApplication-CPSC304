@@ -322,7 +322,7 @@ async function fetchJoinsTableFromDb() {
 async function insertServerTable(serverId, serverName, premiumPlanId, calendarId, avatarId) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `INSERT INTO DEMOTABLE (ServerID, ServerName, PlanID, CalendarID, AvatarID) VALUES (:serverId, :serverName, :premiumPlanId, :calendarId, :avatarId)`,
+            `INSERT INTO SERVER (ServerID, ServerName, PlanID, CalendarID, AvatarID) VALUES (:serverId, :serverName, :premiumPlanId, :calendarId, :avatarId)`,
             [serverId, serverName, premiumPlanId, calendarId, avatarId],
             { autoCommit: true }
         );
@@ -368,6 +368,36 @@ async function getAdminPlanID(currentUsername) {
     });
 }
 
+///////**********INSERT ADMINISTRATOR TABLE**********//
+async function insertAdministratorTable(Username, Tag, Signature, ServerID) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `INSERT INTO ADMINISTRATOR (Username, Tag, Signature, ServerID) VALUES (:Username, :Tag, :premiumPlanId, :calenSignaturedarId, :ServerID)`,
+            [Username, Tag, Signature, ServerID],
+            { autoCommit: true }
+        );
+
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+
+///////**********INSERT ADMINISTRATOR TABLE**********//
+async function insertChannelTable(channelID, channel, serverId) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `INSERT INTO CHANNEL (channelId, channel, serverId) VALUES (:channelId, :channel, :serverId)`,
+            [channelID, channel, serverId],
+            { autoCommit: true }
+        );
+
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -397,5 +427,7 @@ module.exports = {
     insertServerTable,
     generateServerId,
     generateCalendarId,
-    getAdminPlanID
+    getAdminPlanID,
+    insertAdministratorTable,
+    insertChannelTable
 };

@@ -1,3 +1,6 @@
+// TODO: USERNAME STUFF
+const username = 'goldfishlover'
+
 // Create Server Script
 function addChannel() {
     const insertChannelGroup = document.querySelector('#insertChannelGroup');
@@ -44,10 +47,6 @@ async function fetchAndDisplayAvatars() {
 
 }
 
-async function insertAdministratorTable() {}
-
-async function insertChannelTable() {}
-
 async function insertServerChannelAdminTables(event) {
     event.preventDefault();
 
@@ -65,12 +64,13 @@ async function insertServerChannelAdminTables(event) {
     for (const channel of rawChannels) {
         channels.push(channel.value)
     }
+    const inputTag = document.getElementById('insertTag');
+    const inputSignature = document.getElementById('insertSignature');
 
     console.log(`serverName: ${serverName} \n insertAvatar: ${selectedAvatar} \n channels: ${channels}`);
 
     // STEP 1: Insert into the Server Table
-    // TODO: work on username stuff later
-    const response = await fetch('/insert-servertable/USERNAME', {
+    const insertServerResponse = await fetch('/insert-server-table', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -78,33 +78,61 @@ async function insertServerChannelAdminTables(event) {
         body: JSON.stringify({
             ServerName: serverName,
             AvatarID: selectedAvatar,
+            Username: this.username
         })
     });
 
-    const responseData = await response.json();
-    const messageElement = document.getElementById('insertResultMsg');
+    const insertServerResponseData = await insertServerResponse.json();
+    let newServerId;
 
-    if (responseData.success) {
-        messageElement.textContent = "Data inserted successfully!";
-        fetchTableData();
+    if (insertServerResponseData.success) {
+        newServerId = insertServerResponseData.serverId;
     } else {
-        messageElement.textContent = "Error inserting data!";
+        alert('Error Creating the Server')
+        return;
     }
 
     // STEP 2: Insert into the Administrator Table
-    const administratorResponse = await insertAdministratorTable();
+    const insertAdministratorResponse = await fetch('/insert-administrator-table', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            Username: this.username,
+            Tag: inputTag,
+            Signature: inputSignature,
+            ServerID: newServerId
+        })
+    });
+
+    const insertAdministratorResponseData = await insertAdministratorResponse.json();
+
+    if (insertAdministratorResponseData.success) {
+        console.log('success inserting new administrator')
+    } else {
+        alert('error inserting administrator')
+        return;
+    }
 
     // STEP 3: Insert into the Channel Table
-    const channelResponse = await insertChannelTable();
-}
+    const insertChannelResponse = await fetch('/insert-channel-table', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            channels: channels,
+            serverID: newServerId,
+        })
+    });
 
-async function homePage() {
-    try {
-        const response = await fetch('/home', {
-            method: 'GET'
-        });
-    } catch(err) {
-        console.log('homepage', err)
+    const insertChannelResponseData = await insertChannelResponse.json();
+
+    if (insertChannelResponseData.success) {
+        console.log('success inserting the new channels')
+    } else {
+        alert('error inserting the new channels')
     }
 
 }
@@ -121,7 +149,6 @@ window.onload = function() {
 
     addChannelBtn.addEventListener('click', addChannel);
     createServerBtn.addEventListener('click', insertServerChannelAdminTables)
-    //document.querySelector('#home').addEventListener('click', homePage);
 };
 
 
