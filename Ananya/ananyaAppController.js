@@ -62,6 +62,25 @@ router.post("/insert-userAccount", async (req, res) => {
     }
 });
 
+router.post("/log-in", async (req, res) => {
+    const { username, password } = req.body;
+    const loginResult = await appService.loginUser(username, password);
+    //const existing = appService.userExists;
+    // if (existing) {
+    //     res.status(500).json({ success: false });
+    //     res.send('This username already exists');
+    // }
+    if (loginResult === 1) {
+        res.json({ success: true, val: 1 });
+    } else if (loginResult === 0) {
+        res.status(500).json({ success: false, val: 0 });
+    } else if (loginResult === 2) {
+        res.status(500).json({ success: false, val: 2 });
+    } else {
+        res.status(500).json({ success: false, val: -1 });
+    }
+});
+
 // router.post("/check-userExists", async (req, res) => {
 //     const existing = appService.userExists;
 //     if (existing) {

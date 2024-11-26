@@ -80,14 +80,46 @@ async function fetchAndDisplayUsers() {
 //     }
 // }
 
+async function logIn(event) {
+    event.preventDefault();
 
+    const usernameValue = document.getElementById('Username').value;
+    const passwordValue = document.getElementById('Password').value;
+
+    const response = await fetch("/log-in", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            username: usernameValue,
+            password: passwordValue,
+        })
+    });
+    const responseData = await response.json();
+    const messageElement = document.getElementById('loginResultMsg');
+
+
+    if (responseData.success) {
+        messageElement.textContent = "Logged in successfully!";
+        window.location.replace("ananyaHome.html")
+    } else {
+        if (responseData.val === 0) {
+            messageElement.textContent = "Username does not exist!";
+        } else if (responseData.val === 2) {
+            messageElement.textContent = "Incorrect password!";
+        } else {
+            messageElement.textContent = "Error logging in!";
+        }
+    }
+}
 
 // Initializes the webpage functionalities.
 // Add or remove event listeners based on the desired functionalities.
 window.onload = function() {
     checkDbConnection();
     initialize();
-    document.getElementById("createAccountTable").addEventListener("submit", insertUserAccount);
+    document.getElementById("loginTable").addEventListener("submit", logIn);
     document.getElementById("resetDemotable").addEventListener("click", resetDemotable);
     // document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
     // document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);

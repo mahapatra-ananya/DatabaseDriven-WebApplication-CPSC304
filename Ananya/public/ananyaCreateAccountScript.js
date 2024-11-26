@@ -137,7 +137,7 @@ async function insertUserAccount(event) {
         if (responseData.val === 0) {
             messageElement.textContent = "Username already exists!";
         } else {
-            messageElement.textContent = "Error inserting data!";
+            messageElement.textContent = "Error creating account!";
         }
     }
 }
