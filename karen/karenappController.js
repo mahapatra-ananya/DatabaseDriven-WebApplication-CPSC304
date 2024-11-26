@@ -18,13 +18,12 @@ router.get('/check-db-connection', async (req, res) => {
 ///////////////////////////////// CALENDAR /////////////////////////////////
 
 router.get('/Calendartable', async (req, res) => {
-    const tableContent = await appService.fetchCalendartableFromDb();
+    const tableContent = await appService.fetchCalendarTableFromDb();
     res.json({data: tableContent});
 });
 
-router.post("/initiate-Calendartable", async (req, res) => {
-    //const initiateResult = await appService.initiateCalendartable();
-    const initiateResult = await appService.initiateAllTables(); // TODO Added
+router.post("/initiate-AllTables", async (req, res) => {
+    const initiateResult = await appService.initiateAllTables();
     if (initiateResult) {
         res.json({ success: true });
     } else {
@@ -70,18 +69,18 @@ router.get('/count-Calendartable', async (req, res) => {
 
 //TODO: Event routes
 router.get('/Eventtable', async (req, res) => {
-    const tableContent = await appService.fetchEventtableFromDb();
+    const tableContent = await appService.fetchEventTableFromDb();
     res.json({data: tableContent});
 });
 
-router.post("/initiate-Eventtable", async (req, res) => {
-    const initiateResult = await appService.initiateEventtable();
-    if (initiateResult) {
-        res.json({ success: true });
-    } else {
-        res.status(500).json({ success: false });
-    }
-});
+// router.post("/initiate-Eventtable", async (req, res) => {
+//     const initiateResult = await appService.initiateEventtable();
+//     if (initiateResult) {
+//         res.json({ success: true });
+//     } else {
+//         res.status(500).json({ success: false });
+//     }
+// });
 
 router.post("/insert-Eventtable", async (req, res) => {
     const { EventID, EventName, EventDateTime, Duration, Details, EventUsername } = req.body;
