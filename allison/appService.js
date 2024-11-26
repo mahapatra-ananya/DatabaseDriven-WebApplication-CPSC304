@@ -1,4 +1,6 @@
 const oracledb = require('oracledb');
+const path = require('path')
+const fs = require('fs')
 const connection = require("oracledb/lib/connection");
 require('dotenv').config();
 
@@ -322,7 +324,7 @@ async function fetchJoinsTableFromDb() {
 async function insertServerTable(serverId, serverName, premiumPlanId, calendarId, avatarId) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `INSERT INTO DEMOTABLE (ServerID, ServerName, PlanID, CalendarID, AvatarID) VALUES (:serverId, :serverName, :premiumPlanId, :calendarId, :avatarId)`,
+            `INSERT INTO SERVER (ServerID, ServerName, PlanID, CalendarID, AvatarID) VALUES (:serverId, :serverName, :premiumPlanId, :calendarId, :avatarId)`,
             [serverId, serverName, premiumPlanId, calendarId, avatarId],
             { autoCommit: true }
         );
@@ -337,8 +339,7 @@ async function generateServerId() {
         const result = await connection.execute(
             `SELECT MAX(SERVERID) FROM SERVER`
         );
-
-        return result + 1;
+        return Number(result.rows[0][0]) + 1;
     }).catch(() => {
         return false;
     });
@@ -350,7 +351,7 @@ async function generateCalendarId() {
             `SELECT MAX(CALENDARID) FROM CALENDAR`
         );
 
-        return result + 1;
+        return Number(result.rows[0][0]) + 1;
     }).catch(() => {
         return false;
     });
@@ -362,7 +363,52 @@ async function getAdminPlanID(currentUsername) {
             `SELECT PlanID FROM USERACCOUNT WHERE username=:currentUsername`, [currentUsername]
         );
 
-        return result;
+        return result.rows[0][0];
+    }).catch(() => {
+        return false;
+    });
+}
+
+///////**********INSERT ADMINISTRATOR TABLE**********//
+async function insertAdministratorTable(Username, Tag, Signature, ServerID) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `INSERT INTO ADMINISTRATOR (Username, Tag, Signature, ServerID) VALUES (:Username, :Tag, :Signature, :ServerID)`,
+            [Username, Tag, Signature, ServerID],
+            { autoCommit: true }
+        );
+
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+
+///////**********INSERT CHANNEL TABLE**********//
+async function insertChannelTable(ChannelID, ChannelTitle, ServerID) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `INSERT INTO CHANNEL (ChannelID, ChannelTitle, ServerID) VALUES (:ChannelID, :ChannelTitle, :ServerID)`,
+            [ChannelID, ChannelTitle, ServerID],
+            { autoCommit: true }
+        );
+
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+
+///////**********INSERT CALENDAR TABLE**********//
+async function insertCalendarTable(CalendarID, CalendarName) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `INSERT INTO CALENDAR (CalendarID, CalendarName, Username) VALUES (:CalendarID, :CalendarName, null)`,
+            [CalendarID, CalendarName],
+            { autoCommit: true }
+        );
+
+        return result.rowsAffected && result.rowsAffected > 0;
     }).catch(() => {
         return false;
     });
@@ -397,5 +443,8 @@ module.exports = {
     insertServerTable,
     generateServerId,
     generateCalendarId,
-    getAdminPlanID
+    getAdminPlanID,
+    insertAdministratorTable,
+    insertChannelTable,
+    insertCalendarTable
 };

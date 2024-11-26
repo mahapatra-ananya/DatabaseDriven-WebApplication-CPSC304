@@ -84,7 +84,6 @@ router.get('/count-demotable', async (req, res) => {
     });
     router.get('/avatartable', async (req, res) => {
         const tableContent = await appService.fetchAvatarTableFromDb();
-        console.log(`avatartable: ${tableContent}`)
         res.json({data: tableContent});
     });
     router.get('/useraccounttable', async (req, res) => {
@@ -130,14 +129,61 @@ router.get('/count-demotable', async (req, res) => {
 
     ////////////////////////////////////////////////////////////////////////
 /*CREATE SERVER*/
-router.post("/insert-servertable/:username", async (req, res) => {
-    const { serverName, avatarId } = req.body;
-    const newServerId = await appService.generateServerId();
+
+router.post("/insert-calendar-table", async (req, res) => {
+    const { CalendarName } = req.body;
     const newCalendarId = await appService.generateCalendarId();
-    const adminsPlan = await appService.getAdminPlanID(req.params['username']);
-    const insertResult = await appService.insertServerTable(newServerId, serverName, adminsPlan, newCalendarId, avatarId);
+    console.log(`newCalendarID: ${newCalendarId}`)
+
+    const insertResult = await appService.insertCalendarTable(newCalendarId, CalendarName);
     if (insertResult) {
-        res.json({ success: true });
+        res.json({ success: true, calendarID: newCalendarId });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
+router.post("/insert-server-table", async (req, res) => {
+    const { ServerName, AvatarID, CalendarID, Username } = req.body;
+    const newServerId = await appService.generateServerId();
+    const adminsPlanID = await appService.getAdminPlanID(Username);
+    console.log(`newServerID: ${newServerId} 
+    \nadminPlanID: ${adminsPlanID}`)
+
+    const insertResult = await appService.insertServerTable(newServerId, ServerName, adminsPlanID, CalendarID, AvatarID);
+    if (insertResult) {
+        res.json({ success: true, serverID: newServerId });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
+router.post("/insert-administrator-table", async (req, res) => {
+    const { Username, Tag, Signature, ServerID } = req.body;
+    const insertResult = await appService.insertAdministratorTable(Username, Tag, Signature, ServerID);
+    if (insertResult) {
+        res.json({ success: true});
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
+router.post("/insert-channel-table", async (req, res) => {
+    const { channels, serverID } = req.body;
+    console.log(`requested channels ${channels}`)
+    let channelID = 1;
+    for (const channel of channels) {
+        try {
+            console.log(channel)
+            await appService.insertChannelTable(channelID, channel, serverID);
+            channelID++;
+        } catch (err) {
+            console.log('error inserting channel', err)
+        }
+    }
+
+    if (channels.length === channelID-1) {
+        res.json({ success: true});
     } else {
         res.status(500).json({ success: false });
     }

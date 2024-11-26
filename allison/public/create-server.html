@@ -9,7 +9,7 @@
 </head>
 <body>
 <nav id="allison-nav">
-    <a href="Ananya/public/Home.html">Home</a>
+    <a href="#">Home</a>
     <a href="./index.html">Index</a>
 
     <a href="./create-server.html">Create a Server</a>
@@ -35,16 +35,19 @@
         </div>
         <a href='#' id="addChannelBtn">+ Channel</a>
     </div>
+    <div class="formComponent">
+        <label for="insertTag">Enter an admin tag</label>
+        <input type="text" id="insertTag" placeholder="Admin Tag" required/>
+    </div>
+    <div class="formComponent">
+        <label for="insertSignature">Enter a signature for this server</label>
+        <input type="text" id="insertSignature" placeholder="Server Signature" required/>
+    </div>
     <button id="createServerBtn" type="submit">Create Server</button>
 </form>
 
+
 <hr/>
-<ul>
-    <h4>TODO</h4>
-    <li>Need to disable this page if the user is already the admin of a server</li>
-    <li>GET Server Avatars -> Display theme</li>
-    <li></li>
-</ul>
 
 <script src="./create-server-script.js"></script>
 </body>
