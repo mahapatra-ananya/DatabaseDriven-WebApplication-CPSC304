@@ -1,5 +1,6 @@
 // TODO: USERNAME STUFF
 let currentUsername = 'goldfishlover';
+let NEWSERVERID;
 
 // Create Server Script
 function addChannel() {
@@ -131,11 +132,11 @@ async function insertServerChannelAdminTables(event) {
     });
 
     const insertServerResponseData = await insertServerResponse.json();
-    let newServerId;
+    // let newServerId;
 
     if (insertServerResponseData.success) {
-        newServerId = insertServerResponseData.serverID;
-        console.log(`Successfully created serverid: ${newServerId}`);
+        NEWSERVERID = insertServerResponseData.serverID;
+        console.log(`Successfully created serverid: ${NEWSERVERID}`);
     } else {
         alert('Error Creating the Server')
         return;
@@ -151,7 +152,7 @@ async function insertServerChannelAdminTables(event) {
             Username: currentUsername,
             Tag: inputTag,
             Signature: inputSignature,
-            ServerID: newServerId
+            ServerID: NEWSERVERID
         })
     });
 
@@ -172,7 +173,7 @@ async function insertServerChannelAdminTables(event) {
         },
         body: JSON.stringify({
             channels: channels,
-            serverID: newServerId,
+            serverID: NEWSERVERID,
         })
     });
 
@@ -192,9 +193,22 @@ async function insertServerChannelAdminTables(event) {
 
 async function goToServerPage(event) {
     event.preventDefault();
-    const response = await fetch('/avatartable', {
-        method: 'GET'
+    const response = await fetch('/server', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            ServerID: NEWSERVERID,
+        })
     });
+
+    if (response.redirected) {
+        NEWSERVERID = ''
+        window.location.href = response.url;
+    } else {
+        alert('failed to redirect')
+    }
 }
 
 // ---------------------------------------------------------------
@@ -202,6 +216,7 @@ async function goToServerPage(event) {
 // Add or remove event listeners based on the desired functionalities.
 window.onload = function() {
     // checkDbConnection();
+    NEWSERVERID = '';
     fetchTableData();
 
     const addChannelBtn = document.querySelector('#addChannelBtn');
@@ -211,7 +226,6 @@ window.onload = function() {
     addChannelBtn.addEventListener('click', addChannel);
     createServerBtn.addEventListener('click', insertServerChannelAdminTables)
     nextBtn.addEventListener('click', goToServerPage);
-
 };
 
 

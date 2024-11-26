@@ -190,6 +190,9 @@ router.post("/insert-channel-table", async (req, res) => {
 });
 
 ////////////////////GO TO A SERVER PAGE ////////////////////////////////////
-
+router.post('/server', async (req, res) => {
+    const { ServerID } = req.body;
+    res.redirect(`/server.html?serverid=${encodeURIComponent(ServerID)}`)
+});
 
 module.exports = router;
