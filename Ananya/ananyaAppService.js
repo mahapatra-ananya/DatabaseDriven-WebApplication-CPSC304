@@ -17,7 +17,7 @@ const dbConfig = {
 };
 
 var currentUser;
-var userExists = false;
+// var userExists = false;
 
 // initialize connection pool
 async function initializeConnectionPool() {
@@ -361,7 +361,7 @@ module.exports = {
     insertUserAccount,
     fetchAccountsFromDb,
     currentUser,
-    userExists,
+    // userExists,
     initiateDemotable, 
     insertDemotable, 
     updateNameDemotable, 

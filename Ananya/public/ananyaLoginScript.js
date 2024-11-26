@@ -80,67 +80,7 @@ async function fetchAndDisplayUsers() {
 //     }
 // }
 
-// Inserts new account into the UserAccount.
-async function insertUserAccount(event) {
-    event.preventDefault();
 
-    const usernameValue = document.getElementById('Username').value;
-    const passwordValue = document.getElementById('Password').value;
-    const displayNameValue = document.getElementById('DisplayName').value;
-    const bioValue = document.getElementById('Bio').value;
-    const regionValue = document.getElementById('Region').value;
-    const avatarValue = document.getElementById('Avatar').value;
-
-
-    // const exists = await fetch('/check-userExists', {
-    //     method: "POST",
-    //
-    // });
-
-    const response = await fetch('/insert-userAccount', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            username: usernameValue,
-            displayName: displayNameValue,
-            password: passwordValue,
-            bio: bioValue,
-            region: regionValue,
-            avatar: avatarValue
-        })
-    });
-
-    const responseData = await response.json();
-    const messageElement = document.getElementById('insertResultMsg');
-
-
-    if (responseData.success) {
-        messageElement.textContent = "Data inserted successfully!";
-        initialize();
-        // const link = document.getElementById('linkToHome');
-        // link.link();
-        window.location.replace("ananyaHome.html")
-        // let a = document.createElement('a');
-        // // Create the text node for anchor element.
-        // let link = document.createTextNode("Home Page");
-        // // Append the text node to anchor element.
-        // a.appendChild(link);
-        // // Set the title.
-        // a.title = "Home Page";
-        // // Set the href property.
-        // a.href = "ananyaHome.html";
-        // // Append the anchor element to the body.
-        // document.body.appendChild(a);
-    } else {
-        if (responseData.val === 0) {
-            messageElement.textContent = "Username already exists!";
-        } else {
-            messageElement.textContent = "Error inserting data!";
-        }
-    }
-}
 
 // Initializes the webpage functionalities.
 // Add or remove event listeners based on the desired functionalities.
