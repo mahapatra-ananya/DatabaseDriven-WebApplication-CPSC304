@@ -16,6 +16,8 @@ const dbConfig = {
     poolTimeout: 60
 };
 
+var currentUser;
+// var userExists = false;
 
 // initialize connection pool
 async function initializeConnectionPool() {
@@ -132,18 +134,61 @@ async function insertDemotable(id, name) {
     });
 }
 
+
 async function insertUserAccount(username, displayName, password, bio, region, avatar) {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute(
+
+        const retVal = await connection.execute(
+            'SELECT Count(*) FROM UserAccount WHERE UserAccount.Username=:username', [username]
+        );
+        if (retVal.rows[0][0] > 0) {return 0;}
+
+        const result = await connection.execute( // HAVE TO RETURN CORRECT ERROR MESSAGE FOR EXISTING USERNAME
             `INSERT INTO UserAccount(Username, DisplayName, UserPassword, Bio, Region, AvatarID, PlanID)
                 VALUES (:username, :displayName, :password, :bio, :region, :avatar, NULL)`,
             [username, displayName, password, bio, region, avatar],
             { autoCommit: true }
         );
-
-        return result.rowsAffected && result.rowsAffected > 0;
+        currentUser = username;
+        if (result.rowsAffected && result.rowsAffected > 0) {
+            return 1;
+        };
     }).catch(() => {
-        return false;
+        return -1;
+    });
+}
+
+async function loginUser(username, passwordInput) {
+    return await withOracleDB(async (connection) => {
+
+        const retVal = await connection.execute(
+            'SELECT Count(*) FROM UserAccount WHERE UserAccount.Username=:username', [username]
+        );
+        if (retVal.rows[0][0] === 0) {return 0;} //username does not exist
+        else {
+            const passVal = await connection.execute(
+                'SELECT UserPassword FROM UserAccount WHERE UserAccount.Username=:username', [username]
+            );
+            if (passwordInput === passVal.rows[0][0]) {
+                currentUser = username;
+                return 1;
+            } else {
+                return 2;
+            }
+        }
+
+        // const result = await connection.execute( // HAVE TO RETURN CORRECT ERROR MESSAGE FOR EXISTING USERNAME
+        //     `INSERT INTO UserAccount(Username, DisplayName, UserPassword, Bio, Region, AvatarID, PlanID)
+        //         VALUES (:username, :displayName, :password, :bio, :region, :avatar, NULL)`,
+        //     [username, displayName, password, bio, region, avatar],
+        //     { autoCommit: true }
+        // );
+        // currentUser = username;
+        // if (result.rowsAffected && result.rowsAffected > 0) {
+        //     return 1;
+        // };
+    }).catch(() => {
+        return -1;
     });
 }
 
@@ -349,7 +394,9 @@ module.exports = {
     initiateAllTables,
     insertUserAccount,
     fetchAccountsFromDb,
-
+    loginUser,
+    currentUser,
+    // userExists,
     initiateDemotable, 
     insertDemotable, 
     updateNameDemotable, 
