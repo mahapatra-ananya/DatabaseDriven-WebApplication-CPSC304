@@ -125,14 +125,6 @@ async function insertUserAccount(event) {
         } else {
             messageElement.textContent = "Error inserting data!";
         }
-        // response.text()
-        //     .then((text) => {
-        //         messageElement.textContent = text;
-        //     })
-        //     .catch((error) => {
-        //         messageElement.textContent = "Error inserting data!";
-        //     });
-        //messageElement.textContent = "Error inserting data!";
     }
 }
 
