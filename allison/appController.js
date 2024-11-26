@@ -84,7 +84,6 @@ router.get('/count-demotable', async (req, res) => {
     });
     router.get('/avatartable', async (req, res) => {
         const tableContent = await appService.fetchAvatarTableFromDb();
-        console.log(`avatartable: ${tableContent}`)
         res.json({data: tableContent});
     });
     router.get('/useraccounttable', async (req, res) => {
@@ -130,15 +129,30 @@ router.get('/count-demotable', async (req, res) => {
 
     ////////////////////////////////////////////////////////////////////////
 /*CREATE SERVER*/
-router.post("/insert-server-table", async (req, res) => {
-    const { ServerName, AvatarID, Username } = req.body;
-    const newServerId = await appService.generateServerId();
+
+router.post("/insert-calendar-table", async (req, res) => {
+    const { CalendarName } = req.body;
     const newCalendarId = await appService.generateCalendarId();
-    // const adminsPlan = await appService.getAdminPlanID(req.params['username']);
-    const adminsPlan = await appService.getAdminPlanID(Username);
-    const insertResult = await appService.insertServerTable(newServerId, ServerName, adminsPlan, newCalendarId, AvatarID);
+    console.log(`newCalendarID: ${newCalendarId}`)
+
+    const insertResult = await appService.insertCalendarTable(newCalendarId, CalendarName);
     if (insertResult) {
-        res.json({ success: true });
+        res.json({ success: true, calendarID: newCalendarId });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
+router.post("/insert-server-table", async (req, res) => {
+    const { ServerName, AvatarID, CalendarID, Username } = req.body;
+    const newServerId = await appService.generateServerId();
+    const adminsPlanID = await appService.getAdminPlanID(Username);
+    console.log(`newServerID: ${newServerId} 
+    \nadminPlanID: ${adminsPlanID}`)
+
+    const insertResult = await appService.insertServerTable(newServerId, ServerName, adminsPlanID, CalendarID, AvatarID);
+    if (insertResult) {
+        res.json({ success: true, serverID: newServerId });
     } else {
         res.status(500).json({ success: false });
     }

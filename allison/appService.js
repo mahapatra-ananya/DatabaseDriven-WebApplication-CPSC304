@@ -1,4 +1,6 @@
 const oracledb = require('oracledb');
+const path = require('path')
+const fs = require('fs')
 const connection = require("oracledb/lib/connection");
 require('dotenv').config();
 
@@ -337,8 +339,7 @@ async function generateServerId() {
         const result = await connection.execute(
             `SELECT MAX(SERVERID) FROM SERVER`
         );
-
-        return result + 1;
+        return Number(result.rows[0][0]) + 1;
     }).catch(() => {
         return false;
     });
@@ -350,7 +351,7 @@ async function generateCalendarId() {
             `SELECT MAX(CALENDARID) FROM CALENDAR`
         );
 
-        return result + 1;
+        return Number(result.rows[0][0]) + 1;
     }).catch(() => {
         return false;
     });
@@ -362,7 +363,7 @@ async function getAdminPlanID(currentUsername) {
             `SELECT PlanID FROM USERACCOUNT WHERE username=:currentUsername`, [currentUsername]
         );
 
-        return result;
+        return result.rows[0][0];
     }).catch(() => {
         return false;
     });
@@ -383,12 +384,27 @@ async function insertAdministratorTable(Username, Tag, Signature, ServerID) {
     });
 }
 
-///////**********INSERT ADMINISTRATOR TABLE**********//
+///////**********INSERT CHANNEL TABLE**********//
 async function insertChannelTable(channelID, channel, serverId) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
             `INSERT INTO CHANNEL (channelId, channel, serverId) VALUES (:channelId, :channel, :serverId)`,
             [channelID, channel, serverId],
+            { autoCommit: true }
+        );
+
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+
+///////**********INSERT CALENDAR TABLE**********//
+async function insertCalendarTable(CalendarID, CalendarName) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `INSERT INTO CALENDAR (CalendarID, CalendarName, Username) VALUES (:CalendarID, :CalendarName, null)`,
+            [CalendarID, CalendarName],
             { autoCommit: true }
         );
 
@@ -429,5 +445,6 @@ module.exports = {
     generateCalendarId,
     getAdminPlanID,
     insertAdministratorTable,
-    insertChannelTable
+    insertChannelTable,
+    insertCalendarTable
 };

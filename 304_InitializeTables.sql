@@ -13,7 +13,6 @@ DROP TABLE Administrator cascade constraints;
 DROP TABLE Message cascade constraints;
 DROP TABLE PostedTo cascade constraints;
 DROP TABLE Joins cascade constraints;
-
 CREATE TABLE Payment (
                          PaymentInterval 		integer,
                          SubscriptionPayment 	integer,

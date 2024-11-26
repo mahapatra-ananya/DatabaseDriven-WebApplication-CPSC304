@@ -212,6 +212,110 @@ async function fetchAndDisplayPremiumPlans() {
     });
 }
 
+async function fetchAndDisplayCalendar() {
+    const tableElement = document.getElementById('calendartable');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/calendartable', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const tableContent = responseData.data;
+    // console.log(`premiumplantable content: ${tableContent}`)
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    tableContent.forEach(user => {
+        const row = tableBody.insertRow();
+        user.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
+async function fetchAndDisplayUserAccount() {
+    const tableElement = document.getElementById('useraccounttable');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/useraccounttable', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const tableContent = responseData.data;
+    // console.log(`premiumplantable content: ${tableContent}`)
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    tableContent.forEach(user => {
+        const row = tableBody.insertRow();
+        user.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
+async function fetchAndDisplayChannel() {
+    const tableElement = document.getElementById('channeltable');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/channeltable', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const tableContent = responseData.data;
+    // console.log(`premiumplantable content: ${tableContent}`)
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    tableContent.forEach(user => {
+        const row = tableBody.insertRow();
+        user.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
+async function fetchAndDisplayTable(getRequest) {
+    const tableElement = document.getElementById(getRequest);
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch(getRequest, {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const tableContent = responseData.data;
+    // console.log(`premiumplantable content: ${tableContent}`)
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    tableContent.forEach(user => {
+        const row = tableBody.insertRow();
+        user.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
 
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
@@ -229,6 +333,16 @@ window.onload = function() {
 // You can invoke this after any table-modifying operation to keep consistency.
 function fetchTableData() {
     fetchAndDisplayUsers();
-    fetchAndDisplayServers();
-    fetchAndDisplayPremiumPlans();
+
+    fetchAndDisplayTable('servertable');
+    fetchAndDisplayTable('premiumplantable');
+    fetchAndDisplayTable('calendartable');
+    fetchAndDisplayTable('useraccounttable');
+    fetchAndDisplayTable('channeltable');
+    fetchAndDisplayTable('generalmembertable');
+    fetchAndDisplayTable('eventtable');
+    fetchAndDisplayTable('administratortable');
+    fetchAndDisplayTable('messagetable');
+    fetchAndDisplayTable('postedtotable');
+    fetchAndDisplayTable('joinstable');
 }

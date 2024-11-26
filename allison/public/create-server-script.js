@@ -1,5 +1,5 @@
 // TODO: USERNAME STUFF
-const username = 'goldfishlover'
+let currentUsername = 'goldfishlover';
 
 // Create Server Script
 function addChannel() {
@@ -64,12 +64,37 @@ async function insertServerChannelAdminTables(event) {
     for (const channel of rawChannels) {
         channels.push(channel.value)
     }
-    const inputTag = document.getElementById('insertTag');
-    const inputSignature = document.getElementById('insertSignature');
+    const inputTag = document.getElementById('insertTag').value;
+    const inputSignature = document.getElementById('insertSignature').value;
 
-    console.log(`serverName: ${serverName} \n insertAvatar: ${selectedAvatar} \n channels: ${channels}`);
+    console.log(`serverName: ${serverName} \n 
+    insertAvatar: ${selectedAvatar} \n 
+    channels: ${channels}
+    inputTag: ${inputTag}
+    inputSignature: ${inputSignature},
+    username: ${currentUsername}`);
 
-    // STEP 1: Insert into the Server Table
+    // STEP 1: Insert into the new calendar table
+    const insertCalendarResponse = await fetch('/insert-calendar-table', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            CalendarName: `${serverName} Calendar`
+        })
+    });
+
+    const insertCalendarResponseData = await insertCalendarResponse.json();
+    const newCalendarId = insertCalendarResponseData.calendarID
+    if (insertCalendarResponseData.success) {
+            console.log(`Successfully created calendarid: ${newCalendarId}`);
+        } else {
+            alert('Error creating calendar')
+            return;
+        }
+
+    // STEP 2: Insert into the Server Table
     const insertServerResponse = await fetch('/insert-server-table', {
         method: 'POST',
         headers: {
@@ -78,7 +103,8 @@ async function insertServerChannelAdminTables(event) {
         body: JSON.stringify({
             ServerName: serverName,
             AvatarID: selectedAvatar,
-            Username: this.username
+            CalendarID: newCalendarId,
+            Username: currentUsername
         })
     });
 
@@ -87,53 +113,54 @@ async function insertServerChannelAdminTables(event) {
 
     if (insertServerResponseData.success) {
         newServerId = insertServerResponseData.serverId;
+        console.log(`Successfully created calendarid: ${newServerId}`);
     } else {
         alert('Error Creating the Server')
         return;
     }
 
     // STEP 2: Insert into the Administrator Table
-    const insertAdministratorResponse = await fetch('/insert-administrator-table', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            Username: this.username,
-            Tag: inputTag,
-            Signature: inputSignature,
-            ServerID: newServerId
-        })
-    });
-
-    const insertAdministratorResponseData = await insertAdministratorResponse.json();
-
-    if (insertAdministratorResponseData.success) {
-        console.log('success inserting new administrator')
-    } else {
-        alert('error inserting administrator')
-        return;
-    }
-
-    // STEP 3: Insert into the Channel Table
-    const insertChannelResponse = await fetch('/insert-channel-table', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            channels: channels,
-            serverID: newServerId,
-        })
-    });
-
-    const insertChannelResponseData = await insertChannelResponse.json();
-
-    if (insertChannelResponseData.success) {
-        console.log('success inserting the new channels')
-    } else {
-        alert('error inserting the new channels')
-    }
+    // const insertAdministratorResponse = await fetch('/insert-administrator-table', {
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify({
+    //         Username: this.username,
+    //         Tag: inputTag,
+    //         Signature: inputSignature,
+    //         ServerID: newServerId
+    //     })
+    // });
+    //
+    // const insertAdministratorResponseData = await insertAdministratorResponse.json();
+    //
+    // if (insertAdministratorResponseData.success) {
+    //     console.log('success inserting new administrator')
+    // } else {
+    //     alert('error inserting administrator')
+    //     return;
+    // }
+    //
+    // // STEP 3: Insert into the Channel Table
+    // const insertChannelResponse = await fetch('/insert-channel-table', {
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify({
+    //         channels: channels,
+    //         serverID: newServerId,
+    //     })
+    // });
+    //
+    // const insertChannelResponseData = await insertChannelResponse.json();
+    //
+    // if (insertChannelResponseData.success) {
+    //     console.log('success inserting the new channels')
+    // } else {
+    //     alert('error inserting the new channels')
+    // }
 
 }
 
