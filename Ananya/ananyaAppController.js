@@ -21,6 +21,11 @@ router.get('/demotable', async (req, res) => {
     res.json({data: tableContent});
 });
 
+router.get('/allAccounts', async (req, res) => {
+    const tableContent = await appService.fetchAccountsFromDb();
+    res.json({data: tableContent});
+});
+
 router.post("/initiate-demotable", async (req, res) => {
     const initiateResult = await appService.initiateAllTables();
     if (initiateResult) {
@@ -33,6 +38,16 @@ router.post("/initiate-demotable", async (req, res) => {
 router.post("/insert-demotable", async (req, res) => {
     const { id, name } = req.body;
     const insertResult = await appService.insertDemotable(id, name);
+    if (insertResult) {
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
+router.post("/insert-userAccount", async (req, res) => {
+    const { username, password, displayName, bio, region, avatar } = req.body;
+    const insertResult = await appService.insertUserAccount(username, displayName, password, bio, region, avatar);
     if (insertResult) {
         res.json({ success: true });
     } else {
