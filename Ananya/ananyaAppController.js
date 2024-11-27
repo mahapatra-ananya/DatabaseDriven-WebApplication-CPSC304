@@ -48,6 +48,16 @@ router.get('/allPlanIDs', async (req, res) => {
     res.json({data: tableContent});
 });
 
+router.get('/allRegions', async (req, res) => {
+    const tableContent = await appService.fetchRegionsFromDb();
+    res.json({data: tableContent});
+});
+
+router.get('/allAvatarIDs', async (req, res) => {
+    const tableContent = await appService.fetchAvatarIDsFromDb();
+    res.json({data: tableContent});
+});
+
 router.get('/user-servers', async (req, res) => {
     const tableContent = await appService.fetchUserServersFromDb();
     res.json({data: tableContent});

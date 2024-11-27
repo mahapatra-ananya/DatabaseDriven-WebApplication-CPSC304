@@ -343,6 +343,24 @@ async function fetchPremiumPlanIDsFromDb() {
     });
 }
 
+async function fetchAvatarIDsFromDb() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT distinct AvatarID FROM AVATAR');
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
+async function fetchRegionsFromDb() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT distinct Region FROM LOCATION');
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
 async function fetchLocationTableFromDb() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute('SELECT * FROM LOCATION');
@@ -472,6 +490,8 @@ module.exports = {
     countDemotable,
     fetchUserServersFromDb,
     purchasePlan,
+    fetchAvatarIDsFromDb,
+    fetchRegionsFromDb,
     fetchPaymentTableFromDb,
     fetchTierTableFromDb,
     fetchPremiumPlanTableFromDb,

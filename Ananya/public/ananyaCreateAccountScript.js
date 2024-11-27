@@ -129,11 +129,57 @@ async function insertUserAccount(event) {
     }
 }
 
+async function displayRegionAndAvatarOptions() {
+    const regionElement = document.getElementById('Region');
+    const avatarElement = document.getElementById('Avatar');
+
+    const regionResponse = await fetch('/allRegions', {
+        method: 'GET'
+    });
+
+    const avatarResponse = await fetch('/allAvatarIDs', {
+        method: 'GET'
+    });
+
+    const regionResponseData = await regionResponse.json();
+    const avatarResponseData = await avatarResponse.json();
+    const regionContent = regionResponseData.data;
+    const avatarContent = avatarResponseData.data;
+
+    // Always clear old, already fetched data before new fetching process.
+    if (regionElement.innerHTML) {
+        regionElement.innerHTML = '';
+    }
+
+    if (avatarElement.innerHTML) {
+        avatarElement.innerHTML = '';
+    }
+
+    regionContent.forEach(region => {
+        const rOption = document.createElement('option');
+        // button.style.height = '100px';
+        // button.style.width = '280px';
+        rOption.textContent = region;
+        regionElement.appendChild(rOption);
+        // containerElement.appendChild(document.createElement('br'));
+    });
+
+    avatarContent.forEach(avatar => {
+        const aOption = document.createElement('option');
+        // button.style.height = '100px';
+        // button.style.width = '280px';
+        aOption.textContent = avatar;
+        avatarElement.appendChild(aOption);
+        // containerElement.appendChild(document.createElement('br'));
+    });
+}
+
 // Initializes the webpage functionalities.
 // Add or remove event listeners based on the desired functionalities.
 window.onload = function() {
     checkDbConnection();
     initialize();
+    displayRegionAndAvatarOptions();
     document.getElementById("createAccountTable").addEventListener("submit", insertUserAccount);
     document.getElementById("resetDemotable").addEventListener("click", resetDemotable);
     // document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
