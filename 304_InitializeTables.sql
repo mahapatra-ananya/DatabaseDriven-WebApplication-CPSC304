@@ -63,7 +63,7 @@ CREATE TABLE Calendar(
                          CalendarName		VARCHAR2 (30),
                          Username			VARCHAR2 (30),
                          PRIMARY KEY (CalendarID),
-                         FOREIGN KEY (Username) 				REFERENCES UserAccount
+                         FOREIGN KEY (Username) 				REFERENCES UserAccount              ON DELETE CASCADE
 );
 CREATE TABLE Event(
                       EventID				INTEGER,
@@ -73,7 +73,7 @@ CREATE TABLE Event(
                       Details				VARCHAR2 (250),
                       Username			VARCHAR2 (30),
                       PRIMARY KEY (EventID),
-                      FOREIGN KEY (UserName) 				REFERENCES UserAccount
+                      FOREIGN KEY (UserName) 				REFERENCES UserAccount                  ON DELETE CASCADE
 );
 CREATE TABLE Server(
                        ServerID			INTEGER,
@@ -98,7 +98,7 @@ CREATE TABLE GeneralMember(
                               Username  			VARCHAR2 (30),
                               Signature  			VARCHAR2 (250),
                               PRIMARY KEY (Username),
-                              FOREIGN KEY (Username)				 REFERENCES UserAccount
+                              FOREIGN KEY (Username)				 REFERENCES UserAccount             ON DELETE CASCADE
 );
 CREATE TABLE Administrator(
                               Username  			VARCHAR2 (30),
@@ -106,7 +106,7 @@ CREATE TABLE Administrator(
                               Signature			VARCHAR (250),
                               ServerID			INTEGER UNIQUE NOT NULL,
                               PRIMARY KEY (Username),
-                              FOREIGN KEY (Username) 				REFERENCES UserAccount,
+                              FOREIGN KEY (Username) 				REFERENCES UserAccount             ON DELETE CASCADE,
                               FOREIGN KEY (ServerID)
                                   REFERENCES Server
 );
@@ -118,7 +118,7 @@ CREATE TABLE Message(
                         MessageDateTime		TIMESTAMP,
                         Username			VARCHAR (30) NOT NULL,
                         PRIMARY KEY (MessageID),
-                        FOREIGN KEY (Username) 				REFERENCES UserAccount,
+                        FOREIGN KEY (Username) 				REFERENCES UserAccount              ON DELETE CASCADE,
                         FOREIGN KEY (ChannelID, ServerID) 	REFERENCES Channel
 );
 CREATE TABLE PostedTo(
