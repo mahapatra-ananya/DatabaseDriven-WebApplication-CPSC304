@@ -1,0 +1,293 @@
+/*
+ * These functions below are for various webpage functionalities. 
+ * Each function serves to process data on the frontend:
+ *      - Before sending requests to the backend.
+ *      - After receiving responses from the backend.
+ * 
+ * To tailor them to your specific needs,
+ * adjust or expand these functions to match both your 
+ *   backend endpoints 
+ * and 
+ *   HTML structure.
+ * 
+ */
+
+
+// This function checks the database connection and updates its status on the frontend.
+async function checkDbConnection() {
+    const statusElem = document.getElementById('dbStatus');
+    const loadingGifElem = document.getElementById('loadingGif');
+
+    const response = await fetch('/check-db-connection', {
+        method: "GET"
+    });
+
+    // Hide the loading GIF once the response is received.
+    loadingGifElem.style.display = 'none';
+    // Display the statusElem's text in the placeholder.
+    statusElem.style.display = 'inline';
+
+    response.text()
+    .then((text) => {
+        statusElem.textContent = text;
+    })
+    .catch((error) => {
+        statusElem.textContent = 'connection timed out';  // Adjust error handling if required.
+    });
+}
+
+/////////////////////////////////////////////// GLOBALS ///////////////////////////////////////////////
+let urlParam = new URLSearchParams(window.location.search); // TODO: global var to retrieve passed in calendar id
+//let selectedCalendarID = urlParam.get('calendarid'); TODO: for use when connecting
+let selectedCalendarID = null;
+
+let eventDates = []; // global array stores all the events associated to current calendar
+let eventsOnDate = []; // global array stores all events associated to current calendar + day
+let reminderList = document.getElementById("reminderList");
+
+
+/////////////////////////////////////////////////////// Event ///////////////////////////////////////////////////////
+
+async function getEventDateTime(event) {
+    event.preventDefault();
+
+    selectedCalendarID = document.getElementById('filterCalendarID').value;
+    fetchEventonDate();
+
+
+    const idValue = selectedCalendarID;
+    const messageElement = document.getElementById("EventDateResultMsg");
+
+    const response = await fetch("/fetch-EventDates", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            selectedCalendar: idValue
+        })
+    });
+
+    const responseData = await response.json();
+
+    const dateTuple = responseData.data;
+
+    eventDates = []; // clear out event dates global array
+    dateTuple.forEach(date => {
+        date.forEach((ind, field) => {
+            eventDates.push(ind);
+        });
+    });
+
+    for (let i = 0; i < eventDates.length; i++) {
+        console.log(eventDates[i]);
+    }
+    console.log(eventDates.length);
+
+    messageElement.textContent = `Retrieved events: ${dateTuple}`;
+    makeCalendar(currMonth, currYear); // reload calendar since events may be updated
+}
+
+
+async function getEventsOnDate() {
+
+    const yearValue = selectedDate.getFullYear();
+    const monthValue = selectedDate.getMonth() + 1; // MONTH IS 0 INDEX
+    const dateValue = selectedDate.getDate();
+    const calID = selectedCalendarID;
+
+    const response = await fetch("/fetch-EventsOnDate", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            selectedCalendar: calID,
+            selectedYear: yearValue,
+            selectedMonth: monthValue,
+            selectedDate: dateValue
+        })
+    });
+
+    const responseData = await response.json();
+    const dateTuple = responseData.data;
+
+    //Note: array is in following order [EventId, EventName, EventDateTime, Duration, Details]
+
+    eventsOnDate = []; // make temp array
+    dateTuple.forEach(date => {
+        date.forEach((ind, field) => {
+            eventsOnDate.push(ind);
+        });
+    });
+
+    for (let i = 0; i < eventsOnDate.length; i++) {
+        console.log(eventsOnDate[i]);
+    }
+    console.log('events on date' + eventsOnDate.length);
+    console.log('calendar ymd: ' + calID + " " + yearValue + monthValue + dateValue);
+
+    fetchDailyEvent(); //this is called to update display after getting events filtered by date
+}
+
+
+function displayReminders() {
+    reminderList.innerHTML = "";
+    for (let i = 0; i < eventsOnDate.length/5; i++) {
+        let eventID = eventsOnDate[i*5];                          // Access EventID
+        let eventTitle = eventsOnDate[(i*5) + 1];                 // Access EventName
+        let eventDate = new Date(eventsOnDate[(i*5) + 2]);  // Access EventDateTime
+        let eventHours = eventsOnDate[(i*5) + 3];                  // Access EventDuration
+        let eventText = `<strong>${eventTitle}</strong> -
+            ${eventHours} hour event on
+            ${eventDate.toLocaleDateString()}`;
+        // let eventText = `<strong>${eventsOnDate[i]}</strong>`;
+        let listItem = document.createElement("li");
+        listItem.innerHTML = eventText;
+
+        // Add a delete button for each reminder item
+        let editButton =
+            document.createElement("button");
+        editButton.className = "edit-event";
+        editButton.textContent = "Edit";
+        editButton.onclick = function () {
+            editEvent(eventID);
+        };
+
+        listItem.appendChild(editButton);
+        reminderList.appendChild(listItem);
+    }
+    console.log("called print reminders");
+}
+
+function editEvent(eventID) {
+    //TODO: link directs away from here to an edit event page, passing in eventID being edited
+    console.log(`this event is: ` + eventID);
+}
+
+
+
+
+/////////////////////////////////////////////////// CALENDAR ///////////////////////////////////////////////////////
+
+
+const calendarDates = document.querySelector('.calendar-dates');
+const monthYear = document.getElementById('monthYear');
+const prevMonthBtn = document.getElementById('prevMonth');
+const nextMonthBtn = document.getElementById('nextMonth');
+
+let selectedDate = new Date();
+let currMonth = selectedDate.getMonth();
+let currYear = selectedDate.getFullYear();
+
+const months = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+];
+
+
+function makeCalendar(month, year) {
+    calendarDates.innerHTML = '';
+    monthYear.textContent = `${months[month]} ${year}`;
+
+    // Get the first day and number days in month
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    // Fill blanks before day 1
+    for (let i = 0; i < firstDay; i++) {
+        const blank = document.createElement('div');
+        calendarDates.appendChild(blank);
+    }
+
+    // Fill calendar active month
+    for (let i = 1; i <= daysInMonth; i++) {
+        const day = document.createElement('div');
+        day.textContent = i;
+
+
+        // Tags to add for currently selected day and days containing events
+        if (i === selectedDate.getDate() && year === selectedDate.getFullYear() && month === selectedDate.getMonth()) {
+            day.classList.add('current-date');
+        } else if (checkEvents(i, month, year)) {
+            day.classList.add('Event-date');
+        }
+
+        calendarDates.appendChild(day);
+    }
+}
+
+function checkEvents(date, month, year) {
+    return getMatchEventsOnDate(date, month, year).length > 0;
+}
+
+function getMatchEventsOnDate(date, month, year) {
+
+    return eventDates.filter(function (event) {
+        let singleEventDate = new Date(event);
+        return (
+            singleEventDate.getDate() === date &&
+            singleEventDate.getMonth() === month &&
+            singleEventDate.getFullYear() === year
+        );
+    });
+}
+
+calendarDates.addEventListener('click', (e) => {
+    if (e.target.textContent !== '') {
+        selectedDate = new Date(currYear, currMonth, e.target.textContent);
+        makeCalendar(currMonth, currYear); // refresh calendar
+        fetchEventonDate();                // refresh event
+    }
+});
+
+prevMonthBtn.addEventListener('click', () => {
+    if (currMonth === 0) {
+        currMonth = 11;
+        currYear--;
+    } else {
+        currMonth--;
+    }
+    makeCalendar(currMonth, currYear);
+})
+
+nextMonthBtn.addEventListener('click', () => {
+    if (currMonth === 11) {
+        currMonth = 0;
+        currYear++;
+    } else {
+        currMonth++;
+    }
+    makeCalendar(currMonth, currYear);
+})
+
+
+makeCalendar(currMonth, currYear);
+
+/////////////////////////////////////////////////// WINDOWS ///////////////////////////////////////////////////////
+
+// Initializes the webpage functionalities.
+// Add or remove event listeners based on the desired functionalities.
+window.onload = function() {
+    checkDbConnection();
+    //const urlParam = new URLSearchParams(window.location.search);
+    urlParam = new URLSearchParams(window.location.search); // TODO: make sure we call on window load
+    selectedCalendarID = urlParam.get('calendarid'); // TODO: try to get calendarid
+    document.getElementById("findCalendarID").addEventListener("submit", getEventDateTime)
+
+    fetchEventonDate();
+    fetchDailyEvent();
+
+};
+
+function fetchDailyEvent() {
+    displayReminders();
+}
+
+function fetchEventonDate() {
+    getEventsOnDate();
+}
+
+// function fetchEventTableData() {
+//     fetchAndDisplayEvent();
+// }
