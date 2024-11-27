@@ -182,6 +182,8 @@ INSERT INTO UserAccount(Username, DisplayName, UserPassword, Bio, Region, Avatar
 VALUES ('goldfishlover', 'Tom Thomas', 'fishyfishyfishy', 'I LOVE GOLDFISH', 'Virginia', 5, NULL);
 INSERT INTO UserAccount(Username, DisplayName, UserPassword, Bio, Region, AvatarID, PlanID)
 VALUES ('abcdefg', '...', 'hijklmnop', 'lalalalala', 'Odisha', 1, 5);
+INSERT INTO UserAccount(Username, DisplayName, UserPassword, Bio, Region, AvatarID, PlanID)
+VALUES ('GojoSatoru', 'Gojo', 'hijklmnop', 'I am the strongest lol', 'Odisha', 1, 5);
 INSERT INTO Calendar(CalendarID, CalendarName, Username)
 VALUES (1, 'Dog Lovers Calendar', NULL);
 INSERT INTO Calendar(CalendarID, CalendarName, Username)

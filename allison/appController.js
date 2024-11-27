@@ -199,29 +199,46 @@ router.post('/server', async (req, res) => {
 /////////////////// JOIN SERVER - LIST FILTERED SERVERS ////////////////////
 router.post('/join-server-list', async (req, res) => {
     const { Username } = req.body;
-    let filteredServers = []
 
     // STEP 1: SELECT the servers the current user has NOT joined AND NOT an admin of
     const filteredUserServers = await appService.fetchFilteredUserServers(Username);
-    console.log(filteredUserServers)
-    // STEP 2: Categorize PlanID === null
-    // let noPlanIDServers = [];
-    // let planIDServers = [];
-    // if (filteredUserServers.length > 0) {
-    //     for (const userServer of filteredUserServers) {
-    //         if (userServer[3] === null) {
-    //             // No PlanID, so default memberlimit is 5
-    //             noPlanIDServers.push(userServer);
-    //         } else {
-    //             planIDServers.push(userServer);
-    //         }
-    //     }
-    // }
+    console.log(`appController: FilteredUserServers: ${filteredUserServers}`)
 
     if (filteredUserServers) {
-        res.json({ success: true, filteredServers: filteredServers});
+        res.json({ success: true, filteredServers: filteredUserServers});
     } else {
         res.status(500).json({ success: false });
+    }
+});
+
+/* INSERT JOIN SERVER AND GENERAL MEMBER*/
+
+router.post("/insert-joins-table", async (req, res) => {
+    const { Username, ServerID } = req.body;
+
+    const insertResult = await appService.insertJoinsTable(Username, ServerID);
+    console.log(insertResult)
+    if (insertResult) {
+        res.redirect(`/server.html?serverid=${encodeURIComponent(ServerID)}`)
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
+router.post("/insert-general-member-table", async (req, res) => {
+    const { Username } = req.body;
+
+    const checkUserIsGeneralMember = await appService.isUserGeneralMember(Username)
+
+    if (!checkUserIsGeneralMember) {
+        const insertResult = await appService.insertGeneralMemberTable(Username);
+        if (insertResult) {
+            res.json({ success: true});
+        } else {
+            res.status(500).json({ success: false });
+        }
+    } else {
+        return;
     }
 });
 
