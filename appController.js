@@ -1,7 +1,7 @@
 const express = require('express');
 const appService = require('./appService');
-const allisonAppService = require('./allisonAppService');
-const karenappService = require('./karenappService');
+//const appService = require('./allisonAppService');
+//const appService = require('./karenappService');
 
 const router = express.Router();
 
@@ -72,7 +72,7 @@ router.get('/count-demotable', async (req, res) => {
 router.post('/serverpage', async (req, res) => {
     const { ServerID } = req.body;
 
-    const serverPageInfo = await allisonAppService.fetchServerPageInfo(ServerID);
+    const serverPageInfo = await appService.fetchServerPageInfo(ServerID);
     console.log(`appController: serverPageInfo: ${serverPageInfo}`)
 
     if (serverPageInfo) {
@@ -85,7 +85,7 @@ router.post('/serverpage', async (req, res) => {
 router.post('/serverpage-channels', async (req, res) => {
     const { ServerID } = req.body;
 
-    const serverPageChannels = await allisonAppService.fetchServerPageChannels(ServerID);
+    const serverPageChannels = await appService.fetchServerPageChannels(ServerID);
     console.log(`appController: serverPageChannels: ${serverPageChannels}`)
 
     if (serverPageChannels) {
@@ -107,7 +107,7 @@ router.post('/join-server-list', async (req, res) => {
     const { Username } = req.body;
 
     // STEP 1: SELECT the servers the current user has NOT joined AND NOT an admin of
-    const filteredUserServers = await allisonAppService.fetchFilteredUserServers(Username);
+    const filteredUserServers = await appService.fetchFilteredUserServers(Username);
     console.log(`appController: FilteredUserServers: ${filteredUserServers}`)
 
     if (filteredUserServers) {
@@ -122,7 +122,7 @@ router.post('/join-server-list', async (req, res) => {
 router.post("/insert-joins-table", async (req, res) => {
     const { Username, ServerID } = req.body;
 
-    const insertResult = await allisonAppService.insertJoinsTable(Username, ServerID);
+    const insertResult = await appService.insertJoinsTable(Username, ServerID);
     if (insertResult) {
         res.redirect(`/server.html?serverid=${encodeURIComponent(ServerID)}`)
     } else {
@@ -133,11 +133,11 @@ router.post("/insert-joins-table", async (req, res) => {
 router.post("/insert-general-member-table", async (req, res) => {
     const { Username } = req.body;
 
-    const checkUserIsGeneralMember = await allisonAppService.isUserGeneralMember(Username)
+    const checkUserIsGeneralMember = await appService.isUserGeneralMember(Username)
     console.log(`isusergeneralmember: ${checkUserIsGeneralMember}`)
     let insertResult
     if (!checkUserIsGeneralMember) {
-        insertResult = await allisonAppService.insertGeneralMemberTable(Username);
+        insertResult = await appService.insertGeneralMemberTable(Username);
     }
 
     if (insertResult || checkUserIsGeneralMember) {
@@ -156,12 +156,12 @@ router.post('/server/calendar', async (req, res) => {
 ///////////////////////////////////////// KAREN APPSERVICE /////////////////////////////////////////
 
 router.get('/Calendartable', async (req, res) => {
-    const tableContent = await karenappService.fetchCalendarTableFromDb();
+    const tableContent = await appService.fetchCalendarTableFromDb();
     res.json({data: tableContent});
 });
 
 router.post("/initiate-AllTables", async (req, res) => {
-    const initiateResult = await karenappService.initiateAllTables();
+    const initiateResult = await appService.initiateAllTables();
     if (initiateResult) {
         res.json({ success: true });
     } else {
@@ -171,7 +171,7 @@ router.post("/initiate-AllTables", async (req, res) => {
 
 router.post("/insert-Calendartable", async (req, res) => {
     const { CalendarID, CalendarName, UserName } = req.body;
-    const insertResult = await karenappService.insertCalendartable(CalendarID, CalendarName, UserName);
+    const insertResult = await appService.insertCalendartable(CalendarID, CalendarName, UserName);
     if (insertResult) {
         res.json({ success: true });
     } else {
@@ -181,7 +181,7 @@ router.post("/insert-Calendartable", async (req, res) => {
 
 router.post("/update-name-Calendartable", async (req, res) => {
     const { oldName, newName } = req.body;
-    const updateResult = await karenappService.updateNameCalendartable(oldName, newName);
+    const updateResult = await appService.updateNameCalendartable(oldName, newName);
     if (updateResult) {
         res.json({ success: true });
     } else {
@@ -190,7 +190,7 @@ router.post("/update-name-Calendartable", async (req, res) => {
 });
 
 router.get('/count-Calendartable', async (req, res) => {
-    const tableCount = await karenappService.countCalendartable();
+    const tableCount = await appService.countCalendartable();
     if (tableCount >= 0) {
         res.json({
             success: true,
@@ -209,27 +209,27 @@ router.post('/fetch-EventDates', async (req, res) => {
     //console.log("reached fetch-EventDates");
 
     const { selectedCalendar } = req.body;
-    const result = await karenappService.fetchEventDates(selectedCalendar);
+    const result = await appService.fetchEventDates(selectedCalendar);
     res.json({ data: result });
 });
 
 router.post('/fetch-EventsOnDate', async (req, res) => {
 
     const { selectedCalendar, selectedYear, selectedMonth, selectedDate } = req.body;
-    const result = await karenappService.fetchEventsOnDate(selectedCalendar, selectedYear, selectedMonth, selectedDate);
+    const result = await appService.fetchEventsOnDate(selectedCalendar, selectedYear, selectedMonth, selectedDate);
     console.log("reached fetch-EventsOnDate");
     res.json({ data: result });
 });
 
 
 router.get('/Eventtable', async (req, res) => {
-    const tableContent = await karenappService.fetchEventTableFromDb();
+    const tableContent = await appService.fetchEventTableFromDb();
     res.json({data: tableContent});
 });
 
 router.post("/insert-Eventtable", async (req, res) => {
     const { EventID, EventName, EventDateTime, Duration, Details, EventUsername } = req.body;
-    const insertResult = await karenappService.insertEventtable(
+    const insertResult = await appService.insertEventtable(
         EventID, EventName, EventDateTime, Duration, Details, EventUsername);
     if (insertResult) {
         // const updatePostedTo = await appService.insertPostedtable(EventID, EventUsername);
@@ -240,7 +240,7 @@ router.post("/insert-Eventtable", async (req, res) => {
 });
 
 router.get('/count-Eventtable', async (req, res) => {
-    const tableCount = await karenappService.countEventtable();
+    const tableCount = await appService.countEventtable();
     if (tableCount >= 0) {
         res.json({
             success: true,
