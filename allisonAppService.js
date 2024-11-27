@@ -2,14 +2,17 @@ const oracledb = require('oracledb');
 const path = require('path')
 const fs = require('fs')
 const connection = require("oracledb/lib/connection");
-require('dotenv').config();
+const loadEnvFile = require("./utils/envUtil");
+// require('dotenv').config();
+
+const envVariables = loadEnvFile('./.env');
 
 
 // Database configuration setup. Ensure your .env file has the required database credentials.
 const dbConfig = {
-    user: process.env.ORACLE_USER,
-    password: process.env.ORACLE_PASS,
-    connectString: `${process.env.ORACLE_HOST}:${process.env.ORACLE_PORT}/${process.env.ORACLE_DBNAME}`,
+    user: envVariables.ORACLE_USER,
+    password: envVariables.ORACLE_PASS,
+    connectString: `${envVariables.ORACLE_HOST}:${envVariables.ORACLE_PORT}/${envVariables.ORACLE_DBNAME}`,
     poolMin: 1,
     poolMax: 3,
     poolIncrement: 1,
@@ -20,7 +23,6 @@ const dbConfig = {
 // initialize connection pool
 async function initializeConnectionPool() {
     try {
-        oracledb.initOracleClient({ libDir: process.env.ORACLE_DIR })
         await oracledb.createPool(dbConfig);
         console.log('Connection pool started');
     } catch (err) {
