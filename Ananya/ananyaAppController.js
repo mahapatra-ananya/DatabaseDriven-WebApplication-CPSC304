@@ -38,6 +38,32 @@ router.get('/allAccounts', async (req, res) => {
     res.json({data: tableContent});
 });
 
+router.get('/user-details', async (req, res) => {
+    const tableContent = await appService.fetchUserDetailsFromDb();
+    console.log(tableContent);
+    res.json({data: tableContent});
+});
+
+router.get('/allPlans', async (req, res) => {
+    const tableContent = await appService.fetchPremiumPlanTableFromDb();
+    res.json({data: tableContent});
+});
+
+router.get('/allPlanIDs', async (req, res) => {
+    const tableContent = await appService.fetchPremiumPlanIDsFromDb();
+    res.json({data: tableContent});
+});
+
+router.get('/allRegions', async (req, res) => {
+    const tableContent = await appService.fetchRegionsFromDb();
+    res.json({data: tableContent});
+});
+
+router.get('/allAvatarIDs', async (req, res) => {
+    const tableContent = await appService.fetchAvatarIDsFromDb();
+    res.json({data: tableContent});
+});
+
 router.get('/user-servers', async (req, res) => {
     const tableContent = await appService.fetchUserServersFromDb();
     res.json({data: tableContent});
@@ -65,17 +91,32 @@ router.post("/insert-demotable", async (req, res) => {
 router.post("/insert-userAccount", async (req, res) => {
     const { username, password, displayName, bio, region, avatar } = req.body;
     const insertResult = await appService.insertUserAccount(username, displayName, password, bio, region, avatar);
-    //const existing = appService.userExists;
-    // if (existing) {
-    //     res.status(500).json({ success: false });
-    //     res.send('This username already exists');
-    // }
     if (insertResult === 1) {
         res.json({ success: true, val: 1 });
     } else if (insertResult === 0) {
         res.status(500).json({ success: false, val: 0 });
     } else {
         res.status(500).json({ success: false, val: -1 });
+    }
+});
+
+router.post("/edit-account", async (req, res) => {
+    const { displayName, password, bio, region, avatar } = req.body;
+    const insertResult = await appService.editAccount(displayName, password, bio, region, avatar);
+    if (insertResult) {
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
+router.post("/purchase-plan", async (req, res) => {
+    const { purchase } = req.body;
+    const purchaseResult = await appService.purchasePlan(purchase);
+    if (purchaseResult) {
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
     }
 });
 

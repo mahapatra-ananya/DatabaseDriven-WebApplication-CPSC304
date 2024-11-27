@@ -1,14 +1,53 @@
 // TODO: UPDATE username
-const USERNAME = 'goldfishlover'
+const USERNAME = 'GojoSatoru'
 
-const joinServerBtns = () => {
-    // get every join server button
+async function insertJoinServerAndGo(event) {
+    event.preventDefault();
+
+    // Get the selected server's ID
+    const joinServerID = event.target.value;
+
+    // Insert into join server table and immediately go to the server's page
+    const generalMemberResponse = await fetch('/insert-general-member-table', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            Username: USERNAME,
+        })
+    });
+
+    const generalMemberResponseData = await generalMemberResponse.json();
+    if (generalMemberResponseData.success) {
+        console.log('success inserting user in general member table')
+    } else {
+        alert('Error becoming a general member')
+        return;
+    }
+
+    // Insert into joins
+    const insertJoinsResponse = await fetch('/insert-joins-table', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            Username: USERNAME,
+            ServerID: joinServerID,
+        })
+    });
+
+    // const insertJoinsResponseData = await insertJoinsResponse.json();
+    console.log (insertJoinsResponse)
+    if (insertJoinsResponse.redirected) {
+        console.log('success inserting user in joins table')
+        window.location.href = insertJoinsResponse.url;
+    } else {
+        alert('Error joining Server')
+        return;
+    }
 }
-
-//TODO: TEMPORARY JUST FOR SHOW
-document.querySelector(".joinServerBtn").addEventListener('click', () => {
-    alert("TODO: Implement Join Button Clicked")
-})
 
 async function fetchAndDisplayFilteredServers() {
     const insertServerGroup = document.querySelector('#serverList');
@@ -23,34 +62,39 @@ async function fetchAndDisplayFilteredServers() {
         })
     });
 
-    // const responseData = await response.json();
-    // const serversFilteredOutUserTemp = responseData.data;
-    // console.log(serversFilteredOutUserTemp);
+    const responseData = await response.json();
+    const filteredServers = responseData.filteredServers;
+    console.log(filteredServers);
 
-    //
-    //
-    // // Always clear old, already fetched data before new fetching process.
-    // if (insertAvatarGroup) {
-    //     insertAvatarGroup.innerHTML = '';
-    // }
-    //
-    // avatarOptions.forEach(avatar => {
-    //
-    //     const newAvatar = document.createElement('input');
-    //     newAvatar.type = 'radio';
-    //     newAvatar.id = avatar[0]; //AvatarID
-    //     newAvatar.className = 'avatar'
-    //     newAvatar.name = 'avatar';
-    //     newAvatar.value = avatar[0];
-    //
-    //
-    //     const newAvatarLabel = document.createElement('label')
-    //     newAvatarLabel.textContent = avatar[3]; //IconDescription
-    //     newAvatarLabel.for = avatar[0];
-    //
-    //     insertAvatarGroup.appendChild(newAvatar);
-    //     insertAvatarGroup.appendChild(newAvatarLabel);
-    // });
+
+
+    // Always clear old, already fetched data before new fetching process.
+    if (insertServerGroup) {
+        insertServerGroup.innerHTML = '';
+    }
+
+    filteredServers.forEach(server => {
+
+        const serverItem = document.createElement('div');
+        serverItem.className = 'serverItem';
+        const serverName = document.createElement('p')
+        serverName.className = 'serverName'
+        serverName.textContent = server[1];
+        const serverId = document.createElement('p')
+        serverId.className = 'serverId'
+        serverId.textContent = `ID: ${server[0]}`;
+        const joinServerBtn = document.createElement('button')
+        joinServerBtn.className = 'joinServerBtn'
+        joinServerBtn.textContent = 'Join';
+        joinServerBtn.value = server[0]
+        joinServerBtn.addEventListener('click', insertJoinServerAndGo);
+
+        serverItem.appendChild(serverName);
+        serverItem.appendChild(serverId);
+        serverItem.appendChild(joinServerBtn);
+
+        serverList.appendChild(serverItem);
+    });
 
 }
 
@@ -62,6 +106,15 @@ window.onload = function() {
     // checkDbConnection();
 
     fetchTableData();
+
+    // const joinServerBtns = document.querySelectorAll(".joinServerBtn");
+    // console.log(joinServerBtns)
+    // if (joinServerBtns.length > 0) {
+    //     for (const btn of joinServerBtns) {
+    //         btn.addEventListener('click', insertJoinServerAndGo);
+    //         console.log(btn)
+    //     }
+    // }
 
     // const addChannelBtn = document.querySelector('#addChannelBtn');
     // const createServerBtn = document.querySelector('#createServerBtn');

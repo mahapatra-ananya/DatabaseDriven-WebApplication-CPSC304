@@ -147,6 +147,7 @@ async function insertDemotable(id, name) {
 
 async function insertUserAccount(username, displayName, password, bio, region, avatar) {
     return await withOracleDB(async (connection) => {
+        // console.log(region);
 
         const retVal = await connection.execute(
             'SELECT Count(*) FROM UserAccount WHERE UserAccount.Username=:username', [username]
@@ -165,6 +166,36 @@ async function insertUserAccount(username, displayName, password, bio, region, a
         }
     }).catch(() => {
         return -1;
+    });
+}
+
+async function editAccount(displayName, password, bio, region, avatar) {
+    return await withOracleDB(async (connection) => {
+        // console.log(region);
+
+        const result = await connection.execute(
+            'UPDATE UserAccount SET DisplayName=:displayName, UserPassword=:password, Bio=:bio, Region=:region, AvatarID=:avatar where Username=:currentUser', [displayName, password, bio, region, avatar, currentUser],
+            { autoCommit: true }
+        );
+
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+
+async function purchasePlan(purchase) {
+    // console.log(purchase);
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `UPDATE UserAccount SET PlanID=:purchase where Username=:currentUser`,
+            [purchase, currentUser],
+            { autoCommit: true }
+        );
+
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
     });
 }
 
@@ -309,9 +340,47 @@ async function fetchTierTableFromDb() {
     });
 }
 
+async function fetchUserDetailsFromDb() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            'SELECT distinct DisplayName, Username, Bio, UserAccount.Region, Country FROM UserAccount, Location WHERE Username=:currentUser AND UserAccount.Region=Location.Region', [currentUser]
+        );
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
 async function fetchPremiumPlanTableFromDb() {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute('SELECT * FROM PREMIUMPLAN');
+        const result = await connection.execute('SELECT distinct PlanID, PREMIUMPLAN.Tier, PREMIUMPLAN.PaymentInterval, MemberLimit, Theme, BasePrice, SubscriptionPayment FROM PREMIUMPLAN, PAYMENT, TIER WHERE PREMIUMPLAN.Tier=Tier.Tier AND PREMIUMPLAN.PaymentInterval=Payment.PaymentInterval');
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
+async function fetchPremiumPlanIDsFromDb() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT distinct PlanID FROM PREMIUMPLAN');
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
+async function fetchAvatarIDsFromDb() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT distinct AvatarID FROM AVATAR');
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
+async function fetchRegionsFromDb() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT distinct Region FROM LOCATION');
         return result.rows;
     }).catch(() => {
         return [];
@@ -446,9 +515,15 @@ module.exports = {
     updateNameDemotable, 
     countDemotable,
     fetchUserServersFromDb,
+    purchasePlan,
+    fetchAvatarIDsFromDb,
+    fetchRegionsFromDb,
+    fetchUserDetailsFromDb,
+    editAccount,
     fetchPaymentTableFromDb,
     fetchTierTableFromDb,
     fetchPremiumPlanTableFromDb,
+    fetchPremiumPlanIDsFromDb,
     fetchLocationTableFromDb,
     fetchAvatarTableFromDb,
     fetchUserAccountTableFromDb,

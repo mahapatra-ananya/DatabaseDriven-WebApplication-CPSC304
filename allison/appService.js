@@ -433,13 +433,49 @@ WHERE (s.PlanID = p.PlanID OR s.PlanID IS NULL)
                           and s2.ServerID IN (SELECT j3.ServerID FROM Joins j3 GROUP BY j3.ServerID HAVING Count(j3.ServerID) < 5)))
                           ORDER BY s.ServerID`,
             [Username])
-//         const result = await connection.execute(
-//             `SELECT s.ServerID, s.ServerName, s.AvatarID, s.PlanID
-// FROM Server s
-// WHERE s.ServerID NOT IN (SELECT j.serverID FROM Joins j WHERE j.memberusername =:Username)
-//   AND s.ServerID NOT IN (SELECT a.ServerID FROM Administrator a WHERE a.Username =:Username)`,
-//             [Username])
         return result.rows;
+    }).catch(() => {
+        return false;
+    });
+}
+
+/*Insert Joins Table*/
+async function insertJoinsTable(Username, ServerID){
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `INSERT INTO JOINS (MemberUsername, ServerID, JoinDate) VALUES (:Username, :ServerID, CURRENT_DATE)`,
+            [Username, ServerID],
+            { autoCommit: true }
+        );
+
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+
+/*Insert GeneralMember Table*/
+async function insertGeneralMemberTable(Username){
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `INSERT INTO GENERALMEMBER (Username, Signature) VALUES (:Username, null)`,
+            [Username],
+            { autoCommit: true }
+        );
+
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+
+async function isUserGeneralMember(Username) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT Username FROM GENERALMEMBER WHERE username=:Username`, [Username]
+        );
+
+        return result.rows.length !==0;
     }).catch(() => {
         return false;
     });
@@ -478,5 +514,8 @@ module.exports = {
     insertAdministratorTable,
     insertChannelTable,
     insertCalendarTable,
-    fetchFilteredUserServers
+    fetchFilteredUserServers,
+    insertJoinsTable,
+    insertGeneralMemberTable,
+    isUserGeneralMember
 };

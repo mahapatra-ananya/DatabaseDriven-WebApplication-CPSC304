@@ -7,6 +7,7 @@
 </style>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Premium Plan</title>
 </head>
 <body>
@@ -19,108 +20,123 @@
     </a>
 </div>
 
+<!--<p>check</p>-->
 
-<h3>Your current plan ID is: Current PlanID</h3>
+<h3 id="displayPlan"></h3>
 
 <div>
-    <p>Purchase a new plan:</p>
-    <form>
-        <table>
+<!--    <p>Purchase a new plan:</p>-->
+
+        <table id="allPlans">
+            <thead>
             <tr>
-                <th></th>
+<!--                <th></th>-->
                 <th>PlanID</th>
                 <th>Tier</th>
-                <th>Base Price</th>
                 <th>Payment Interval</th>
-                <th>Subscription Payment</th>
                 <th>Member Limit</th>
                 <th>Theme</th>
+                <th>Base Price</th>
+                <th>Subscription Payment</th>
+
             </tr>
-            <tr>
-                <td><input type="radio" id="plan1" name="plan" value="Plan 1"></td>
-                <td><label for="plan1">1</label></td>
-                <td>Basic</td>
-                <td>12</td>
-                <td>1</td>
-                <td>1</td>
-                <td>10</td>
-                <td>#000000</td>
-            </tr>
-            <tr>
-                <td><input type="radio" id="plan2" name="plan" value="Plan 2"></td>
-                <td><label for="plan2">2</label></td>
-                <td>Silver</td>
-                <td>24</td>
-                <td>1</td>
-                <td>1</td>
-                <td>50</td>
-                <td>#111111</td>
-            </tr>
-            <tr>
-                <td><input type="radio" id="plan3" name="plan" value="Plan 3"></td>
-                <td><label for="plan3">3</label></td>
-                <td>Gold</td>
-                <td>60</td>
-                <td>6</td>
-                <td>1</td>
-                <td>100</td>
-                <td>#000000</td>
-            </tr>
-            <tr>
-                <td><input type="radio" id="plan4" name="plan" value="Plan 4"></td>
-                <td><label for="plan4">4</label></td>
-                <td>Platinum</td>
-                <td>120</td>
-                <td>12</td>
-                <td>12</td>
-                <td>150</td>
-                <td>#FFFFFF</td>
-            </tr>
-            <tr>
-                <td><input type="radio" id="plan5" name="plan" value="Plan 5"></td>
-                <td><label for="plan5">5</label></td>
-                <td>Royal</td>
-                <td>180</td>
-                <td>12</td>
-                <td>12</td>
-                <td>200</td>
-                <td>#CCCCCC</td>
-            </tr>
-            <tr>
-                <td><input type="radio" id="plan11" name="plan" value="Plan 11"></td>
-                <td><label for="plan11">11</label></td>
-                <td>Basic</td>
-                <td>12</td>
-                <td>6</td>
-                <td>1</td>
-                <td>50</td>
-                <td>#FFFFFF</td>
-            </tr>
-            <tr>
-                <td><input type="radio" id="plan12" name="plan" value="Plan 12"></td>
-                <td><label for="plan12">12</label></td>
-                <td>Basic</td>
-                <td>12</td>
-                <td>12</td>
-                <td>12</td>
-                <td>60</td>
-                <td>#123456</td>
-            </tr>
-            <tr>
-                <td><input type="radio" id="plan21" name="plan" value="Plan 21"></td>
-                <td><label for="plan21">21</label></td>
-                <td>Gold</td>
-                <td>60</td>
-                <td>6</td>
-                <td>1</td>
-                <td>150</td>
-                <td>#AAAAAA</td>
-            </tr>
+            </thead>
+            <tbody>
+<!--                <td><input type="radio" id="plan1" name="plan" value="Plan 1"></td>&ndash;&gt;-->
+            </tbody>
+<!--            <tr>-->
+<!--                <td><input type="radio" id="plan1" name="plan" value="Plan 1"></td>-->
+<!--                <td><label for="plan1">1</label></td>-->
+<!--                <td>Basic</td>-->
+<!--                <td>12</td>-->
+<!--                <td>1</td>-->
+<!--                <td>1</td>-->
+<!--                <td>10</td>-->
+<!--                <td>#000000</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td><input type="radio" id="plan2" name="plan" value="Plan 2"></td>-->
+<!--                <td><label for="plan2">2</label></td>-->
+<!--                <td>Silver</td>-->
+<!--                <td>24</td>-->
+<!--                <td>1</td>-->
+<!--                <td>1</td>-->
+<!--                <td>50</td>-->
+<!--                <td>#111111</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td><input type="radio" id="plan3" name="plan" value="Plan 3"></td>-->
+<!--                <td><label for="plan3">3</label></td>-->
+<!--                <td>Gold</td>-->
+<!--                <td>60</td>-->
+<!--                <td>6</td>-->
+<!--                <td>1</td>-->
+<!--                <td>100</td>-->
+<!--                <td>#000000</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td><input type="radio" id="plan4" name="plan" value="Plan 4"></td>-->
+<!--                <td><label for="plan4">4</label></td>-->
+<!--                <td>Platinum</td>-->
+<!--                <td>120</td>-->
+<!--                <td>12</td>-->
+<!--                <td>12</td>-->
+<!--                <td>150</td>-->
+<!--                <td>#FFFFFF</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td><input type="radio" id="plan5" name="plan" value="Plan 5"></td>-->
+<!--                <td><label for="plan5">5</label></td>-->
+<!--                <td>Royal</td>-->
+<!--                <td>180</td>-->
+<!--                <td>12</td>-->
+<!--                <td>12</td>-->
+<!--                <td>200</td>-->
+<!--                <td>#CCCCCC</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td><input type="radio" id="plan11" name="plan" value="Plan 11"></td>-->
+<!--                <td><label for="plan11">11</label></td>-->
+<!--                <td>Basic</td>-->
+<!--                <td>12</td>-->
+<!--                <td>6</td>-->
+<!--                <td>1</td>-->
+<!--                <td>50</td>-->
+<!--                <td>#FFFFFF</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td><input type="radio" id="plan12" name="plan" value="Plan 12"></td>-->
+<!--                <td><label for="plan12">12</label></td>-->
+<!--                <td>Basic</td>-->
+<!--                <td>12</td>-->
+<!--                <td>12</td>-->
+<!--                <td>12</td>-->
+<!--                <td>60</td>-->
+<!--                <td>#123456</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td><input type="radio" id="plan21" name="plan" value="Plan 21"></td>-->
+<!--                <td><label for="plan21">21</label></td>-->
+<!--                <td>Gold</td>-->
+<!--                <td>60</td>-->
+<!--                <td>6</td>-->
+<!--                <td>1</td>-->
+<!--                <td>150</td>-->
+<!--                <td>#AAAAAA</td>-->
+<!--            </tr>-->
         </table>
         <br>
+    <form id="purchasePlan">
+        <label for="purchase">Choose Plan:</label>
+        <select name="purchase" id="purchase"></select>
         <button type="submit"> Purchase </button> <br>
 
     </form>
 </div>
+
+<div id="purchaseMsg"></div>
+
+<script src="ananyaPremiumPlanScript.js"></script>
+
 </body>
 </html>
