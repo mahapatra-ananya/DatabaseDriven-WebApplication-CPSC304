@@ -192,6 +192,10 @@ async function loginUser(username, passwordInput) {
     });
 }
 
+function currUser() {
+    return currentUser;
+}
+
 async function updateNameDemotable(oldName, newName) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
@@ -395,7 +399,8 @@ module.exports = {
     insertUserAccount,
     fetchAccountsFromDb,
     loginUser,
-    currentUser,
+    // currentUser,
+    currUser,
     // userExists,
     initiateDemotable, 
     insertDemotable, 

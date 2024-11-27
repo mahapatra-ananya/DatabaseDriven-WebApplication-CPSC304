@@ -1,5 +1,6 @@
 const express = require('express');
 const appService = require('./ananyaAppService');
+const {currentUser} = require("./ananyaAppService");
 // const globalScript = require('../globalScript');
 
 const router = express.Router();
@@ -65,11 +66,6 @@ router.post("/insert-userAccount", async (req, res) => {
 router.post("/log-in", async (req, res) => {
     const { username, password } = req.body;
     const loginResult = await appService.loginUser(username, password);
-    //const existing = appService.userExists;
-    // if (existing) {
-    //     res.status(500).json({ success: false });
-    //     res.send('This username already exists');
-    // }
     if (loginResult === 1) {
         res.json({ success: true, val: 1 });
     } else if (loginResult === 0) {
@@ -79,6 +75,12 @@ router.post("/log-in", async (req, res) => {
     } else {
         res.status(500).json({ success: false, val: -1 });
     }
+});
+
+router.post("/curr-user", async (req, res) => {
+    // const { username, password } = req.body;
+    const loginResult = await appService.currUser();
+    res.send(loginResult);
 });
 
 // router.post("/check-userExists", async (req, res) => {
