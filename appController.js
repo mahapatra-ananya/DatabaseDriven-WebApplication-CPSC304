@@ -1,5 +1,6 @@
 const express = require('express');
 const appService = require('./appService');
+const allisonAppService = require('./allisonAppService');
 
 const router = express.Router();
 
@@ -62,6 +63,38 @@ router.get('/count-demotable', async (req, res) => {
             count: tableCount
         });
     }
+});
+
+/////////////////////////////////////////SERVER PAGE//////////////////////////////////////////
+router.post('/serverpage', async (req, res) => {
+    const { ServerID } = req.body;
+
+    const serverPageInfo = await allisonAppService.fetchServerPageInfo(ServerID);
+    console.log(`appController: serverPageInfo: ${serverPageInfo}`)
+
+    if (serverPageInfo) {
+        res.json({ success: true, serverPageInfo: serverPageInfo});
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
+router.post('/serverpage-channels', async (req, res) => {
+    const { ServerID } = req.body;
+
+    const serverPageChannels = await allisonAppService.fetchServerPageChannels(ServerID);
+    console.log(`appController: serverPageChannels: ${serverPageChannels}`)
+
+    if (serverPageChannels) {
+        res.json({ success: true, serverPageChannels: serverPageChannels});
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
+router.post('/server/calendar', async (req, res) => {
+    const { CalendarID } = req.body;
+    res.redirect(`/Calendar.html?calendarid=${encodeURIComponent(CalendarID)}`)
 });
 
 

@@ -41,7 +41,32 @@ async function insertJoinServerAndGo(event) {
     // const insertJoinsResponseData = await insertJoinsResponse.json();
     if (insertJoinsResponse.redirected) {
         console.log('success inserting user in joins table')
-        window.location.href = insertJoinsResponse.url;
+        // window.location.href = insertJoinsResponse.url;
+        const insertServerGroup = document.querySelector('#serverList');
+        insertServerGroup.textContent = '';
+        const successMsg = document.createElement('p')
+        successMsg.textContent = `You have successfully joined the server! Would you like to go to the server page?`
+        const goToServerBtn = document.createElement('button');
+        goToServerBtn.textContent = 'Go to Server';
+        goToServerBtn.addEventListener('click', async function () {
+            const response = await fetch('/server', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    ServerID: joinServerID,
+                })
+            });
+
+            if (response.redirected) {
+                window.location.href = response.url;
+            } else {
+                alert('failed to redirect')
+            }
+        })
+        insertServerGroup.appendChild(successMsg)
+        insertServerGroup.appendChild(goToServerBtn)
     } else {
         alert('Error joining Server')
         return;
