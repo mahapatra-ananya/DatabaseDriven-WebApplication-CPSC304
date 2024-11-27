@@ -100,6 +100,16 @@ async function fetchAccountsFromDb() {
     });
 }
 
+async function fetchUserServersFromDb() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT distinct ServerName FROM Server s, Joins j WHERE j.MemberUsername=:currentUser', [currentUser]);
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
+
 async function initiateDemotable() {
     return await withOracleDB(async (connection) => {
         try {
@@ -143,7 +153,7 @@ async function insertUserAccount(username, displayName, password, bio, region, a
         );
         if (retVal.rows[0][0] > 0) {return 0;}
 
-        const result = await connection.execute( // HAVE TO RETURN CORRECT ERROR MESSAGE FOR EXISTING USERNAME
+        const result = await connection.execute(
             `INSERT INTO UserAccount(Username, DisplayName, UserPassword, Bio, Region, AvatarID, PlanID)
                 VALUES (:username, :displayName, :password, :bio, :region, :avatar, NULL)`,
             [username, displayName, password, bio, region, avatar],
@@ -152,7 +162,7 @@ async function insertUserAccount(username, displayName, password, bio, region, a
         currentUser = username;
         if (result.rowsAffected && result.rowsAffected > 0) {
             return 1;
-        };
+        }
     }).catch(() => {
         return -1;
     });
@@ -176,21 +186,51 @@ async function loginUser(username, passwordInput) {
                 return 2;
             }
         }
-
-        // const result = await connection.execute( // HAVE TO RETURN CORRECT ERROR MESSAGE FOR EXISTING USERNAME
-        //     `INSERT INTO UserAccount(Username, DisplayName, UserPassword, Bio, Region, AvatarID, PlanID)
-        //         VALUES (:username, :displayName, :password, :bio, :region, :avatar, NULL)`,
-        //     [username, displayName, password, bio, region, avatar],
-        //     { autoCommit: true }
-        // );
-        // currentUser = username;
-        // if (result.rowsAffected && result.rowsAffected > 0) {
-        //     return 1;
-        // };
     }).catch(() => {
         return -1;
     });
 }
+
+async function checkIfAdmin() {
+    return await withOracleDB(async (connection) => {
+
+        const retVal = await connection.execute(
+            'SELECT Count(*) FROM Administrator WHERE Administrator.Username=:currentUser', [currentUser]
+        );
+        if (retVal.rows[0][0] !== 0) { // if user is an admin
+            const serverName = await connection.execute(
+                'SELECT distinct ServerName FROM Administrator, Server WHERE Administrator.Username=:currentUser AND Administrator.ServerID=Server.ServerID', [currentUser]
+            );
+            return [true, serverName.rows[0][0]];
+        } else {
+            return [false, ""]
+
+        }
+    }).catch(() => {
+        return false;
+    });
+}
+
+async function checkIfHasPremium() {
+    return await withOracleDB(async (connection) => {
+
+        const retVal = await connection.execute(
+            'SELECT PlanID FROM UserAccount WHERE UserAccount.Username=:currentUser', [currentUser]
+        );
+        const plan = retVal.rows[0][0];
+        return [plan !== null, plan];
+    }).catch(() => {
+        return false;
+    });
+}
+
+function currUser() {
+    return currentUser;
+}
+
+// function currUserDisplayName() {
+//     return currentUser;
+// }
 
 async function updateNameDemotable(oldName, newName) {
     return await withOracleDB(async (connection) => {
@@ -395,13 +435,17 @@ module.exports = {
     insertUserAccount,
     fetchAccountsFromDb,
     loginUser,
-    currentUser,
+    // currUserDisplayName,
+    // currentUser,
+    currUser,
+    checkIfAdmin,
+    checkIfHasPremium,
     // userExists,
     initiateDemotable, 
     insertDemotable, 
     updateNameDemotable, 
     countDemotable,
-
+    fetchUserServersFromDb,
     fetchPaymentTableFromDb,
     fetchTierTableFromDb,
     fetchPremiumPlanTableFromDb,

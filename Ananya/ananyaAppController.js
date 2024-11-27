@@ -1,5 +1,6 @@
 const express = require('express');
 const appService = require('./ananyaAppService');
+const {currentUser} = require("./ananyaAppService");
 // const globalScript = require('../globalScript');
 
 const router = express.Router();
@@ -16,6 +17,17 @@ router.get('/check-db-connection', async (req, res) => {
     }
 });
 
+router.get("/curr-user", async (req, res) => {
+    const loginResult = await appService.currUser();
+    res.send(loginResult);
+});
+
+// router.get("/curr-user-display-name", async (req, res) => {
+//     const loginResult = await appService.currUserDisplayName();
+//     res.send(loginResult);
+// });
+
+
 router.get('/demotable', async (req, res) => {
     const tableContent = await appService.fetchDemotableFromDb();
     res.json({data: tableContent});
@@ -23,6 +35,11 @@ router.get('/demotable', async (req, res) => {
 
 router.get('/allAccounts', async (req, res) => {
     const tableContent = await appService.fetchAccountsFromDb();
+    res.json({data: tableContent});
+});
+
+router.get('/user-servers', async (req, res) => {
+    const tableContent = await appService.fetchUserServersFromDb();
     res.json({data: tableContent});
 });
 
@@ -65,11 +82,6 @@ router.post("/insert-userAccount", async (req, res) => {
 router.post("/log-in", async (req, res) => {
     const { username, password } = req.body;
     const loginResult = await appService.loginUser(username, password);
-    //const existing = appService.userExists;
-    // if (existing) {
-    //     res.status(500).json({ success: false });
-    //     res.send('This username already exists');
-    // }
     if (loginResult === 1) {
         res.json({ success: true, val: 1 });
     } else if (loginResult === 0) {
@@ -81,13 +93,23 @@ router.post("/log-in", async (req, res) => {
     }
 });
 
-// router.post("/check-userExists", async (req, res) => {
-//     const existing = appService.userExists;
-//     if (existing) {
-//         //res.status(500).json({ success: false });
-//         res.send('This username already exists');
-//     }
-// });
+router.get("/admin-or-create", async (req, res) => {
+    const isAdmin = await appService.checkIfAdmin();
+    if (isAdmin[0]) {
+        res.json({ success: true, serverName: isAdmin[1]});
+    } else {
+        res.status(500).json({ success: false, serverName: isAdmin[1]});
+    }
+});
+
+router.get("/premium-or-not", async (req, res) => {
+    const hasPremium = await appService.checkIfHasPremium();
+    if (hasPremium[0]) {
+        res.json({ success: true, plan: hasPremium[1]});
+    } else {
+        res.status(500).json({ success: false, plan: hasPremium[1]});
+    }
+});
 
 router.post("/update-name-demotable", async (req, res) => {
     const { oldName, newName } = req.body;
