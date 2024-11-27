@@ -241,4 +241,31 @@ router.post("/insert-general-member-table", async (req, res) => {
     }
 });
 
+/////////////////////////////////////////SERVER PAGE//////////////////////////////////////////
+router.post('/serverpage', async (req, res) => {
+    const { ServerID } = req.body;
+
+    const serverPageInfo = await appService.fetchServerPageInfo(ServerID);
+    console.log(`appController: serverPageInfo: ${serverPageInfo}`)
+
+    if (serverPageInfo) {
+        res.json({ success: true, serverPageInfo: serverPageInfo});
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
+router.post('/serverpage-channels', async (req, res) => {
+    const { ServerID } = req.body;
+
+    const serverPageChannels = await appService.fetchServerPageChannels(ServerID);
+    console.log(`appController: serverPageChannels: ${serverPageChannels}`)
+
+    if (serverPageChannels) {
+        res.json({ success: true, serverPageChannels: serverPageChannels});
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
 module.exports = router;
