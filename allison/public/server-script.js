@@ -1,5 +1,6 @@
-const urlParam = new URLSearchParams(window.location.search);
-const SERVERID = urlParam.get('serverid');
+let urlParam;
+let SERVERID;
+let CALENDARID;
 
 async function fetchAndDisplayServerInformation() {
     // TODO: NEED TO FIRST CHECK IF USER HAS ACCESS TO THIS SERVER
@@ -52,7 +53,7 @@ async function fetchAndDisplayServerInformation() {
     const serverName = serverPageInfo[0][0];
     const avatarID = serverPageInfo[0][1];
     let planID = serverPageInfo[0][2];
-    const calendarID = serverPageInfo[0][3];
+    CALENDARID = serverPageInfo[0][3];
     const planTier = serverPageInfo[0][4];
     const planMemberLimit = serverPageInfo[0][5];
     const planTheme = serverPageInfo[0][6];
@@ -95,7 +96,27 @@ async function fetchAndDisplayServerInformation() {
         channelItem.appendChild(goChannelBtn);
         channelList.appendChild(channelItem);
     });
+}
 
+async function goToServerCalendar(event) {
+    event.preventDefault();
+    const response = await fetch('/server/calendar', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            CalendarID: CALENDARID,
+        })
+    });
+
+    if (response.redirected) {
+        NEWSERVERID = ''
+        CALENDARID = null;
+        window.location.href = response.url;
+    } else {
+        alert('failed to redirect')
+    }
 }
 
 // ---------------------------------------------------------------
@@ -103,6 +124,8 @@ async function fetchAndDisplayServerInformation() {
 // Add or remove event listeners based on the desired functionalities.
 window.onload = function() {
     // checkDbConnection();
+    urlParam = new URLSearchParams(window.location.search);
+    SERVERID = urlParam.get('serverid');
 
     fetchTableData();
 };
@@ -112,4 +135,8 @@ window.onload = function() {
 // You can invoke this after any table-modifying operation to keep consistency.
 function fetchTableData() {
     fetchAndDisplayServerInformation()
+
+    const calendarBtn = document.querySelector('.serverCalendarBtn');
+
+    calendarBtn.addEventListener('click', goToServerCalendar);
 }
