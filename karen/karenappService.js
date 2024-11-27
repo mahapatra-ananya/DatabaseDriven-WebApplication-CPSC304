@@ -252,6 +252,23 @@ async function fetchJoinsTableFromDb() {
     });
 }
 
+////////////////////////////////////////////// POSTEDTO //////////////////////////////////////////////////
+
+// async function insertPostedtable(EventID, EventUsername) {
+//     return await withOracleDB(async (connection) => {
+//         const result = await connection.execute(
+//             `INSERT INTO PostedTo (CalendarID, EventID)
+//             VALUES (:CalendarID, :CalendarName)`,
+//             [EventID, EventUsername],
+//             { autoCommit: true }
+//         );
+//         return result.rowsAffected && result.rowsAffected > 0;
+//     }).catch(() => {
+//         return false;
+//     });
+// }
+
+
 ////////////////////////////////////////////// CALENDAR //////////////////////////////////////////////////
 async function insertCalendartable(CalendarID, CalendarName, UserName) {
     return await withOracleDB(async (connection) => {

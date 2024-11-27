@@ -87,9 +87,6 @@ router.post('/fetch-EventsOnDate', async (req, res) => {
 });
 
 
-
-
-
 router.get('/Eventtable', async (req, res) => {
     const tableContent = await appService.fetchEventTableFromDb();
     res.json({data: tableContent});
@@ -100,10 +97,10 @@ router.post("/insert-Eventtable", async (req, res) => {
     const insertResult = await appService.insertEventtable(
         EventID, EventName, EventDateTime, Duration, Details, EventUsername);
     if (insertResult) {
+        // const updatePostedTo = await appService.insertPostedtable(EventID, EventUsername);
         res.json({ success: true });
     } else {
         res.status(500).json({ success: false });
-        console.log(EventDateTime);
     }
 });
 

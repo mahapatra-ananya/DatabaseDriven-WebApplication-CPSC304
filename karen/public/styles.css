@@ -98,9 +98,9 @@ body {
 }
 
 #reminder-section h3 {
-    color: green;
+    /* color: green;
     font-size: 18px;
-    margin: 0;
+    margin: 0;*/
 }
 
 #reminderList {
