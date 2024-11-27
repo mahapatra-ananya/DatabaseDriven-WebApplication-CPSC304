@@ -1,12 +1,12 @@
-#searchGroup, #searchQuery {
-    width: 75%
+#searchQuery {
+    width: 75%;
+    margin-right: 5px;
 }
 
-/*#serverList {*/
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*   */
-/*}*/
+#searchGroup {
+    display: flex;
+    justify-content: center;
+}
 
 #serverList {
     display: flex;
@@ -21,17 +21,20 @@
 .serverItem {
     display: flex;
     flex-direction: row;
-    height: 40px;
+    height: 50px;
     background-color: #EEEBEB;
     margin: 10px
 }
 
 .serverName {
     flex: 2;
+    margin-left: 10px;
+    font-size: large;
 }
 
 .serverId {
     flex: 0.5;
+    color: #4c4c4c;
 }
 
 .joinServerBtn {
@@ -40,4 +43,5 @@
     background-color: #518EFF;
     color: white;
     height: 30px;
+    margin-right: 5px;
 }
