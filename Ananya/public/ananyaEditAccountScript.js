@@ -21,25 +21,171 @@ async function checkDbConnection() {
         });
 }
 
-async function editAccount(event) {
+async function editPassword(event) {
     event.preventDefault();
 
     const passwordValue = document.getElementById('Password').value;
-    const displayNameValue = document.getElementById('DisplayName').value;
-    const bioValue = document.getElementById('Bio').value;
-    const regionValue = document.getElementById('Region').value;
-    const avatarValue = document.getElementById('Avatar').value;
+    // const displayNameValue = document.getElementById('DisplayName').value;
+    // const bioValue = document.getElementById('Bio').value;
+    // const regionValue = document.getElementById('Region').value;
+    // const avatarValue = document.getElementById('Avatar').value;
 
-    const response = await fetch('/edit-account', {
+    // document.getElementById('DisplayName').setAttribute("placeholder", "placeholder value");
+
+    const response = await fetch('/edit-password', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            // displayName: displayNameValue,
+            password: passwordValue,
+            // bio: bioValue,
+            // region: regionValue,
+            // avatar: avatarValue
+        })
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('editResultMsg');
+
+
+    if (responseData.success) {
+        messageElement.textContent = "Password saved successfully!";
+    } else {
+        messageElement.textContent = "Error saving password!";
+    }
+}
+
+async function editDN(event) {
+    event.preventDefault();
+
+    // const passwordValue = document.getElementById('Password').value;
+    const displayNameValue = document.getElementById('DisplayName').value;
+    // const bioValue = document.getElementById('Bio').value;
+    // const regionValue = document.getElementById('Region').value;
+    // const avatarValue = document.getElementById('Avatar').value;
+
+    // document.getElementById('DisplayName').setAttribute("placeholder", "placeholder value");
+
+    const response = await fetch('/edit-DN', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
             displayName: displayNameValue,
-            password: passwordValue,
+            // password: passwordValue,
+            // bio: bioValue,
+            // region: regionValue,
+            // avatar: avatarValue
+        })
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('editResultMsg');
+
+
+    if (responseData.success) {
+        messageElement.textContent = "Display Name saved successfully!";
+    } else {
+        messageElement.textContent = "Error saving display name!";
+    }
+}
+
+async function editBio(event) {
+    event.preventDefault();
+
+    // const passwordValue = document.getElementById('Password').value;
+    // const displayNameValue = document.getElementById('DisplayName').value;
+    const bioValue = document.getElementById('Bio').value;
+    // const regionValue = document.getElementById('Region').value;
+    // const avatarValue = document.getElementById('Avatar').value;
+
+    // document.getElementById('DisplayName').setAttribute("placeholder", "placeholder value");
+
+    const response = await fetch('/edit-bio', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            // displayName: displayNameValue,
+            // password: passwordValue,
             bio: bioValue,
+            // region: regionValue,
+            // avatar: avatarValue
+        })
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('editResultMsg');
+
+
+    if (responseData.success) {
+        messageElement.textContent = "Bio saved successfully!";
+    } else {
+        messageElement.textContent = "Error saving bio!";
+    }
+}
+
+async function editRegion(event) {
+    event.preventDefault();
+
+    // const passwordValue = document.getElementById('Password').value;
+    // const displayNameValue = document.getElementById('DisplayName').value;
+    // const bioValue = document.getElementById('Bio').value;
+    const regionValue = document.getElementById('Region').value;
+    // const avatarValue = document.getElementById('Avatar').value;
+
+    // document.getElementById('DisplayName').setAttribute("placeholder", "placeholder value");
+
+    const response = await fetch('/edit-region', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            // displayName: displayNameValue,
+            // password: passwordValue,
+            // bio: bioValue,
             region: regionValue,
+            // avatar: avatarValue
+        })
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('editResultMsg');
+
+
+    if (responseData.success) {
+        messageElement.textContent = "Region saved successfully!";
+    } else {
+        messageElement.textContent = "Error saving region!";
+    }
+}
+
+async function editAvatar(event) {
+    event.preventDefault();
+
+    // const passwordValue = document.getElementById('Password').value;
+    // const displayNameValue = document.getElementById('DisplayName').value;
+    // const bioValue = document.getElementById('Bio').value;
+    // const regionValue = document.getElementById('Region').value;
+    const avatarValue = document.getElementById('Avatar').value;
+
+    // document.getElementById('DisplayName').setAttribute("placeholder", "placeholder value");
+
+    const response = await fetch('/edit-avatar', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            // displayName: displayNameValue,
+            // password: passwordValue,
+            // bio: bioValue,
+            // region: regionValue,
             avatar: avatarValue
         })
     });
@@ -49,9 +195,9 @@ async function editAccount(event) {
 
 
     if (responseData.success) {
-        messageElement.textContent = "Changes saved successfully!";
+        messageElement.textContent = "Avatar saved successfully!";
     } else {
-        messageElement.textContent = "Error saving changes!";
+        messageElement.textContent = "Error saving avatar!";
     }
 }
 
@@ -124,6 +270,10 @@ async function deleteAccount(event) {
 window.onload = function() {
     checkDbConnection();
     displayRegionAndAvatarOptions();
-    document.getElementById("editAccountTable").addEventListener("submit", editAccount);
+    document.getElementById("passwordForm").addEventListener("submit", editPassword);
+    document.getElementById("dnForm").addEventListener("submit", editDN);
+    document.getElementById("bioForm").addEventListener("submit", editBio);
+    document.getElementById("regionForm").addEventListener("submit", editRegion);
+    document.getElementById("avatarForm").addEventListener("submit", editAvatar);
     document.getElementById("deleteButton").addEventListener("click", deleteAccount);
 }

@@ -169,13 +169,74 @@ async function insertUserAccount(username, displayName, password, bio, region, a
     });
 }
 
-async function editAccount(displayName, password, bio, region, avatar) {
+async function editPassword(password) {
     return await withOracleDB(async (connection) => {
         // console.log(region);
 
         const result = await connection.execute(
-            'UPDATE UserAccount SET DisplayName=:displayName, UserPassword=:password, Bio=:bio, Region=:region, AvatarID=:avatar where Username=:currentUser',
-            [displayName, password, bio, region, avatar, currentUser],
+            'UPDATE UserAccount SET UserPassword=:password where Username=:currentUser',
+            [password, currentUser],
+            { autoCommit: true }
+        );
+
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+
+async function editDN(displayName) {
+    return await withOracleDB(async (connection) => {
+        // console.log(region);
+
+        const result = await connection.execute(
+            'UPDATE UserAccount SET DisplayName=:displayName where Username=:currentUser',
+            [displayName, currentUser],
+            { autoCommit: true }
+        );
+
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+async function editBio(bio) {
+    return await withOracleDB(async (connection) => {
+        // console.log(region);
+
+        const result = await connection.execute(
+            'UPDATE UserAccount SET Bio=:bio where Username=:currentUser',
+            [bio, currentUser],
+            { autoCommit: true }
+        );
+
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+async function editRegion(region) {
+    return await withOracleDB(async (connection) => {
+        // console.log(region);
+
+        const result = await connection.execute(
+            'UPDATE UserAccount SET Region=:region where Username=:currentUser',
+            [region, currentUser],
+            { autoCommit: true }
+        );
+
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+async function editAvatar(avatar) {
+    return await withOracleDB(async (connection) => {
+        // console.log(region);
+
+        const result = await connection.execute(
+            'UPDATE UserAccount SET AvatarID=:avatar where Username=:currentUser',
+            [avatar, currentUser],
             { autoCommit: true }
         );
 
@@ -211,9 +272,6 @@ async function purchasePlan(purchase) {
             { autoCommit: true }
         );
         console.log(result);
-
-
-
 
         // const result2 = await connection.execute(
         //     `UPDATE Server SET PlanID=:purchase where ServerID=(SELECT Server.ServerID FROM Server, Administrator WHERE Server.ServerID = Administrator.ServerID AND Administrator.Username=:currentUser)`,
@@ -555,7 +613,11 @@ module.exports = {
     fetchAvatarIDsFromDb,
     fetchRegionsFromDb,
     fetchUserDetailsFromDb,
-    editAccount,
+    editAvatar,
+    editRegion,
+    editPassword,
+    editBio,
+    editDN,
     fetchPaymentTableFromDb,
     fetchTierTableFromDb,
     fetchPremiumPlanTableFromDb,

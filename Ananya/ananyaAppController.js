@@ -100,9 +100,49 @@ router.post("/insert-userAccount", async (req, res) => {
     }
 });
 
-router.post("/edit-account", async (req, res) => {
-    const { displayName, password, bio, region, avatar } = req.body;
-    const insertResult = await appService.editAccount(displayName, password, bio, region, avatar);
+router.post("/edit-password", async (req, res) => {
+    const { password } = req.body;
+    const insertResult = await appService.editPassword(password);
+    if (insertResult) {
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
+router.post("/edit-DN", async (req, res) => {
+    const { displayName } = req.body;
+    const insertResult = await appService.editDN(displayName);
+    if (insertResult) {
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
+router.post("/edit-bio", async (req, res) => {
+    const {bio} = req.body;
+    const insertResult = await appService.editBio(bio);
+    if (insertResult) {
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
+router.post("/edit-region", async (req, res) => {
+    const { region } = req.body;
+    const insertResult = await appService.editRegion(region);
+    if (insertResult) {
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
+router.post("/edit-avatar", async (req, res) => {
+    const { avatar } = req.body;
+    const insertResult = await appService.editAvatar(avatar);
     if (insertResult) {
         res.json({ success: true });
     } else {
