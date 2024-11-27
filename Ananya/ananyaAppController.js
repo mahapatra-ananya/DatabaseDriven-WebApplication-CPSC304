@@ -17,6 +17,11 @@ router.get('/check-db-connection', async (req, res) => {
     }
 });
 
+router.get("/curr-user", async (req, res) => {
+    const loginResult = await appService.currUser();
+    res.send(loginResult);
+});
+
 router.get('/demotable', async (req, res) => {
     const tableContent = await appService.fetchDemotableFromDb();
     res.json({data: tableContent});
@@ -77,11 +82,7 @@ router.post("/log-in", async (req, res) => {
     }
 });
 
-router.post("/curr-user", async (req, res) => {
-    // const { username, password } = req.body;
-    const loginResult = await appService.currUser();
-    res.send(loginResult);
-});
+
 
 // router.post("/check-userExists", async (req, res) => {
 //     const existing = appService.userExists;

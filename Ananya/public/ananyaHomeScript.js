@@ -29,7 +29,7 @@ async function banner() {
 
     response.text()
         .then((text) => {
-            bannerElem.textContent = 'Welcome' + text;
+            bannerElem.textContent = 'Welcome, ' + text;
         })
         .catch((error) => {
             bannerElem.textContent = 'Error: Username not found';  // Adjust error handling if required.
