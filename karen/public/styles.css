@@ -8,6 +8,55 @@ body {
     margin: 0;
 }
 
+
+/* General styling for the entire page */
+
+.current-date {
+    background-color: #00ab41;
+    color: #fff;
+    border-radius: 50%;
+}
+
+.Event-date {
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 5%;
+}
+
+.calendar-weekdays, .calendar-dates {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+.calendar-weekdays div, .calendar-dates div {
+    text-align: center;
+    padding: 10px;
+}
+.calendar-weekdays {
+    background-color: #eaeef3;
+}
+.calendar-weekdays div {
+    font-weight: bold;
+}
+.calendar-dates div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 10px;
+    margin: auto;
+    width: 40px;
+    height: 40px;
+    transition: 0.2s;
+    cursor: pointer;
+}
+.calendar-dates div:hover {
+    background-color: #f1f1f1;
+    color: #111111;
+}
+
+
+
+/* General styling for the entire page */
 .Calendar{
     width: 600px;
     height: auto;
@@ -72,10 +121,11 @@ body {
     color:#fff;
 }
 
-/*.date.event{*/
-/*    background: #45b6f3;*/
-/*    color:#fff;*/
-/*}*/
+.date.event{
+    background: #45b6f3;
+    border-radius: 5%;
+    color:#fff;
+}
 
 .date.inactive {
     color:#d2d2d2;

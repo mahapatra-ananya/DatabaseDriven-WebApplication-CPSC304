@@ -242,6 +242,7 @@ async function countEventtable() {
     }
 }
 
+
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
 // Add or remove event listeners based on the desired functionalities.
@@ -260,6 +261,7 @@ window.onload = function() {
     document.getElementById("insertEventtable").addEventListener("submit", insertEventtable);
     document.getElementById("countEventtable").addEventListener("click", countEventtable);
 
+    document.getElementById("findCalendarID").addEventListener("submit", getEventDates);
 };
 
 // General function to refresh the displayed table data. 
@@ -272,64 +274,180 @@ function fetchEventTableData() {
     fetchAndDisplayEvent();
 }
 
-
-
 /////////////////////////////////////////////////// CALENDAR ///////////////////////////////////////////////////////
-const monthYear = document.getElementById("monthYear");
-const datesElement = document.getElementById("dates");
-const prevMonth = document.getElementById("prevMonth");
-const nextMonth = document.getElementById("nextMonth");
-
-let currDate = new Date();
-
-let testEvent = new Date(currDate.getFullYear(),currDate.getMonth(),20); // use to test event
-
-const updateCalendar = () => {
-    const currYear = currDate.getFullYear();
-    const currMonth = currDate.getMonth();
-    const first = new Date(currYear, currMonth, 0);
-    const last = new Date(currYear, currMonth + 1,0)
-    const totalDays = last.getDate();
-
-    const firstDayIndex = first.getDay();
-    const lastDayIndex = last.getDay();
-
-    const monthYearLabel = currDate.toLocaleString('default', {month: 'long', year: 'numeric'});
-    monthYear.textContent = monthYearLabel;
 
 
-    let datesHTML = '';
+const calendarDates = document.querySelector('.calendar-dates');
+const monthYear = document.getElementById('monthYear');
+const prevMonthBtn = document.getElementById('prevMonth');
+const nextMonthBtn = document.getElementById('nextMonth');
 
-    for (let i = firstDayIndex; i > 0; i--) {
-        const prevDate = new Date(currYear, currMonth, 0 - i);
-        datesHTML += `<div class = "date inactive">${prevDate.getDate()}</div>`;
+let selectedDate = new Date();
+let currMonth = selectedDate.getMonth();
+let currYear = selectedDate.getFullYear();
+
+let testEvent = new Date(2024,10,20); // use to test event
+
+const months = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+];
+
+
+
+function makeCalendar(month, year) {
+    calendarDates.innerHTML = '';
+    monthYear.textContent = `${months[month]} ${year}`;
+
+    // Get the first day and number days in month
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    // Fill blanks before day 1
+    for (let i = 0; i < firstDay; i++) {
+        const blank = document.createElement('div');
+        calendarDates.appendChild(blank);
     }
 
-     for (let i = 0; i < totalDays; i++) {
-         const date = new Date(currYear, currMonth, i);
-         const activeClass = date.toDateString() === new Date().toDateString() ? 'active' : '';
-         datesHTML += `<div class = "date ${activeClass}">${i}</div>`;
-     }
+    // Fill calendar active month
+    for (let i = 1; i <= daysInMonth; i++) {
+        const day = document.createElement('div');
+        day.textContent = i;
 
-    for (let i = 0; i < 7 - lastDayIndex; i++) {
-        const nextDate = new Date(currYear,currMonth + 1, i);
-        datesHTML += `<div class = "date inactive">${nextDate.getDate()}</div>`;
+
+        // Tags to add for currently selected day and days containing events
+        if (i === selectedDate.getDate() && year === selectedDate.getFullYear() && month === selectedDate.getMonth()) {
+            day.classList.add('current-date');
+        } else if (checkEvents(i, month, year)) {
+            day.classList.add('Event-date');
+        }
+
+        calendarDates.appendChild(day);
     }
-
-    datesElement.innerHTML = datesHTML;
 }
 
-prevMonth.addEventListener('click', () => {
-    currDate.setMonth(currDate.getMonth() - 1);
-    updateCalendar();
+function checkEvents(date, month, year) {
+    return date === testEvent.getDate() && testEvent.getMonth() === month && testEvent.getFullYear() === year;
+    //return getEventsOnDate(date, month, year).length > 0;
+}
+
+calendarDates.addEventListener('click', (e) => {
+    if (e.target.textContent !== '') {
+        alert(`You clicked on ${e.target.textContent} ${months[currMonth]} ${currYear}`);
+    }
+});
+
+prevMonthBtn.addEventListener('click', () => {
+    if (currMonth === 0) {
+        currMonth = 11;
+        currYear--;
+    } else {
+        currMonth--;
+    }
+    makeCalendar(currMonth, currYear);
 })
 
-nextMonth.addEventListener('click', () => {
-    currDate.setMonth(currDate.getMonth() + 1);
-    updateCalendar();
+nextMonthBtn.addEventListener('click', () => {
+    if (currMonth === 11) {
+        currMonth = 0;
+        currYear++;
+    } else {
+        currMonth++;
+    }
+    makeCalendar(currMonth, currYear);
 })
 
-updateCalendar();
+
+makeCalendar(currMonth, currYear);
+
+
+
+/////////////////////////////////////////////////// GLOBAL VAR ///////////////////////////////////////////////////////
+
+const CALENDARNUM = 21;
+
+/////////////////////////////////////////////////// CALENDAR ///////////////////////////////////////////////////////
+// const monthYear = document.getElementById("monthYear");
+// const datesElement = document.getElementById("dates");
+// const prevMonth = document.getElementById("prevMonth");
+// const nextMonth = document.getElementById("nextMonth");
+//
+// let currDate = new Date();
+//
+
+//
+// const updateCalendar = () => {
+//     const currYear = currDate.getFullYear();
+//     const currMonth = currDate.getMonth();
+//     const first = new Date(currYear, currMonth, 0);
+//     const last = new Date(currYear, currMonth + 1,0)
+//     const totalDays = last.getDate();
+//
+//     const firstDayIndex = first.getDay();
+//     const lastDayIndex = last.getDay();
+//
+//     const monthYearLabel = currDate.toLocaleString('default', {month: 'long', year: 'numeric'});
+//     monthYear.textContent = monthYearLabel;
+//
+//
+//     let datesHTML = '';
+//
+//     for (let i = firstDayIndex; i > 0; i--) {
+//         const prevDate = new Date(currYear, currMonth, 0 - i);
+//         datesHTML += `<div class = "date inactive">${prevDate.getDate()}</div>`;
+//     }
+//
+//      for (let i = 0; i < totalDays; i++) {
+//          const date = new Date(currYear, currMonth, i);
+//          let activeClass = '';
+//
+//
+//          if (checkEvents(i, currMonth, currYear)) {
+//              datesHTML += `<div class = "date event">${date.getDate()}</div>`;
+//              console.log(date);
+//          } else {
+//              activeClass = date.toDateString() === new Date().toDateString() ? 'active' : '';
+//              datesHTML += `<div class = "date ${activeClass}">${i}</div>`;
+//          }
+//          //const activeClass = date.toDateString() === new Date().toDateString() ? 'active' : '';
+//          //datesHTML += `<div class = "date ${activeClass}">${i}</div>`;
+//      }
+//
+//     for (let i = 0; i < 7 - lastDayIndex; i++) {
+//         const nextDate = new Date(currYear,currMonth + 1, i);
+//         datesHTML += `<div class = "date inactive">${nextDate.getDate()}</div>`;
+//     }
+//
+//     datesElement.innerHTML = datesHTML;
+// }
+//
+
+//
+// prevMonth.addEventListener('click', () => {
+//     currDate.setMonth(currDate.getMonth() - 1);
+//     updateCalendar();
+// })
+//
+// nextMonth.addEventListener('click', () => {
+//     currDate.setMonth(currDate.getMonth() + 1);
+//     updateCalendar();
+// })
+//
+//
+// ////////////////////////////// TESTING SELECT CLICKER /////////////////////////////////
+// var selectableDates = document.getElementsByClassName("date active");
+//
+// var getDateText = function() {
+//     console.log('clicked a date');
+//     var attribute = this.getAttribute("textContent");
+//     alert(attribute);
+// }
+// for (var i = 0; i < selectableDates.length; i++) {
+//     selectableDates[i].addEventListener('click',getDateText,false)
+//     console.log('added listener?');
+// }
+//
+// updateCalendar();
 
 // TODO: calendar code below
 // Define an array to store events

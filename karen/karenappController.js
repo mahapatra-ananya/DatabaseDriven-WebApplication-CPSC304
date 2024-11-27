@@ -15,7 +15,7 @@ router.get('/check-db-connection', async (req, res) => {
     }
 });
 
-///////////////////////////////// CALENDAR /////////////////////////////////
+/////////////////////////////////////////////// CALENDAR ///////////////////////////////////////////////
 
 router.get('/Calendartable', async (req, res) => {
     const tableContent = await appService.fetchCalendarTableFromDb();
@@ -67,20 +67,25 @@ router.get('/count-Calendartable', async (req, res) => {
 });
 
 
-//TODO: Event routes
+/////////////////////////////////////////////// EVENTS ///////////////////////////////////////////////
+
+router.post('/fetch-EventDates', async (req, res) => {
+
+    console.log("reached fetch-EventDates");
+
+    const { selectedCalendar } = req.body;
+    const result = await appService.fetchEventDates(selectedCalendar);
+    if (result > -1) {
+        res.json({ success: true, val: result });
+    } else {
+        res.status(500).json({success: false, val: -1});
+    }
+});
+
 router.get('/Eventtable', async (req, res) => {
     const tableContent = await appService.fetchEventTableFromDb();
     res.json({data: tableContent});
 });
-
-// router.post("/initiate-Eventtable", async (req, res) => {
-//     const initiateResult = await appService.initiateEventtable();
-//     if (initiateResult) {
-//         res.json({ success: true });
-//     } else {
-//         res.status(500).json({ success: false });
-//     }
-// });
 
 router.post("/insert-Eventtable", async (req, res) => {
     const { EventID, EventName, EventDateTime, Duration, Details, EventUsername } = req.body;

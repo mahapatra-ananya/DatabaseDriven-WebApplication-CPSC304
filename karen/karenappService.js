@@ -291,7 +291,34 @@ async function countCalendartable() {
     });
 }
 
-////////////////////////////////////////////// CALENDAR //////////////////////////////////////////////////
+////////////////////////////////////////////// EVENTS //////////////////////////////////////////////////
+
+async function fetchEventDates(selectedCalendar) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            'SELECT Count(*) FROM Event e, PostedTo p WHERE e.EventID = p.EventID AND p.CalendarID=:selectedCalendar', [selectedCalendar]
+        );
+        // if (result.rows[0][0] === 0) {return 0;}
+        // else {
+            return result.rows[0][0];
+        // }
+    }).catch(() => {
+        return -1;
+    });
+}
+
+// async function fetchEventDates(selectedCalendar){
+//     return await withOracleDB(async (connection) => {
+//         console.log("reached service");
+//         const result = await connection.execute(
+//             `SELECT Count(*) FROM Event e, PostedTo p WHERE e.EventID = p.EventID AND p.CalendarID=:selectedCalendar`,
+//             [selectedCalendar])
+//         return result.rows[0][0];
+//
+//     }).catch(() => {
+//         return -1;
+//     });
+// }
 
 async function countEventtable() {
     return await withOracleDB(async (connection) => {
@@ -324,14 +351,14 @@ async function insertEventtable(EventID, EventName, EventDateTime, Duration, Det
 module.exports = {
     testOracleConnection,
 
-    //fetchCalendartableFromDb,
     insertCalendartable,
     updateNameCalendartable,
     countCalendartable,
 
-    //fetchEventtableFromDb,
     insertEventtable,
     countEventtable,
+
+    fetchEventDates,
 
     initiateAllTables,
     fetchPaymentTableFromDb,
@@ -348,5 +375,8 @@ module.exports = {
     fetchAdministratorTableFromDb,
     fetchMessageTableFromDb,
     fetchPostedToTableFromDb,
-    fetchJoinsTableFromDb
+    fetchJoinsTableFromDb,
+
+
+    // getEventDatesFromCalendar
 };
