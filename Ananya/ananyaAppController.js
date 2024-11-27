@@ -110,6 +110,16 @@ router.post("/edit-account", async (req, res) => {
     }
 });
 
+router.post("/delete-account", async (req, res) => {
+    // const { displayName, password, bio, region, avatar } = req.body;
+    const deleteResult = await appService.deleteAccount();
+    if (deleteResult) {
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
 router.post("/purchase-plan", async (req, res) => {
     const { purchase } = req.body;
     const purchaseResult = await appService.purchasePlan(purchase);

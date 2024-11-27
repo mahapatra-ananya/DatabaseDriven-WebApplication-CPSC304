@@ -100,6 +100,24 @@ async function displayRegionAndAvatarOptions() {
     });
 }
 
+async function deleteAccount(event) {
+    event.preventDefault();
+
+    const response = await fetch('/delete-account', {
+        method: 'POST'
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('deleteResultMsg');
+
+
+    if (responseData.success) {
+        messageElement.textContent = "Account deleted successfully!";
+        window.location.replace("ananyaCreateAccount.html");
+    } else {
+        messageElement.textContent = "Error deleting account!";
+    }
+}
 
 // Initializes the webpage functionalities.
 // Add or remove event listeners based on the desired functionalities.
@@ -107,4 +125,5 @@ window.onload = function() {
     checkDbConnection();
     displayRegionAndAvatarOptions();
     document.getElementById("editAccountTable").addEventListener("submit", editAccount);
+    document.getElementById("deleteButton").addEventListener("click", deleteAccount);
 }

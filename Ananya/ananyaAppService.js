@@ -185,6 +185,22 @@ async function editAccount(displayName, password, bio, region, avatar) {
     });
 }
 
+async function deleteAccount() {
+    return await withOracleDB(async (connection) => {
+        // console.log(region);
+
+        const result = await connection.execute(
+            'DELETE FROM UserAccount where Username=:currentUser',
+            [currentUser],
+            { autoCommit: true }
+        );
+
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+
 async function purchasePlan(purchase) {
     // console.log(purchase);
     return await withOracleDB(async (connection) => {
@@ -193,11 +209,22 @@ async function purchasePlan(purchase) {
             [purchase, currentUser],
             { autoCommit: true }
         );
+        console.log(result);
+
+
+
+
+        // const result2 = await connection.execute(
+        //     `UPDATE Server SET PlanID=:purchase where ServerID=(SELECT Server.ServerID FROM Server, Administrator WHERE Server.ServerID = Administrator.ServerID AND Administrator.Username=:currentUser)`,
+        //     [purchase, currentUser],
+        //     {autocommit: true}
+        // );
         const result2 = await connection.execute(
-            `UPDATE Server SET PlanID=:purchase where ServerID=(SELECT Server.ServerID FROM Server, Administrator WHERE Server.ServerID = Administrator.ServerID AND Administrator.Username=:currentUser)`,
-            [purchase, currentUser],
-            {autocommit: true}
+            `UPDATE Server SET PlanID=:purchase where ServerID=(Select Server.ServerID FROM Server, Administrator WHERE Server.ServerID = Administrator.ServerID AND Administrator.Username=:currentUser)`,
+            [purchase, currentUser]
         );
+
+        const result3 = await connection.execute(`commit`);
 
         console.log(result2)
 
@@ -532,6 +559,7 @@ module.exports = {
     fetchTierTableFromDb,
     fetchPremiumPlanTableFromDb,
     fetchPremiumPlanIDsFromDb,
+    deleteAccount,
     fetchLocationTableFromDb,
     fetchAvatarTableFromDb,
     fetchUserAccountTableFromDb,

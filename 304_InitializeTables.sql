@@ -133,7 +133,7 @@ CREATE TABLE Joins (
                        ServerID			INTEGER NOT NULL,
                        JoinDate			DATE,
                        PRIMARY KEY (MemberUsername, ServerID),
-                       FOREIGN KEY (MemberUsername) 		REFERENCES GeneralMember (Username),
+                       FOREIGN KEY (MemberUsername) 		REFERENCES GeneralMember (Username)             ON DELETE CASCADE,
                        FOREIGN KEY (ServerID) 				REFERENCES Server
 );
 INSERT INTO Payment(PaymentInterval, SubscriptionPayment) VALUES (1, 1);
