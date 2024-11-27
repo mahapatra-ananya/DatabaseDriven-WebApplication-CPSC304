@@ -174,7 +174,8 @@ async function editAccount(displayName, password, bio, region, avatar) {
         // console.log(region);
 
         const result = await connection.execute(
-            'UPDATE UserAccount SET DisplayName=:displayName, UserPassword=:password, Bio=:bio, Region=:region, AvatarID=:avatar where Username=:currentUser', [displayName, password, bio, region, avatar, currentUser],
+            'UPDATE UserAccount SET DisplayName=:displayName, UserPassword=:password, Bio=:bio, Region=:region, AvatarID=:avatar where Username=:currentUser',
+            [displayName, password, bio, region, avatar, currentUser],
             { autoCommit: true }
         );
 
@@ -192,8 +193,13 @@ async function purchasePlan(purchase) {
             [purchase, currentUser],
             { autoCommit: true }
         );
+        const result2 = await connection.execute(
+            'UPDATE (SELECT * FROM Server, Administrator where Administrator.Username=:currentUser AND Administrator.ServerID=Server.ServerID) SET PlanID=:purchase',
+            [currentUser, purchase],
+            {autocommit: true}
+        );
 
-        return result.rowsAffected && result.rowsAffected > 0;
+        return (result.rowsAffected && result.rowsAffected > 0) && (result2.rowsAffected && result2.rowsAffected > 0);
     }).catch(() => {
         return false;
     });
