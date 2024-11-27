@@ -325,6 +325,17 @@ async function fetchTierTableFromDb() {
     });
 }
 
+async function fetchUserDetailsFromDb() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            'SELECT distinct DisplayName, Username, Bio, UserAccount.Region, Country FROM UserAccount, Location WHERE Username=:currentUser AND UserAccount.Region=Location.Region', [currentUser]
+        );
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
 async function fetchPremiumPlanTableFromDb() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute('SELECT distinct PlanID, PREMIUMPLAN.Tier, PREMIUMPLAN.PaymentInterval, MemberLimit, Theme, BasePrice, SubscriptionPayment FROM PREMIUMPLAN, PAYMENT, TIER WHERE PREMIUMPLAN.Tier=Tier.Tier AND PREMIUMPLAN.PaymentInterval=Payment.PaymentInterval');
@@ -492,6 +503,7 @@ module.exports = {
     purchasePlan,
     fetchAvatarIDsFromDb,
     fetchRegionsFromDb,
+    fetchUserDetailsFromDb,
     fetchPaymentTableFromDb,
     fetchTierTableFromDb,
     fetchPremiumPlanTableFromDb,
