@@ -36,8 +36,31 @@ async function currentPlan() {
     }
 }
 
-async function purchasePremiumPlan() {
-    const elem = document.getElementById('purchasePlan');
+async function purchasePremiumPlan(event) {
+    event.preventDefault();
+
+    const purchaseValue = document.getElementById('purchase').value;
+    // console.log(purchaseValue);
+
+    const response = await fetch('/purchase-plan', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            purchase: purchaseValue
+        })
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('purchaseMsg');
+
+
+    if (responseData.success) {
+        messageElement.textContent = "Purchase successful!";
+    } else {
+        messageElement.textContent = "Error purchasing premium plan!";
+    }
 }
 
 async function displayAllPlans() {

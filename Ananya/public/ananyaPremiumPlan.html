@@ -26,7 +26,7 @@
 
 <div>
 <!--    <p>Purchase a new plan:</p>-->
-    <form id="purchasePlan">
+
         <table id="allPlans">
             <thead>
             <tr>
@@ -36,10 +36,7 @@
                 <th>Payment Interval</th>
                 <th>Member Limit</th>
                 <th>Theme</th>
-
-
                 <th>Base Price</th>
-
                 <th>Subscription Payment</th>
 
             </tr>
@@ -129,10 +126,24 @@
 <!--            </tr>-->
         </table>
         <br>
+    <form id="purchasePlan">
+        <label for="purchase">Choose Plan:</label>
+        <select name="purchase" id="purchase">
+            <option value="Select">Select</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="11">11</option>
+            <option value="21">21</option>
+        </select>
         <button type="submit"> Purchase </button> <br>
 
     </form>
 </div>
+
+<div id="purchaseMsg"></div>
 
 <script src="ananyaPremiumPlanScript.js"></script>
 

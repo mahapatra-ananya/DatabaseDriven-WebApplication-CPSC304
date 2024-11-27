@@ -147,6 +147,7 @@ async function insertDemotable(id, name) {
 
 async function insertUserAccount(username, displayName, password, bio, region, avatar) {
     return await withOracleDB(async (connection) => {
+        // console.log(region);
 
         const retVal = await connection.execute(
             'SELECT Count(*) FROM UserAccount WHERE UserAccount.Username=:username', [username]
@@ -165,6 +166,21 @@ async function insertUserAccount(username, displayName, password, bio, region, a
         }
     }).catch(() => {
         return -1;
+    });
+}
+
+async function purchasePlan(purchase) {
+    // console.log(purchase);
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `UPDATE UserAccount SET PlanID=:purchase where Username=:currentUser`,
+            [purchase, currentUser],
+            { autoCommit: true }
+        );
+
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
     });
 }
 
@@ -446,6 +462,7 @@ module.exports = {
     updateNameDemotable, 
     countDemotable,
     fetchUserServersFromDb,
+    purchasePlan,
     fetchPaymentTableFromDb,
     fetchTierTableFromDb,
     fetchPremiumPlanTableFromDb,

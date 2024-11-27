@@ -70,17 +70,22 @@ router.post("/insert-demotable", async (req, res) => {
 router.post("/insert-userAccount", async (req, res) => {
     const { username, password, displayName, bio, region, avatar } = req.body;
     const insertResult = await appService.insertUserAccount(username, displayName, password, bio, region, avatar);
-    //const existing = appService.userExists;
-    // if (existing) {
-    //     res.status(500).json({ success: false });
-    //     res.send('This username already exists');
-    // }
     if (insertResult === 1) {
         res.json({ success: true, val: 1 });
     } else if (insertResult === 0) {
         res.status(500).json({ success: false, val: 0 });
     } else {
         res.status(500).json({ success: false, val: -1 });
+    }
+});
+
+router.post("/purchase-plan", async (req, res) => {
+    const { purchase } = req.body;
+    const purchaseResult = await appService.purchasePlan(purchase);
+    if (purchaseResult) {
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
     }
 });
 
