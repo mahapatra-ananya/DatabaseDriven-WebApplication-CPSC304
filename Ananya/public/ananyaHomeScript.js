@@ -124,6 +124,12 @@ async function fetchAndDisplayServers() {
         containerElement.innerHTML = '';
     }
 
+    if (serverList.length > 0) {
+        containerElement.style.height = '300px';
+        containerElement.style.width = '300px';
+        containerElement.style.overflow = 'scroll';
+    }
+
     // Iterate over the server data and create buttons for each one
     serverList.forEach(server => {
         const button = document.createElement('button');
