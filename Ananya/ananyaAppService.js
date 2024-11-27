@@ -169,6 +169,21 @@ async function insertUserAccount(username, displayName, password, bio, region, a
     });
 }
 
+async function editAccount(displayName, password, bio, region, avatar) {
+    return await withOracleDB(async (connection) => {
+        // console.log(region);
+
+        const result = await connection.execute(
+            'UPDATE UserAccount SET DisplayName=:displayName, Bio=:bio, Region=:region, AvatarID=:avatar where Username=:currentUser', [displayName, password, bio, region, avatar, currentUser],
+            { autoCommit: true }
+        );
+
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+
 async function purchasePlan(purchase) {
     // console.log(purchase);
     return await withOracleDB(async (connection) => {
@@ -504,6 +519,7 @@ module.exports = {
     fetchAvatarIDsFromDb,
     fetchRegionsFromDb,
     fetchUserDetailsFromDb,
+    editAccount,
     fetchPaymentTableFromDb,
     fetchTierTableFromDb,
     fetchPremiumPlanTableFromDb,
