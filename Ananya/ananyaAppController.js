@@ -89,10 +89,10 @@ router.post("/log-in", async (req, res) => {
 
 router.get("/admin-or-create", async (req, res) => {
     const isAdmin = await appService.checkIfAdmin();
-    if (isAdmin) {
-        res.json({ success: true});
+    if (isAdmin[0]) {
+        res.json({ success: true, serverName: isAdmin[1]});
     } else {
-        res.status(500).json({ success: false});
+        res.status(500).json({ success: false, serverName: isAdmin[1]});
     }
 });
 

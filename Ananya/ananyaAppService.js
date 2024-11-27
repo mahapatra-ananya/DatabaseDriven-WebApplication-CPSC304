@@ -197,7 +197,15 @@ async function checkIfAdmin() {
         const retVal = await connection.execute(
             'SELECT Count(*) FROM Administrator WHERE Administrator.Username=:currentUser', [currentUser]
         );
-        return (retVal.rows[0][0] !== 0) // returns true if user is an admin, false if not
+        if (retVal.rows[0][0] !== 0) { // if user is an admin
+            const serverName = await connection.execute(
+                'SELECT distinct ServerName FROM Administrator, Server WHERE Administrator.Username=:currentUser AND Administrator.ServerID=Server.ServerID', [currentUser]
+            );
+            return [true, serverName.rows[0][0]];
+        } else {
+            return [false, ""]
+
+        }
     }).catch(() => {
         return false;
     });

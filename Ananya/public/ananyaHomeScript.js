@@ -49,7 +49,7 @@ async function adminOrCreate() {
         const button = document.createElement('button');
         button.style.height = '100px';
         button.style.width = '280px';
-        button.textContent = 'Go to Your Server';
+        button.textContent = 'Your Server: ' + responseData.serverName;
         buttonElem.appendChild(button);
     } else {
         const button = document.createElement('button');
