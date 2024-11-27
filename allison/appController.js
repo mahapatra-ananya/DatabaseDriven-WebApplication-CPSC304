@@ -217,7 +217,6 @@ router.post("/insert-joins-table", async (req, res) => {
     const { Username, ServerID } = req.body;
 
     const insertResult = await appService.insertJoinsTable(Username, ServerID);
-    console.log(insertResult)
     if (insertResult) {
         res.redirect(`/server.html?serverid=${encodeURIComponent(ServerID)}`)
     } else {
@@ -229,16 +228,16 @@ router.post("/insert-general-member-table", async (req, res) => {
     const { Username } = req.body;
 
     const checkUserIsGeneralMember = await appService.isUserGeneralMember(Username)
-
+    console.log(`isusergeneralmember: ${checkUserIsGeneralMember}`)
+    let insertResult
     if (!checkUserIsGeneralMember) {
-        const insertResult = await appService.insertGeneralMemberTable(Username);
-        if (insertResult) {
-            res.json({ success: true});
-        } else {
-            res.status(500).json({ success: false });
-        }
+         insertResult = await appService.insertGeneralMemberTable(Username);
+    }
+
+    if (insertResult || checkUserIsGeneralMember) {
+        res.json({ success: true});
     } else {
-        return;
+        res.status(500).json({ success: false });
     }
 });
 

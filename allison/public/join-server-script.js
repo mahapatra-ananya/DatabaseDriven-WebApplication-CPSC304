@@ -39,7 +39,6 @@ async function insertJoinServerAndGo(event) {
     });
 
     // const insertJoinsResponseData = await insertJoinsResponse.json();
-    console.log (insertJoinsResponse)
     if (insertJoinsResponse.redirected) {
         console.log('success inserting user in joins table')
         window.location.href = insertJoinsResponse.url;
@@ -73,29 +72,34 @@ async function fetchAndDisplayFilteredServers() {
         insertServerGroup.innerHTML = '';
     }
 
-    filteredServers.forEach(server => {
+    if (filteredServers.length > 0) {
+        filteredServers.forEach(server => {
 
-        const serverItem = document.createElement('div');
-        serverItem.className = 'serverItem';
-        const serverName = document.createElement('p')
-        serverName.className = 'serverName'
-        serverName.textContent = server[1];
-        const serverId = document.createElement('p')
-        serverId.className = 'serverId'
-        serverId.textContent = `ID: ${server[0]}`;
-        const joinServerBtn = document.createElement('button')
-        joinServerBtn.className = 'joinServerBtn'
-        joinServerBtn.textContent = 'Join';
-        joinServerBtn.value = server[0]
-        joinServerBtn.addEventListener('click', insertJoinServerAndGo);
+            const serverItem = document.createElement('div');
+            serverItem.className = 'serverItem';
+            const serverName = document.createElement('p')
+            serverName.className = 'serverName'
+            serverName.textContent = server[1];
+            const serverId = document.createElement('p')
+            serverId.className = 'serverId'
+            serverId.textContent = `ID: ${server[0]}`;
+            const joinServerBtn = document.createElement('button')
+            joinServerBtn.className = 'joinServerBtn'
+            joinServerBtn.textContent = 'Join';
+            joinServerBtn.value = server[0]
+            joinServerBtn.addEventListener('click', insertJoinServerAndGo);
 
-        serverItem.appendChild(serverName);
-        serverItem.appendChild(serverId);
-        serverItem.appendChild(joinServerBtn);
+            serverItem.appendChild(serverName);
+            serverItem.appendChild(serverId);
+            serverItem.appendChild(joinServerBtn);
 
-        serverList.appendChild(serverItem);
-    });
-
+            serverList.appendChild(serverItem);
+        });
+    } else {
+        const noAvailableServersMsg = document.createElement('p');
+        noAvailableServersMsg.textContent ='There are currently no servers available for you to join. Please come back later!'
+        insertServerGroup.appendChild(noAvailableServersMsg)
+    }
 }
 
 
@@ -107,22 +111,6 @@ window.onload = function() {
 
     fetchTableData();
 
-    // const joinServerBtns = document.querySelectorAll(".joinServerBtn");
-    // console.log(joinServerBtns)
-    // if (joinServerBtns.length > 0) {
-    //     for (const btn of joinServerBtns) {
-    //         btn.addEventListener('click', insertJoinServerAndGo);
-    //         console.log(btn)
-    //     }
-    // }
-
-    // const addChannelBtn = document.querySelector('#addChannelBtn');
-    // const createServerBtn = document.querySelector('#createServerBtn');
-    // const nextBtn = document.querySelector('#nextBtn');
-    //
-    // addChannelBtn.addEventListener('click', addChannel);
-    // createServerBtn.addEventListener('click', insertServerChannelAdminTables)
-    // nextBtn.addEventListener('click', goToServerPage);
 };
 
 
