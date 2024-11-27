@@ -87,6 +87,15 @@ router.post("/log-in", async (req, res) => {
     }
 });
 
+router.get("/admin-or-create", async (req, res) => {
+    const isAdmin = await appService.checkIfAdmin();
+    if (isAdmin) {
+        res.json({ success: true});
+    } else {
+        res.status(500).json({ success: false});
+    }
+});
+
 
 
 // router.post("/check-userExists", async (req, res) => {

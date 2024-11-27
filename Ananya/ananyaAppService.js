@@ -186,19 +186,20 @@ async function loginUser(username, passwordInput) {
                 return 2;
             }
         }
-
-        // const result = await connection.execute( // HAVE TO RETURN CORRECT ERROR MESSAGE FOR EXISTING USERNAME
-        //     `INSERT INTO UserAccount(Username, DisplayName, UserPassword, Bio, Region, AvatarID, PlanID)
-        //         VALUES (:username, :displayName, :password, :bio, :region, :avatar, NULL)`,
-        //     [username, displayName, password, bio, region, avatar],
-        //     { autoCommit: true }
-        // );
-        // currentUser = username;
-        // if (result.rowsAffected && result.rowsAffected > 0) {
-        //     return 1;
-        // };
     }).catch(() => {
         return -1;
+    });
+}
+
+async function checkIfAdmin() {
+    return await withOracleDB(async (connection) => {
+
+        const retVal = await connection.execute(
+            'SELECT Count(*) FROM Administrator WHERE Administrator.Username=:currentUser', [currentUser]
+        );
+        return (retVal.rows[0][0] !== 0) // returns true if user is an admin, false if not
+    }).catch(() => {
+        return false;
     });
 }
 
@@ -411,6 +412,7 @@ module.exports = {
     loginUser,
     // currentUser,
     currUser,
+    checkIfAdmin,
     // userExists,
     initiateDemotable, 
     insertDemotable, 

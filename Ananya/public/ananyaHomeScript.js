@@ -36,6 +36,28 @@ async function banner() {
         });
 }
 
+async function adminOrCreate() {
+    const buttonElem = document.getElementById('adminOrCreateServer');
+    const response = await fetch('/admin-or-create', {
+        method: "GET"
+    });
+
+    const responseData = await response.json();
+
+
+    if (responseData.success) {
+        const button = document.createElement('button');
+        button.style.height = '100px';
+        button.style.width = '280px';
+        button.textContent = 'Go to Your Server';
+        buttonElem.appendChild(button);
+    } else {
+        const button = document.createElement('button');
+        button.textContent = 'Create a Server';
+        buttonElem.appendChild(button);
+    }
+}
+
 // Fetches data from the demotable and displays it.
 async function fetchAndDisplayUsers() {
     const tableElement = document.getElementById('allAccounts');
@@ -89,29 +111,6 @@ async function fetchAndDisplayServers() {
         containerElement.appendChild(document.createElement('br'));
     });
 }
-    // const tableElement = document.getElementById('displayServers');
-    // const tableBody = tableElement.querySelector('tbody');
-    //
-    // const response = await fetch('/user-servers', {
-    //     method: 'GET'
-    // });
-    //
-    // const responseData = await response.json();
-    // const demotableContent = responseData.data;
-    //
-    // // Always clear old, already fetched data before new fetching process.
-    // if (tableBody) {
-    //     tableBody.innerHTML = '';
-    // }
-    //
-    // demotableContent.forEach(user => {
-    //     const row = tableBody.insertRow();
-    //     user.forEach((field, index) => {
-    //         const cell = row.insertCell(index);
-    //         cell.textContent = field;
-    //     });
-    // });
-// }
 
 
 
@@ -122,6 +121,7 @@ window.onload = function() {
     initialize();
     banner();
     fetchAndDisplayServers();
+    adminOrCreate();
     // document.getElementById("createAccountTable").addEventListener("submit", insertUserAccount);
     // document.getElementById("displayServers").addEventListener("click", resetDemotable);
     // document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);

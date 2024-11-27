@@ -119,20 +119,7 @@ async function insertUserAccount(event) {
     if (responseData.success) {
         messageElement.textContent = "Data inserted successfully!";
         initialize();
-        // const link = document.getElementById('linkToHome');
-        // link.link();
         window.location.replace("ananyaHome.html")
-        // let a = document.createElement('a');
-        // // Create the text node for anchor element.
-        // let link = document.createTextNode("Home Page");
-        // // Append the text node to anchor element.
-        // a.appendChild(link);
-        // // Set the title.
-        // a.title = "Home Page";
-        // // Set the href property.
-        // a.href = "ananyaHome.html";
-        // // Append the anchor element to the body.
-        // document.body.appendChild(a);
     } else {
         if (responseData.val === 0) {
             messageElement.textContent = "Username already exists!";
