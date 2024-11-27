@@ -307,7 +307,8 @@ async function fetchEventDates(selectedCalendar) {
 async function fetchEventsOnDate(selectedCalendar, selectedYear, selectedMonth, selectedDate) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            'SELECT e.EventID FROM Event e, PostedTo p WHERE e.EventID = p.EventID AND p.CalendarID=:selectedCalendar ' +
+            'SELECT e.EventID, e.EventName, e.EventDateTime, e.Duration, e.Details ' +
+            'FROM Event e, PostedTo p WHERE e.EventID = p.EventID AND p.CalendarID=:selectedCalendar ' +
             'AND EXTRACT( YEAR FROM e.EventDateTime) =:selectedYear AND EXTRACT( MONTH FROM e.EventDateTime) =:selectedMonth ' +
             'AND EXTRACT( DAY FROM e.EventDateTime) =:selectedDate', [selectedCalendar, selectedYear, selectedMonth, selectedDate]
         );

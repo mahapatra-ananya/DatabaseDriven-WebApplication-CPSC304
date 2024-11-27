@@ -308,6 +308,8 @@ VALUES (4, 'Book Review 1',to_timestamp('2024/12/03 10:30', 'YYYY/MM/DD HH24 MI'
 INSERT INTO Event(EventID, EventName, EventDateTime, Duration, Details, Username)
 VALUES (5, 'Book Review 2', to_timestamp('2024/12/27 10:30', 'YYYY/MM/DD HH24 MI'), 3, 'Details will be posted shortly', 'racekar');
 
+INSERT INTO Event(EventID, EventName, EventDateTime, Duration, Details, Username)
+VALUES (6, 'Book Review 3',to_timestamp('2024/12/03 9:30', 'YYYY/MM/DD HH24 MI'), 6, 'Best book ever', 'abcdefg');
 
 --Server
 
@@ -400,6 +402,8 @@ INSERT INTO PostedTo(CalendarID, EventID) VALUES (4, 2);
 INSERT INTO PostedTo(CalendarID, EventID) VALUES (21, 4);
 
 INSERT INTO PostedTo(CalendarID, EventID) VALUES (21, 5);
+
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (21, 6);
 
 
 --Joins
