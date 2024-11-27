@@ -169,6 +169,21 @@ async function insertUserAccount(username, displayName, password, bio, region, a
     });
 }
 
+async function editAccount(displayName, password, bio, region, avatar) {
+    return await withOracleDB(async (connection) => {
+        // console.log(region);
+
+        const result = await connection.execute(
+            'UPDATE UserAccount SET DisplayName=:displayName, UserPassword=:password, Bio=:bio, Region=:region, AvatarID=:avatar where Username=:currentUser', [displayName, password, bio, region, avatar, currentUser],
+            { autoCommit: true }
+        );
+
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+
 async function purchasePlan(purchase) {
     // console.log(purchase);
     return await withOracleDB(async (connection) => {
@@ -319,6 +334,17 @@ async function fetchPaymentTableFromDb() {
 async function fetchTierTableFromDb() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute('SELECT * FROM TIER');
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
+async function fetchUserDetailsFromDb() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            'SELECT distinct DisplayName, Username, Bio, UserAccount.Region, Country FROM UserAccount, Location WHERE Username=:currentUser AND UserAccount.Region=Location.Region', [currentUser]
+        );
         return result.rows;
     }).catch(() => {
         return [];
@@ -492,6 +518,8 @@ module.exports = {
     purchasePlan,
     fetchAvatarIDsFromDb,
     fetchRegionsFromDb,
+    fetchUserDetailsFromDb,
+    editAccount,
     fetchPaymentTableFromDb,
     fetchTierTableFromDb,
     fetchPremiumPlanTableFromDb,

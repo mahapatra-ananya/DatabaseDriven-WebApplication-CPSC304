@@ -38,6 +38,12 @@ router.get('/allAccounts', async (req, res) => {
     res.json({data: tableContent});
 });
 
+router.get('/user-details', async (req, res) => {
+    const tableContent = await appService.fetchUserDetailsFromDb();
+    console.log(tableContent);
+    res.json({data: tableContent});
+});
+
 router.get('/allPlans', async (req, res) => {
     const tableContent = await appService.fetchPremiumPlanTableFromDb();
     res.json({data: tableContent});
@@ -91,6 +97,16 @@ router.post("/insert-userAccount", async (req, res) => {
         res.status(500).json({ success: false, val: 0 });
     } else {
         res.status(500).json({ success: false, val: -1 });
+    }
+});
+
+router.post("/edit-account", async (req, res) => {
+    const { displayName, password, bio, region, avatar } = req.body;
+    const insertResult = await appService.editAccount(displayName, password, bio, region, avatar);
+    if (insertResult) {
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
     }
 });
 
