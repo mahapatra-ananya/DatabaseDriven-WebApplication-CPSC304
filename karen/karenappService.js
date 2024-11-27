@@ -296,29 +296,26 @@ async function countCalendartable() {
 async function fetchEventDates(selectedCalendar) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            'SELECT Count(*) FROM Event e, PostedTo p WHERE e.EventID = p.EventID AND p.CalendarID=:selectedCalendar', [selectedCalendar]
+            'SELECT e.EventDateTime FROM Event e, PostedTo p WHERE e.EventID = p.EventID AND p.CalendarID=:selectedCalendar', [selectedCalendar]
         );
-        // if (result.rows[0][0] === 0) {return 0;}
-        // else {
-            return result.rows[0][0];
-        // }
+            return result.rows;
     }).catch(() => {
-        return -1;
+        return [];
     });
 }
 
-// async function fetchEventDates(selectedCalendar){
-//     return await withOracleDB(async (connection) => {
-//         console.log("reached service");
-//         const result = await connection.execute(
-//             `SELECT Count(*) FROM Event e, PostedTo p WHERE e.EventID = p.EventID AND p.CalendarID=:selectedCalendar`,
-//             [selectedCalendar])
-//         return result.rows[0][0];
-//
-//     }).catch(() => {
-//         return -1;
-//     });
-// }
+async function fetchEventsOnDate(selectedCalendar, selectedYear, selectedMonth, selectedDate) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            'SELECT e.EventID FROM Event e, PostedTo p WHERE e.EventID = p.EventID AND p.CalendarID=:selectedCalendar ' +
+            'AND EXTRACT( YEAR FROM e.EventDateTime) =:selectedYear AND EXTRACT( MONTH FROM e.EventDateTime) =:selectedMonth ' +
+            'AND EXTRACT( DAY FROM e.EventDateTime) =:selectedDate', [selectedCalendar, selectedYear, selectedMonth, selectedDate]
+        );
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
 
 async function countEventtable() {
     return await withOracleDB(async (connection) => {
@@ -359,6 +356,7 @@ module.exports = {
     countEventtable,
 
     fetchEventDates,
+    fetchEventsOnDate,
 
     initiateAllTables,
     fetchPaymentTableFromDb,

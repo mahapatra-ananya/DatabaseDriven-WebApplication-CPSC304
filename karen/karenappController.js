@@ -71,16 +71,24 @@ router.get('/count-Calendartable', async (req, res) => {
 
 router.post('/fetch-EventDates', async (req, res) => {
 
-    console.log("reached fetch-EventDates");
+    //console.log("reached fetch-EventDates");
 
     const { selectedCalendar } = req.body;
     const result = await appService.fetchEventDates(selectedCalendar);
-    if (result > -1) {
-        res.json({ success: true, val: result });
-    } else {
-        res.status(500).json({success: false, val: -1});
-    }
+    res.json({ data: result });
 });
+
+router.post('/fetch-EventsOnDate', async (req, res) => {
+
+    const { selectedCalendar, selectedYear, selectedMonth, selectedDate } = req.body;
+    const result = await appService.fetchEventsOnDate(selectedCalendar, selectedYear, selectedMonth, selectedDate);
+    console.log("reached fetch-EventsOnDate");
+    res.json({ data: result });
+});
+
+
+
+
 
 router.get('/Eventtable', async (req, res) => {
     const tableContent = await appService.fetchEventTableFromDb();
