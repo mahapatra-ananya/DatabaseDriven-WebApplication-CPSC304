@@ -211,4 +211,35 @@ router.post('/join-server-list', async (req, res) => {
     }
 });
 
+/* INSERT JOIN SERVER AND GENERAL MEMBER*/
+
+router.post("/insert-joins-table", async (req, res) => {
+    const { Username, ServerID } = req.body;
+
+    const insertResult = await appService.insertJoinsTable(Username, ServerID);
+    console.log(insertResult)
+    if (insertResult) {
+        res.redirect(`/server.html?serverid=${encodeURIComponent(ServerID)}`)
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
+router.post("/insert-general-member-table", async (req, res) => {
+    const { Username } = req.body;
+
+    const checkUserIsGeneralMember = await appService.isUserGeneralMember(Username)
+
+    if (!checkUserIsGeneralMember) {
+        const insertResult = await appService.insertGeneralMemberTable(Username);
+        if (insertResult) {
+            res.json({ success: true});
+        } else {
+            res.status(500).json({ success: false });
+        }
+    } else {
+        return;
+    }
+});
+
 module.exports = router;

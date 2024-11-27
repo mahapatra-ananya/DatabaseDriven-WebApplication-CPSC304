@@ -439,6 +439,48 @@ WHERE (s.PlanID = p.PlanID OR s.PlanID IS NULL)
     });
 }
 
+/*Insert Joins Table*/
+async function insertJoinsTable(Username, ServerID){
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `INSERT INTO JOINS (MemberUsername, ServerID, JoinDate) VALUES (:Username, :ServerID, CURRENT_DATE)`,
+            [Username, ServerID],
+            { autoCommit: true }
+        );
+
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+
+/*Insert GeneralMember Table*/
+async function insertGeneralMemberTable(Username){
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `INSERT INTO GENERALMEMBER (Username, Signature) VALUES (:Username, null)`,
+            [Username],
+            { autoCommit: true }
+        );
+
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+
+async function isUserGeneralMember(Username) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT Username FROM GENERALMEMBER WHERE username=:Username`, [Username]
+        );
+
+        return result.rows.length !==0;
+    }).catch(() => {
+        return false;
+    });
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -472,5 +514,8 @@ module.exports = {
     insertAdministratorTable,
     insertChannelTable,
     insertCalendarTable,
-    fetchFilteredUserServers
+    fetchFilteredUserServers,
+    insertJoinsTable,
+    insertGeneralMemberTable,
+    isUserGeneralMember
 };
