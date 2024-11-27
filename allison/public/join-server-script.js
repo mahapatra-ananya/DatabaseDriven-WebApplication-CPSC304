@@ -23,34 +23,38 @@ async function fetchAndDisplayFilteredServers() {
         })
     });
 
-    // const responseData = await response.json();
-    // const serversFilteredOutUserTemp = responseData.data;
-    // console.log(serversFilteredOutUserTemp);
+    const responseData = await response.json();
+    const filteredServers = responseData.filteredServers;
+    console.log(filteredServers);
 
-    //
-    //
-    // // Always clear old, already fetched data before new fetching process.
-    // if (insertAvatarGroup) {
-    //     insertAvatarGroup.innerHTML = '';
-    // }
-    //
-    // avatarOptions.forEach(avatar => {
-    //
-    //     const newAvatar = document.createElement('input');
-    //     newAvatar.type = 'radio';
-    //     newAvatar.id = avatar[0]; //AvatarID
-    //     newAvatar.className = 'avatar'
-    //     newAvatar.name = 'avatar';
-    //     newAvatar.value = avatar[0];
-    //
-    //
-    //     const newAvatarLabel = document.createElement('label')
-    //     newAvatarLabel.textContent = avatar[3]; //IconDescription
-    //     newAvatarLabel.for = avatar[0];
-    //
-    //     insertAvatarGroup.appendChild(newAvatar);
-    //     insertAvatarGroup.appendChild(newAvatarLabel);
-    // });
+
+
+    // Always clear old, already fetched data before new fetching process.
+    if (insertServerGroup) {
+        insertServerGroup.innerHTML = '';
+    }
+
+    filteredServers.forEach(server => {
+
+        const serverItem = document.createElement('div');
+        serverItem.className = 'serverItem';
+        const serverName = document.createElement('p')
+        serverName.className = 'serverName'
+        serverName.textContent = server[1];
+        newAvatar.type = 'radio';
+        newAvatar.id = avatar[0]; //AvatarID
+        newAvatar.className = 'avatar'
+        newAvatar.name = 'avatar';
+        newAvatar.value = avatar[0];
+
+
+        const newAvatarLabel = document.createElement('label')
+        newAvatarLabel.textContent = avatar[3]; //IconDescription
+        newAvatarLabel.for = avatar[0];
+
+        insertAvatarGroup.appendChild(newAvatar);
+        insertAvatarGroup.appendChild(newAvatarLabel);
+    });
 
 }
 

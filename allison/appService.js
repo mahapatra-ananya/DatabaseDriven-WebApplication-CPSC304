@@ -433,12 +433,6 @@ WHERE (s.PlanID = p.PlanID OR s.PlanID IS NULL)
                           and s2.ServerID IN (SELECT j3.ServerID FROM Joins j3 GROUP BY j3.ServerID HAVING Count(j3.ServerID) < 5)))
                           ORDER BY s.ServerID`,
             [Username])
-//         const result = await connection.execute(
-//             `SELECT s.ServerID, s.ServerName, s.AvatarID, s.PlanID
-// FROM Server s
-// WHERE s.ServerID NOT IN (SELECT j.serverID FROM Joins j WHERE j.memberusername =:Username)
-//   AND s.ServerID NOT IN (SELECT a.ServerID FROM Administrator a WHERE a.Username =:Username)`,
-//             [Username])
         return result.rows;
     }).catch(() => {
         return false;
