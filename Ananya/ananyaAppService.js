@@ -311,7 +311,7 @@ async function fetchTierTableFromDb() {
 
 async function fetchPremiumPlanTableFromDb() {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute('SELECT * FROM PREMIUMPLAN');
+        const result = await connection.execute('SELECT distinct PlanID, PREMIUMPLAN.Tier, PREMIUMPLAN.PaymentInterval, MemberLimit, Theme, BasePrice, SubscriptionPayment FROM PREMIUMPLAN, PAYMENT, TIER WHERE PREMIUMPLAN.Tier=Tier.Tier AND PREMIUMPLAN.PaymentInterval=Payment.PaymentInterval');
         return result.rows;
     }).catch(() => {
         return [];

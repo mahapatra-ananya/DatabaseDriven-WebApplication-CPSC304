@@ -38,6 +38,11 @@ router.get('/allAccounts', async (req, res) => {
     res.json({data: tableContent});
 });
 
+router.get('/allPlans', async (req, res) => {
+    const tableContent = await appService.fetchPremiumPlanTableFromDb();
+    res.json({data: tableContent});
+});
+
 router.get('/user-servers', async (req, res) => {
     const tableContent = await appService.fetchUserServersFromDb();
     res.json({data: tableContent});

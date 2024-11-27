@@ -22,7 +22,7 @@ async function checkDbConnection() {
 }
 
 async function currentPlan() {
-    const bannerElem = document.getElementById('ddd');
+    const bannerElem = document.getElementById('displayPlan');
     const response = await fetch('/premium-or-not', {
         method: "GET"
     });
@@ -34,6 +34,37 @@ async function currentPlan() {
     } else {
         bannerElem.textContent = 'Buy a Premium Plan';
     }
+}
+
+async function purchasePremiumPlan() {
+    const elem = document.getElementById('purchasePlan');
+}
+
+async function displayAllPlans() {
+    const tableElement = document.getElementById('allPlans');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/allPlans', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const demotableContent = responseData.data;
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    demotableContent.forEach(user => {
+        const row = tableBody.insertRow();
+        // const radioCell = row.insertCell(0);
+        // radioCell.
+        user.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
 }
 
 
@@ -48,7 +79,8 @@ window.onload = function() {
     // adminOrCreate();
     // premiumOrNot();
     currentPlan();
-    // document.getElementById("createAccountTable").addEventListener("submit", insertUserAccount);
+    displayAllPlans();
+    document.getElementById("purchasePlan").addEventListener("submit", purchasePremiumPlan);
     // document.getElementById("displayServers").addEventListener("click", resetDemotable);
     // document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
     // document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
