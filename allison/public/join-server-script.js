@@ -48,6 +48,7 @@ async function insertJoinServerAndGo(event) {
         successMsg.textContent = `You have successfully joined the server! Would you like to go to the server page?`
         const goToServerBtn = document.createElement('button');
         goToServerBtn.textContent = 'Go to Server';
+        /////// TODO: WAIT
         goToServerBtn.addEventListener('click', async function () {
             const response = await fetch('/server', {
                 method: 'POST',

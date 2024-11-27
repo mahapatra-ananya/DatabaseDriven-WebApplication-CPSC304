@@ -244,6 +244,7 @@ router.post("/insert-general-member-table", async (req, res) => {
 /////////////////////////////////////////SERVER PAGE//////////////////////////////////////////
 router.post('/serverpage', async (req, res) => {
     const { ServerID } = req.body;
+    console.log('SERVERPAGE SERVERID' + ServerID)
 
     const serverPageInfo = await allisonAppService.fetchServerPageInfo(ServerID);
     console.log(`appController: serverPageInfo: ${serverPageInfo}`)
