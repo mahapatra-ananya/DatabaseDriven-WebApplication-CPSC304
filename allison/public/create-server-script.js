@@ -1,5 +1,6 @@
 // TODO: USERNAME STUFF
 let currentUsername = 'goldfishlover';
+let NEWSERVERID;
 
 // Create Server Script
 function addChannel() {
@@ -62,10 +63,32 @@ async function insertServerChannelAdminTables(event) {
     const rawChannels = document.getElementsByClassName('newChannel')
     let channels = [];
     for (const channel of rawChannels) {
-        channels.push(channel.value)
+        if (channel.value.trim().length > 0) {
+            channels.push(channel.value)
+        }
     }
     const inputTag = document.getElementById('insertTag').value;
     const inputSignature = document.getElementById('insertSignature').value;
+
+    ////// USER INPUT CHECKING
+    let emptyInput = []
+
+    if (serverName === null || serverName === '') {
+        emptyInput.push("Server Name")
+    }
+
+    if (selectedAvatar === null || selectedAvatar === '' || selectedAvatar === undefined) {
+        emptyInput.push(" Select an Avatar")
+    }
+
+    if (channels === null || channels.length === 0) {
+        emptyInput.push(" Channels")
+    }
+
+    if (emptyInput.length > 0) {
+        alert(`Please fill out the following fields: ${emptyInput}`)
+        return;
+    }
 
     console.log(`serverName: ${serverName} \n 
     insertAvatar: ${selectedAvatar} \n 
@@ -109,11 +132,11 @@ async function insertServerChannelAdminTables(event) {
     });
 
     const insertServerResponseData = await insertServerResponse.json();
-    let newServerId;
+    // let newServerId;
 
     if (insertServerResponseData.success) {
-        newServerId = insertServerResponseData.serverID;
-        console.log(`Successfully created serverid: ${newServerId}`);
+        NEWSERVERID = insertServerResponseData.serverID;
+        console.log(`Successfully created serverid: ${NEWSERVERID}`);
     } else {
         alert('Error Creating the Server')
         return;
@@ -129,7 +152,7 @@ async function insertServerChannelAdminTables(event) {
             Username: currentUsername,
             Tag: inputTag,
             Signature: inputSignature,
-            ServerID: newServerId
+            ServerID: NEWSERVERID
         })
     });
 
@@ -150,18 +173,42 @@ async function insertServerChannelAdminTables(event) {
         },
         body: JSON.stringify({
             channels: channels,
-            serverID: newServerId,
+            serverID: NEWSERVERID,
         })
     });
 
     const insertChannelResponseData = await insertChannelResponse.json();
     if (insertChannelResponseData.success) {
         console.log('success inserting the new channels')
-
+        const serverSuccess = document.querySelector('#onInsertServerSuccess')
+        serverSuccess.style.display = 'block';
+        const successServerName = document.querySelector('#successServerName');
+        successServerName.textContent = serverName;
     } else {
         alert('error inserting the new channels')
     }
 
+    // TODO: IF ANY OF THESE FAILS, NEED TO DELETE THE PREVIOUS INSERTS..........
+}
+
+async function goToServerPage(event) {
+    event.preventDefault();
+    const response = await fetch('/server', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            ServerID: NEWSERVERID,
+        })
+    });
+
+    if (response.redirected) {
+        NEWSERVERID = ''
+        window.location.href = response.url;
+    } else {
+        alert('failed to redirect')
+    }
 }
 
 // ---------------------------------------------------------------
@@ -169,13 +216,16 @@ async function insertServerChannelAdminTables(event) {
 // Add or remove event listeners based on the desired functionalities.
 window.onload = function() {
     // checkDbConnection();
+    NEWSERVERID = '';
     fetchTableData();
 
     const addChannelBtn = document.querySelector('#addChannelBtn');
     const createServerBtn = document.querySelector('#createServerBtn');
+    const nextBtn = document.querySelector('#nextBtn');
 
     addChannelBtn.addEventListener('click', addChannel);
     createServerBtn.addEventListener('click', insertServerChannelAdminTables)
+    nextBtn.addEventListener('click', goToServerPage);
 };
 
 

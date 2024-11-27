@@ -189,4 +189,40 @@ router.post("/insert-channel-table", async (req, res) => {
     }
 });
 
+////////////////////GO TO A SERVER PAGE ////////////////////////////////////
+router.post('/server', async (req, res) => {
+    const { ServerID } = req.body;
+    res.redirect(`/server.html?serverid=${encodeURIComponent(ServerID)}`)
+});
+
+
+/////////////////// JOIN SERVER - LIST FILTERED SERVERS ////////////////////
+router.post('/join-server-list', async (req, res) => {
+    const { Username } = req.body;
+    let filteredServers = []
+
+    // STEP 1: SELECT the servers the current user has NOT joined AND NOT an admin of
+    const filteredUserServers = await appService.fetchFilteredUserServers(Username);
+    console.log(filteredUserServers)
+    // STEP 2: Categorize PlanID === null
+    // let noPlanIDServers = [];
+    // let planIDServers = [];
+    // if (filteredUserServers.length > 0) {
+    //     for (const userServer of filteredUserServers) {
+    //         if (userServer[3] === null) {
+    //             // No PlanID, so default memberlimit is 5
+    //             noPlanIDServers.push(userServer);
+    //         } else {
+    //             planIDServers.push(userServer);
+    //         }
+    //     }
+    // }
+
+    if (filteredUserServers) {
+        res.json({ success: true, filteredServers: filteredServers});
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
 module.exports = router;

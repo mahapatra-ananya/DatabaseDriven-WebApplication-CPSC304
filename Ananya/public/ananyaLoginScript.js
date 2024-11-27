@@ -80,51 +80,36 @@ async function fetchAndDisplayUsers() {
 //     }
 // }
 
-// Inserts new account into the UserAccount.
-async function insertUserAccount(event) {
+async function logIn(event) {
     event.preventDefault();
 
     const usernameValue = document.getElementById('Username').value;
     const passwordValue = document.getElementById('Password').value;
-    const displayNameValue = document.getElementById('DisplayName').value;
-    const bioValue = document.getElementById('Bio').value;
-    const regionValue = document.getElementById('Region').value;
-    const avatarValue = document.getElementById('Avatar').value;
 
-
-    // const exists = await fetch('/check-userExists', {
-    //     method: "POST",
-    //
-    // });
-
-    const response = await fetch('/insert-userAccount', {
+    const response = await fetch("/log-in", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
             username: usernameValue,
-            displayName: displayNameValue,
             password: passwordValue,
-            bio: bioValue,
-            region: regionValue,
-            avatar: avatarValue
         })
     });
-
     const responseData = await response.json();
-    const messageElement = document.getElementById('insertResultMsg');
+    const messageElement = document.getElementById('loginResultMsg');
 
 
     if (responseData.success) {
-        messageElement.textContent = "Data inserted successfully!";
-        initialize();
+        messageElement.textContent = "Logged in successfully!";
         window.location.replace("ananyaHome.html")
     } else {
         if (responseData.val === 0) {
-            messageElement.textContent = "Username already exists!";
+            messageElement.textContent = "Username does not exist!";
+        } else if (responseData.val === 2) {
+            messageElement.textContent = "Incorrect password!";
         } else {
-            messageElement.textContent = "Error creating account!";
+            messageElement.textContent = "Error logging in!";
         }
     }
 }
@@ -134,7 +119,7 @@ async function insertUserAccount(event) {
 window.onload = function() {
     checkDbConnection();
     initialize();
-    document.getElementById("createAccountTable").addEventListener("submit", insertUserAccount);
+    document.getElementById("loginTable").addEventListener("submit", logIn);
     document.getElementById("resetDemotable").addEventListener("click", resetDemotable);
     // document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
     // document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);

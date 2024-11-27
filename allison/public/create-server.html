@@ -37,17 +37,20 @@
     </div>
     <div class="formComponent">
         <label for="insertTag">Enter an admin tag</label>
-        <input type="text" id="insertTag" placeholder="Admin Tag" required/>
+        <input type="text" id="insertTag" placeholder="Admin Tag"/>
     </div>
     <div class="formComponent">
         <label for="insertSignature">Enter a signature for this server</label>
-        <input type="text" id="insertSignature" placeholder="Server Signature" required/>
+        <input type="text" id="insertSignature" placeholder="Server Signature"/>
     </div>
     <button id="createServerBtn" type="submit">Create Server</button>
 </form>
 
-
-<hr/>
+<div id="onInsertServerSuccess">
+    <p>You have successfully created the <span id="successServerName"></span> Server!</p>
+    <p>Select 'Next' to go to your server's page</p>
+    <button id="nextBtn">Next</button>
+</div>
 
 <script src="./create-server-script.js"></script>
 </body>
