@@ -481,6 +481,36 @@ async function isUserGeneralMember(Username) {
     });
 }
 
+async function fetchServerPageInfo(ServerID) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT s.ServerName, s.AvatarID, s.PlanID, s.CalendarID, p.Tier, p.MemberLimit, p.Theme
+       FROM Server s, PremiumPlan p 
+       WHERE s.ServerID=:ServerID
+       AND s.PlanID=p.PlanID`,
+            [ServerID]
+        );
+
+        return result.rows;
+    }).catch(() => {
+        return false;
+    });
+}
+
+async function fetchServerPageChannels(ServerID) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT ChannelID, ChannelTitle
+            FROM Channel
+       WHERE ServerID=:ServerID`,
+            [ServerID]
+        );
+
+        return result.rows;
+    }).catch(() => {
+        return false;
+    });
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -517,5 +547,7 @@ module.exports = {
     fetchFilteredUserServers,
     insertJoinsTable,
     insertGeneralMemberTable,
-    isUserGeneralMember
+    isUserGeneralMember,
+    fetchServerPageInfo,
+    fetchServerPageChannels
 };

@@ -1,5 +1,5 @@
 // TODO: USERNAME STUFF
-let currentUsername = 'goldfishlover';
+let currentUsername = 'GojoSatoru';
 let NEWSERVERID;
 
 // Create Server Script

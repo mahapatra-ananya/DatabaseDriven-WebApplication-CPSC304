@@ -19,23 +19,15 @@
 
     <div class="leftMenu">
         <div class="serverInformation">
-            <h1 class="serverName">ServerName</h1>
+            <h1 class="serverName"></h1>
             <div class="serverAvatar">Avatar</div>
             <h4 class="serverPlan">Plan: PlanName</h4>
         </div>
         <div class="serverCalendar">
-            <p class="serverCalendarName">ServerName Calendar</p>
-            <button class="serverCalendarBtn">Go</button>
+<!--            <p class="serverCalendarName">ServerName Calendar</p>-->
+            <button class="serverCalendarBtn"></button>
         </div>
         <div class="channelList">
-            <div class="channelItem">
-                <p class="channelName">ChannelName</p>
-                <button class="goChannelBtn">Go</button>
-            </div>
-            <div class="channelItem">
-                <p class="channelName">ChannelName</p>
-                <button class="goChannelBtn">Go</button>
-            </div>
         </div>
     </div>
 
@@ -49,8 +41,13 @@
             <div class="userAvatar"></div>
             <p class="messageContent">MessageContent</p>
         </div>
+        <div id="sendMessageGroup">
+            <input type="text" id="messageInput" placeholder="Send a Message"/>
+            <button id="messageBtn">Send</button>
+        </div>
     </div>
 
+    <script src="./server-script.js"></script>
 </div>
 </body>
 </html>
