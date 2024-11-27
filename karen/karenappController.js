@@ -15,16 +15,15 @@ router.get('/check-db-connection', async (req, res) => {
     }
 });
 
-///////////////////////////////// CALENDAR /////////////////////////////////
+/////////////////////////////////////////////// CALENDAR ///////////////////////////////////////////////
 
 router.get('/Calendartable', async (req, res) => {
-    const tableContent = await appService.fetchCalendartableFromDb();
+    const tableContent = await appService.fetchCalendarTableFromDb();
     res.json({data: tableContent});
 });
 
-router.post("/initiate-Calendartable", async (req, res) => {
-    //const initiateResult = await appService.initiateCalendartable();
-    const initiateResult = await appService.initiateAllTables(); // TODO Added
+router.post("/initiate-AllTables", async (req, res) => {
+    const initiateResult = await appService.initiateAllTables();
     if (initiateResult) {
         res.json({ success: true });
     } else {
@@ -68,19 +67,32 @@ router.get('/count-Calendartable', async (req, res) => {
 });
 
 
-//TODO: Event routes
-router.get('/Eventtable', async (req, res) => {
-    const tableContent = await appService.fetchEventtableFromDb();
-    res.json({data: tableContent});
+/////////////////////////////////////////////// EVENTS ///////////////////////////////////////////////
+
+router.post('/fetch-EventDates', async (req, res) => {
+
+    //console.log("reached fetch-EventDates");
+
+    const { selectedCalendar } = req.body;
+    const result = await appService.fetchEventDates(selectedCalendar);
+    res.json({ data: result });
 });
 
-router.post("/initiate-Eventtable", async (req, res) => {
-    const initiateResult = await appService.initiateEventtable();
-    if (initiateResult) {
-        res.json({ success: true });
-    } else {
-        res.status(500).json({ success: false });
-    }
+router.post('/fetch-EventsOnDate', async (req, res) => {
+
+    const { selectedCalendar, selectedYear, selectedMonth, selectedDate } = req.body;
+    const result = await appService.fetchEventsOnDate(selectedCalendar, selectedYear, selectedMonth, selectedDate);
+    console.log("reached fetch-EventsOnDate");
+    res.json({ data: result });
+});
+
+
+
+
+
+router.get('/Eventtable', async (req, res) => {
+    const tableContent = await appService.fetchEventTableFromDb();
+    res.json({data: tableContent});
 });
 
 router.post("/insert-Eventtable", async (req, res) => {
