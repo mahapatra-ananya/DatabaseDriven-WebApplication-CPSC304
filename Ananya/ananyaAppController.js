@@ -32,6 +32,11 @@ router.get('/allAccounts', async (req, res) => {
     res.json({data: tableContent});
 });
 
+router.get('/user-servers', async (req, res) => {
+    const tableContent = await appService.fetchUserServersFromDb();
+    res.json({data: tableContent});
+});
+
 router.post("/initiate-demotable", async (req, res) => {
     const initiateResult = await appService.initiateAllTables();
     if (initiateResult) {

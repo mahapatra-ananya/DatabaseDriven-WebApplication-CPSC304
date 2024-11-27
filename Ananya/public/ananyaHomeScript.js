@@ -63,6 +63,33 @@ async function fetchAndDisplayUsers() {
 }
 
 
+// Fetches data from the demotable and displays it.
+async function fetchAndDisplayServers() {
+    const tableElement = document.getElementById('displayServers');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/user-servers', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const demotableContent = responseData.data;
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    demotableContent.forEach(user => {
+        const row = tableBody.insertRow();
+        user.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
+
 
 // Initializes the webpage functionalities.
 // Add or remove event listeners based on the desired functionalities.
@@ -70,8 +97,9 @@ window.onload = function() {
     checkDbConnection();
     initialize();
     banner();
-    document.getElementById("createAccountTable").addEventListener("submit", insertUserAccount);
-    document.getElementById("resetDemotable").addEventListener("click", resetDemotable);
+    fetchAndDisplayServers();
+    // document.getElementById("createAccountTable").addEventListener("submit", insertUserAccount);
+    // document.getElementById("displayServers").addEventListener("click", resetDemotable);
     // document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
     // document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
     // document.getElementById("countDemotable").addEventListener("click", countDemotable);

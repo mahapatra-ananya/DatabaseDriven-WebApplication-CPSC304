@@ -100,6 +100,16 @@ async function fetchAccountsFromDb() {
     });
 }
 
+async function fetchUserServersFromDb() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT distinct ServerName FROM Server s, Joins j WHERE j.MemberUsername=:currentUser', [currentUser]);
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
+
 async function initiateDemotable() {
     return await withOracleDB(async (connection) => {
         try {
@@ -406,7 +416,7 @@ module.exports = {
     insertDemotable, 
     updateNameDemotable, 
     countDemotable,
-
+    fetchUserServersFromDb,
     fetchPaymentTableFromDb,
     fetchTierTableFromDb,
     fetchPremiumPlanTableFromDb,
