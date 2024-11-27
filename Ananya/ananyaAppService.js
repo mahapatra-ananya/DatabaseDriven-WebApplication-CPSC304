@@ -334,6 +334,15 @@ async function fetchPremiumPlanTableFromDb() {
     });
 }
 
+async function fetchPremiumPlanIDsFromDb() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT distinct PlanID FROM PREMIUMPLAN');
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
 async function fetchLocationTableFromDb() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute('SELECT * FROM LOCATION');
@@ -466,6 +475,7 @@ module.exports = {
     fetchPaymentTableFromDb,
     fetchTierTableFromDb,
     fetchPremiumPlanTableFromDb,
+    fetchPremiumPlanIDsFromDb,
     fetchLocationTableFromDb,
     fetchAvatarTableFromDb,
     fetchUserAccountTableFromDb,

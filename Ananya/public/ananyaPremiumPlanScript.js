@@ -90,6 +90,32 @@ async function displayAllPlans() {
     });
 }
 
+async function displaySelectOptions() {
+    const element = document.getElementById('purchase');
+    // const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/allPlanIDs', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const planContent = responseData.data;
+
+    // Always clear old, already fetched data before new fetching process.
+    if (element.innerHTML) {
+        element.innerHTML = '';
+    }
+
+    planContent.forEach(planID => {
+        const option = document.createElement('option');
+        // button.style.height = '100px';
+        // button.style.width = '280px';
+        option.textContent = planID;
+        element.appendChild(option);
+        // containerElement.appendChild(document.createElement('br'));
+    });
+}
+
 
 
 // Initializes the webpage functionalities.
