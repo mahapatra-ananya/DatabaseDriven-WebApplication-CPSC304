@@ -22,6 +22,12 @@ router.get("/curr-user", async (req, res) => {
     res.send(loginResult);
 });
 
+// router.get("/curr-user-display-name", async (req, res) => {
+//     const loginResult = await appService.currUserDisplayName();
+//     res.send(loginResult);
+// });
+
+
 router.get('/demotable', async (req, res) => {
     const tableContent = await appService.fetchDemotableFromDb();
     res.json({data: tableContent});
@@ -96,15 +102,14 @@ router.get("/admin-or-create", async (req, res) => {
     }
 });
 
-
-
-// router.post("/check-userExists", async (req, res) => {
-//     const existing = appService.userExists;
-//     if (existing) {
-//         //res.status(500).json({ success: false });
-//         res.send('This username already exists');
-//     }
-// });
+router.get("/premium-or-not", async (req, res) => {
+    const hasPremium = await appService.checkIfHasPremium();
+    if (hasPremium[0]) {
+        res.json({ success: true, plan: hasPremium[1]});
+    } else {
+        res.status(500).json({ success: false, plan: hasPremium[1]});
+    }
+});
 
 router.post("/update-name-demotable", async (req, res) => {
     const { oldName, newName } = req.body;

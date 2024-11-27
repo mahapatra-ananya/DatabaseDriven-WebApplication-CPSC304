@@ -58,6 +58,29 @@ async function adminOrCreate() {
     }
 }
 
+
+async function premiumOrNot() {
+    const buttonElem = document.getElementById('premiumOrNot');
+    const response = await fetch('/premium-or-not', {
+        method: "GET"
+    });
+
+    const responseData = await response.json();
+
+
+    if (responseData.success) {
+        const button = document.createElement('button');
+        // button.style.height = '100px';
+        // button.style.width = '280px';
+        button.textContent = 'Your Premium PlanID: ' + responseData.plan;
+        buttonElem.appendChild(button);
+    } else {
+        const button = document.createElement('button');
+        button.textContent = 'Buy a Premium Plan';
+        buttonElem.appendChild(button);
+    }
+}
+
 // Fetches data from the demotable and displays it.
 async function fetchAndDisplayUsers() {
     const tableElement = document.getElementById('allAccounts');
@@ -122,6 +145,7 @@ window.onload = function() {
     banner();
     fetchAndDisplayServers();
     adminOrCreate();
+    premiumOrNot();
     // document.getElementById("createAccountTable").addEventListener("submit", insertUserAccount);
     // document.getElementById("displayServers").addEventListener("click", resetDemotable);
     // document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
