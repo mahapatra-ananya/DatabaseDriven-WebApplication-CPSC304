@@ -192,8 +192,9 @@ async function deleteAccount() {
         const result = await connection.execute(
             'DELETE FROM UserAccount where Username=:currentUser',
             [currentUser],
-            { autoCommit: true }
+            // { autoCommit: true }
         );
+        const result2 = await connection.execute('commit');
 
         return result.rowsAffected && result.rowsAffected > 0;
     }).catch(() => {
@@ -324,7 +325,7 @@ async function countDemotable() {
 /*Initializing All Tables*/
 async function initiateAllTables() {
     console.log(__dirname);
-    const scriptPath = path.resolve(__dirname, '../304_InitializeTables.sql');
+    const scriptPath = path.resolve(__dirname, '../304_InitializeTablesDelete.sql');
     return await withOracleDB(async (connection) => {
         try {
             // Get the SQL Script

@@ -30,8 +30,8 @@ CREATE TABLE PremiumPlan (
                              MemberLimit			INTEGER,
                              Theme				CHAR (7),
                              PRIMARY KEY (PlanID),
-                             FOREIGN KEY (PaymentInterval) 		REFERENCES Payment,
-                             FOREIGN KEY (Tier) 					REFERENCES Tier
+                             FOREIGN KEY (PaymentInterval) 		REFERENCES Payment              ON DELETE CASCADE,
+                             FOREIGN KEY (Tier) 					REFERENCES Tier              ON DELETE CASCADE
 );
 CREATE TABLE Location(
                          Country 			VARCHAR2 (30),
@@ -54,16 +54,16 @@ CREATE TABLE UserAccount(
                             AvatarID			INTEGER NOT NULL,
                             PlanID				INTEGER,
                             PRIMARY KEY (Username),
-                            FOREIGN KEY (Region) 				REFERENCES Location(Region),
-                            FOREIGN KEY (AvatarID) 				REFERENCES Avatar,
-                            FOREIGN KEY (PlanID) 				REFERENCES PremiumPlan
+                            FOREIGN KEY (Region) 				REFERENCES Location(Region)         ON DELETE CASCADE,
+                            FOREIGN KEY (AvatarID) 				REFERENCES Avatar           ON DELETE CASCADE,
+                            FOREIGN KEY (PlanID) 				REFERENCES PremiumPlan              ON DELETE CASCADE
 );
 CREATE TABLE Calendar(
                          CalendarID			INTEGER,
                          CalendarName		VARCHAR2 (30),
                          Username			VARCHAR2 (30),
                          PRIMARY KEY (CalendarID),
-                         FOREIGN KEY (Username) 				REFERENCES UserAccount
+                         FOREIGN KEY (Username) 				REFERENCES UserAccount              ON DELETE CASCADE
 );
 CREATE TABLE Event(
                       EventID				INTEGER,
@@ -73,7 +73,7 @@ CREATE TABLE Event(
                       Details				VARCHAR2 (250),
                       Username			VARCHAR2 (30),
                       PRIMARY KEY (EventID),
-                      FOREIGN KEY (UserName) 				REFERENCES UserAccount
+                      FOREIGN KEY (UserName) 				REFERENCES UserAccount                  ON DELETE CASCADE
 );
 CREATE TABLE Server(
                        ServerID			INTEGER,
@@ -82,9 +82,9 @@ CREATE TABLE Server(
                        CalendarID			INTEGER UNIQUE NOT NULL,
                        AvatarID			INTEGER NOT NULL,
                        PRIMARY KEY (ServerID),
-                       FOREIGN KEY (PlanID) 				REFERENCES PremiumPlan,
-                       FOREIGN KEY (CalendarID) 			REFERENCES Calendar,
-                       FOREIGN KEY (AvatarID) 				REFERENCES Avatar
+                       FOREIGN KEY (PlanID) 				REFERENCES PremiumPlan              ON DELETE CASCADE,
+                       FOREIGN KEY (CalendarID) 			REFERENCES Calendar              ON DELETE CASCADE,
+                       FOREIGN KEY (AvatarID) 				REFERENCES Avatar              ON DELETE CASCADE
 );
 CREATE TABLE Channel(
                         ChannelID			INTEGER,
@@ -98,7 +98,7 @@ CREATE TABLE GeneralMember(
                               Username  			VARCHAR2 (30),
                               Signature  			VARCHAR2 (250),
                               PRIMARY KEY (Username),
-                              FOREIGN KEY (Username)				 REFERENCES UserAccount
+                              FOREIGN KEY (Username)				 REFERENCES UserAccount             ON DELETE CASCADE
 );
 CREATE TABLE Administrator(
                               Username  			VARCHAR2 (30),
@@ -106,9 +106,9 @@ CREATE TABLE Administrator(
                               Signature			VARCHAR (250),
                               ServerID			INTEGER UNIQUE NOT NULL,
                               PRIMARY KEY (Username),
-                              FOREIGN KEY (Username) 				REFERENCES UserAccount,
+                              FOREIGN KEY (Username) 				REFERENCES UserAccount             ON DELETE CASCADE,
                               FOREIGN KEY (ServerID)
-                                  REFERENCES Server
+                                  REFERENCES Server             ON DELETE CASCADE
 );
 CREATE TABLE Message(
                         MessageID			INTEGER,
@@ -118,23 +118,23 @@ CREATE TABLE Message(
                         MessageDateTime		TIMESTAMP,
                         Username			VARCHAR (30) NOT NULL,
                         PRIMARY KEY (MessageID),
-                        FOREIGN KEY (Username) 				REFERENCES UserAccount,
-                        FOREIGN KEY (ChannelID, ServerID) 	REFERENCES Channel
+                        FOREIGN KEY (Username) 				REFERENCES UserAccount              ON DELETE CASCADE,
+                        FOREIGN KEY (ChannelID, ServerID) 	REFERENCES Channel              ON DELETE CASCADE
 );
 CREATE TABLE PostedTo(
                          CalendarID			INTEGER,
                          EventID			INTEGER,
                          PRIMARY KEY (EventID, CalendarID),
-                         FOREIGN KEY (CalendarID) 			REFERENCES Calendar,
-                         FOREIGN KEY (EventID) 				REFERENCES Event
+                         FOREIGN KEY (CalendarID) 			REFERENCES Calendar              ON DELETE CASCADE,
+                         FOREIGN KEY (EventID) 				REFERENCES Event              ON DELETE CASCADE
 );
 CREATE TABLE Joins (
                        MemberUsername		VARCHAR2 (30),
                        ServerID			INTEGER NOT NULL,
                        JoinDate			DATE,
                        PRIMARY KEY (MemberUsername, ServerID),
-                       FOREIGN KEY (MemberUsername) 		REFERENCES GeneralMember (Username),
-                       FOREIGN KEY (ServerID) 				REFERENCES Server
+                       FOREIGN KEY (MemberUsername) 		REFERENCES GeneralMember (Username)             ON DELETE CASCADE,
+                       FOREIGN KEY (ServerID) 				REFERENCES Server              ON DELETE CASCADE
 );
 INSERT INTO Payment(PaymentInterval, SubscriptionPayment) VALUES (1, 1);
 INSERT INTO Payment(PaymentInterval, SubscriptionPayment) VALUES (6, 1);
