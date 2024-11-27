@@ -122,6 +122,7 @@ async function displaySelectOptions() {
 // Add or remove event listeners based on the desired functionalities.
 window.onload = function() {
     checkDbConnection();
+    displaySelectOptions();
     // initialize();
     // banner();
     // fetchAndDisplayServers();
