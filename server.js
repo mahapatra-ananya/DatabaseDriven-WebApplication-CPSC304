@@ -19,6 +19,11 @@ app.use(express.json());             // Parse incoming JSON payloads
 // app.get('/', (req, res) => {
 //     res.sendFile(__dirname + '/public/DEFAULT_FILE_NAME.html');
 // });
+app.get('/', (req, res) => {
+
+    console.log(__dirname + '/public/server.html');
+    res.sendFile(__dirname + '/public/server.html');
+});
 
 
 // mount the router
