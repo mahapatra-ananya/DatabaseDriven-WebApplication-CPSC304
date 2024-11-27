@@ -103,12 +103,10 @@ router.post("/insert-userAccount", async (req, res) => {
 router.post("/edit-account", async (req, res) => {
     const { displayName, password, bio, region, avatar } = req.body;
     const insertResult = await appService.editAccount(displayName, password, bio, region, avatar);
-    if (insertResult === 1) {
-        res.json({ success: true, val: 1 });
-    } else if (insertResult === 0) {
-        res.status(500).json({ success: false, val: 0 });
+    if (insertResult) {
+        res.json({ success: true });
     } else {
-        res.status(500).json({ success: false, val: -1 });
+        res.status(500).json({ success: false });
     }
 });
 

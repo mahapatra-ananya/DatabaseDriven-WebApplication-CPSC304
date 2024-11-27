@@ -174,7 +174,7 @@ async function editAccount(displayName, password, bio, region, avatar) {
         // console.log(region);
 
         const result = await connection.execute(
-            'UPDATE UserAccount SET DisplayName=:displayName, Bio=:bio, Region=:region, AvatarID=:avatar where Username=:currentUser', [displayName, password, bio, region, avatar, currentUser],
+            'UPDATE UserAccount SET DisplayName=:displayName, UserPassword=:password, Bio=:bio, Region=:region, AvatarID=:avatar where Username=:currentUser', [displayName, password, bio, region, avatar, currentUser],
             { autoCommit: true }
         );
 
