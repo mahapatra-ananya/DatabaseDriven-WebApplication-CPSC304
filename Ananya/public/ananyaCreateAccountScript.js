@@ -48,6 +48,21 @@ async function fetchAndDisplayUsers() {
     });
 }
 
+async function resetDemotable() {
+    const response = await fetch("/initiate-demotable", {
+        method: 'POST'
+    });
+    const responseData = await response.json();
+
+    if (responseData.success) {
+        const messageElement = document.getElementById('resetResultMsg');
+        messageElement.textContent = "Application initiated successfully!";
+        initialize();
+    } else {
+        alert("Error initiating application!");
+    }
+}
+
 // This function resets or initializes the demotable.
 // async function resetDemotable() {
 //     const response = await fetch("/initiate-demotable", {

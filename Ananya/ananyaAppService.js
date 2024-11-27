@@ -194,10 +194,12 @@ async function purchasePlan(purchase) {
             { autoCommit: true }
         );
         const result2 = await connection.execute(
-            'UPDATE (SELECT * FROM Server, Administrator where Administrator.Username=:currentUser AND Administrator.ServerID=Server.ServerID) SET PlanID=:purchase',
-            [currentUser, purchase],
+            `UPDATE Server SET PlanID=:purchase WHERE ServerID=(SELECT Server.ServerID FROM Server, Administrator WHERE Server.ServerID = Administrator.ServerID AND Administrator.Username=:currentUser)`,
+            [purchase, currentUser],
             {autocommit: true}
         );
+
+        console.log(result2)
 
         return (result.rowsAffected && result.rowsAffected > 0) && (result2.rowsAffected && result2.rowsAffected > 0);
     }).catch(() => {
