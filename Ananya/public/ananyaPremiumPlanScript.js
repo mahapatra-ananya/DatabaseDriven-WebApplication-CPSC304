@@ -97,7 +97,7 @@ async function displayAllPlansProject(event) {
 
     const tableElement = document.getElementById('viewTablePlans');
     const tableBody = tableElement.querySelector('tbody');
-    // const tableHead = tableElement.querySelector('thead');
+    const tableHead = tableElement.querySelector('thead');
 
     const planIDElem = document.getElementById('planID');
     const tierElem = document.getElementById('tier');
@@ -123,29 +123,29 @@ async function displayAllPlansProject(event) {
         })
     });
 
-    // let head = [];
-    //
-    // if (planIDElem.checked) {
-    //     head.push("Plan ID");
-    // }
-    // if (tierElem.checked) {
-    //     head.push("Tier");
-    // }
-    // if (paymIntElem.checked) {
-    //     head.push("Payment Interval");
-    // }
-    // if (membLimElem.checked) {
-    //     head.push("Member Limit");
-    // }
-    // if (themeElem.checked) {
-    //     head.push("Theme");
-    // }
-    // if (bpElem.checked) {
-    //     head.push("Base Price");
-    // }
-    // if (subsPayElem.checked) {
-    //     head.push("Subscription Payment");
-    // }
+    let head = [];
+
+    if (planIDElem.checked) {
+        head.push("Plan ID");
+    }
+    if (tierElem.checked) {
+        head.push("Tier");
+    }
+    if (paymIntElem.checked) {
+        head.push("Payment Interval");
+    }
+    if (membLimElem.checked) {
+        head.push("Member Limit");
+    }
+    if (themeElem.checked) {
+        head.push("Theme");
+    }
+    if (bpElem.checked) {
+        head.push("Base Price");
+    }
+    if (subsPayElem.checked) {
+        head.push("Subscription Payment");
+    }
 
     const responseData = await response.json();
     const demotableContent = responseData.data;
@@ -154,9 +154,17 @@ async function displayAllPlansProject(event) {
     if (tableBody) {
         tableBody.innerHTML = '';
     }
-    // if (tableHead) {
-    //     tableHead.innerHTML = '';
-    // }
+    if (tableHead) {
+        tableHead.innerHTML = '';
+    }
+
+    const headerRow = tableHead.insertRow();
+    head.forEach(field => {
+        const cell = headerRow.insertCell();
+        cell.textContent = field;
+        cell.style.fontWeight = 'bold';
+        cell.style.textAlign = 'center';
+    });
 
     demotableContent.forEach(user => {
         const row = tableBody.insertRow();
@@ -165,43 +173,8 @@ async function displayAllPlansProject(event) {
         user.forEach((field, index) => {
             const cell = row.insertCell(index);
             cell.textContent = field;
+            cell.style.textAlign = 'center';
         });
-    });
-    //
-    // head.forEach(user => {
-    //     const row = tableHead.insertRow();
-    //     // const radioCell = row.insertCell(0);
-    //     // radioCell.
-    //     user.forEach((field, index) => {
-    //         const cell = row.insertCell(index);
-    //         cell.textContent = field;
-    //     });
-    // });
-}
-
-async function displaySelectOptions() {
-    const element = document.getElementById('purchase');
-    // const tableBody = tableElement.querySelector('tbody');
-
-    const response = await fetch('/allPlanIDs', {
-        method: 'GET'
-    });
-
-    const responseData = await response.json();
-    const planContent = responseData.data;
-
-    // Always clear old, already fetched data before new fetching process.
-    if (element.innerHTML) {
-        element.innerHTML = '';
-    }
-
-    planContent.forEach(planID => {
-        const option = document.createElement('option');
-        // button.style.height = '100px';
-        // button.style.width = '280px';
-        option.textContent = planID;
-        element.appendChild(option);
-        // containerElement.appendChild(document.createElement('br'));
     });
 }
 
