@@ -9,7 +9,7 @@
 <body>
     <div class="searchQuery">
         <h2>Add filters to search for events</h2>
-        <div class="filterItem firstFilterItem">
+        <div class="firstFilterItem">
             <select name="filter" class="filter-select">
                 <option value="">--Filter--</option>
                 <option value="year">Year</option>
@@ -23,7 +23,7 @@
                 <option value="<"><</option>
                 <option value="=">=</option>
                 <option value=">=">>=</option>
-                <option value=">=">=<</option>
+                <option value="<="><=</option>
             </select>
             <input type="number" class="filterInput" placeholder="Enter a number" min="1"/>
         </div>
@@ -51,7 +51,10 @@
 <!--            <input type="number" class="filterInput" placeholder="Enter a number"/>-->
 <!--        </div>-->
     </div>
-    <button class="addFilterBtn">+Filter</button>
+    <div class="filterBtns">
+        <button class="addFilterBtn">+Filter</button>
+        <button class="removeFilterBtn">-Filter</button>
+    </div>
     <button class="applyFiltersBtn">Apply Filters</button>
 
 <script src="./calendar-selection-search-script.js"></script>

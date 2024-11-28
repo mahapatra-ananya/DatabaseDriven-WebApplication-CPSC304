@@ -98,7 +98,142 @@ function addFilter() {
     searchQueryGroup.appendChild(newFilterItem);
 }
 
+function removeFilter() {
+    const searchQuery = document.querySelector('.searchQuery')
+    const lastChild = searchQuery.lastChild;
+    if (lastChild.className !== 'firstFilterItem') {
+        lastChild.remove()
+    }
+}
+
+function isValidYearInput(input) {
+    return input.length === 4;
+}
+
+function isValidMonthInput(input) {
+    return input <= 12;
+}
+
+function isValidDay(input) {
+    return input <= 31;
+}
+
 function applyFilters() {
+    // clean up leftover error messages
+    const leftOverErrorMessages = document.querySelectorAll('.error-message');
+    for (const msg of leftOverErrorMessages) {
+        msg.remove();
+    }
+    // error message set up
+    const errorMessage = document.createElement('p');
+    errorMessage.textContent = '';
+    errorMessage.className = 'error-message';
+
+
+    // GET THE FILTERITEMS
+    const filterItems = document.querySelectorAll('.filterItem');
+    let queryString = '';
+
+    //////////////////// Get first filter item
+    const firstFilterItem = document.querySelector('.firstFilterItem');
+    const firstFilter = firstFilterItem.children[0].value;
+    const firstOperator = firstFilterItem.children[1].value;
+    const firstInput = firstFilterItem.children[2].value;
+
+    if (firstFilter === '' || firstOperator === '' || firstInput.trim().length < 1) {
+        errorMessage.textContent = 'Please select a filter and operator and enter a number'
+        firstFilterItem.appendChild(errorMessage);
+        return;
+    } else {
+        if (firstFilter === 'year') {
+            if (!isValidYearInput(firstInput)) {
+                errorMessage.textContent = 'Please enter a valid year (exactly 4 digits)'
+                firstFilterItem.appendChild(errorMessage);
+                return;
+            } else {
+                queryString = `EXTRACT(year from EventDateTime) ${firstOperator} ${firstInput}`;
+            }
+        } else if (firstFilter === 'month') {
+            if (!isValidMonthInput(firstInput)) {
+                errorMessage.textContent = 'Please enter a valid month (value from 1 to 12)'
+                firstFilterItem.appendChild(errorMessage);
+                return;
+            } else {
+                queryString = `EXTRACT(month from EventDateTime) ${firstOperator} ${firstInput}`;
+            }
+        } else if (firstFilter === 'day') {
+            if (!isValidDay(firstInput)) {
+                errorMessage.textContent = 'Please enter a valid day (value from 1 to 31)'
+                firstFilterItem.appendChild(errorMessage);
+                return;
+            } else {
+                queryString = `EXTRACT(month from EventDateTime) ${firstOperator} ${firstInput}`;
+            }
+        } else if (firstFilter === 'duration') {
+            queryString = `Duration ${firstOperator} ${firstInput}`;
+        }
+    }
+
+    // queryString = `${firstFilter} ${firstOperator} ${firstInput}`
+    console.log(`firstFilterItem: ${queryString}`);
+
+    /////// GET THE OTHER filteritems
+    if (filterItems && filterItems.length > 0) {
+        // FOR EACH FILTER ITEM
+        for (const filterItem of filterItems) {
+            const logicalOp = filterItem.children[0].value;
+            const filter = filterItem.children[1].value;
+            const operator = filterItem.children[2].value;
+            const input = filterItem.children[3].value;
+            console.log(`logicalOp: ${logicalOp} filter: ${filter} operator: ${operator} input: ${input}`);
+            if (logicalOp === '' || filter === '' || operator === '' || input.trim().length < 1) {
+                errorMessage.textContent = 'Please select a logical operator, filter, and operator and enter a number'
+                filterItem.appendChild(errorMessage);
+                return;
+            } else {
+                if (filter === 'year') {
+                    if (!isValidYearInput(input)) {
+                        errorMessage.textContent = 'Please enter a valid year (exactly 4 digits)'
+                        filterItem.appendChild(errorMessage);
+                        return;
+                    } else {
+                        queryString = `${queryString} ${logicalOp} EXTRACT(year from EventDateTime) ${operator} ${input}`;
+                    }
+                } else if (filter === 'month') {
+                    if (!isValidMonthInput(input)) {
+                        errorMessage.textContent = 'Please enter a valid month (value from 1 to 12)'
+                        filterItem.appendChild(errorMessage);
+                        return;
+                    } else {
+                        queryString = `${queryString} ${logicalOp} EXTRACT(month from EventDateTime) ${operator} ${input}`;
+                    }
+                } else if (filter === 'day') {
+                    if (!isValidDay(input)) {
+                        errorMessage.textContent = 'Please enter a valid day (value from 1 to 31)'
+                        filterItem.appendChild(errorMessage);
+                        return;
+                    } else {
+                        queryString = `${queryString} ${logicalOp} EXTRACT(month from EventDateTime) ${operator} ${input}`;
+                    }
+                } else if (filter === 'duration') {
+                    queryString = `${queryString} ${logicalOp} Duration ${operator} ${input}`;
+                }
+            }
+        }
+
+        console.log(queryString)
+        // INPUT CHECKING
+        // if Filter = Year, must be 4 digits
+        // if Filter = Month, max value is 12
+        // if Filter = Day, max value 31
+        //  IF any value within an item is = '', then do not push that query string
+        // ELSE IF item PASS,
+        // push to query string
+    }
+
+    // IF FINAL QUERY STRING IS '', just fetch and display the entire table
+
+    // ELSE FETCH AND DISPLAY FILTERED EVENTS ORDERED BY ASCENDING
 
 }
 
@@ -112,9 +247,12 @@ window.onload = function() {
     fetchTableData();
 
     const addFilterBtn = document.querySelector('.addFilterBtn')
-    const
+    const removeFilterBtn = document.querySelector('.removeFilterBtn')
+    const applyFiltersBtn = document.querySelector('.applyFiltersBtn')
 
     addFilterBtn.addEventListener('click', addFilter);
+    removeFilterBtn.addEventListener('click', removeFilter)
+    applyFiltersBtn.addEventListener('click', applyFilters);
 
 };
 
