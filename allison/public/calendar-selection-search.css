@@ -1,3 +1,6 @@
+body {
+    margin: 50px;
+}
 .searchQuery {
     margin-bottom: 10px;
 }
@@ -25,4 +28,21 @@
 
 .andOr-select, .filter-select, .operator-select {
     margin-right: 10px;
+}
+
+tr:nth-child(even) {
+    background-color: #c4d9ff;
+}
+
+th, td {
+    min-width: 100px;
+    min-height: 20px;
+}
+
+th {
+   border-bottom: 3px solid #959595;
+}
+
+table {
+    width: 100%;
 }

@@ -129,6 +129,9 @@ async function applyFilters() {
     errorMessage.textContent = '';
     errorMessage.className = 'error-message';
 
+    const noEventsMsg = document.querySelector('.noEventsMsg');
+    noEventsMsg.textContent = ''
+
 
     // GET THE FILTERITEMS
     const filterItems = document.querySelectorAll('.filterItem');
@@ -250,10 +253,25 @@ async function applyFilters() {
     const filteredEvents = responseData.filteredEvents;
     console.log(filteredEvents);
 
-    // Always clear old, already fetched data before new fetching process.
-    // if (insertServerGroup) {
-    //     insertServerGroup.innerHTML = '';
-    // }
+    // DISPLAY FILTERED EVENTS
+    const tableBody = document.querySelector('tbody');
+    // const filteredEventsGroup = document.querySelector('.filteredEvents')
+    if (filteredEvents && filteredEvents.length > 0) {
+        tableBody.innerHTML = '';
+        filteredEvents.forEach(event => {
+            const row = tableBody.insertRow();
+            event.forEach((field, index) => {
+                const cell = row.insertCell(index);
+                cell.textContent = field;
+            });
+        });
+
+    } else {
+        tableBody.textContent = '';
+        // const noEventsMsgGroup = document.querySelector('.noEventsMsgGroup');
+        const noEventsMsg = document.querySelector('.noEventsMsg');
+        noEventsMsg.textContent = 'No Events with these filters. Please try a different filter or combination of filters!'
+    }
 }
 
 
