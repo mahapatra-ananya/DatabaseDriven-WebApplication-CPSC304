@@ -96,8 +96,8 @@ router.get('/allRegions', async (req, res) => {
     res.json({data: tableContent});
 });
 
-router.get('/allAvatarIDs', async (req, res) => {
-    const tableContent = await appService.fetchAvatarIDsFromDb();
+router.get('/allAvatars', async (req, res) => {
+    const tableContent = await appService.fetchAvatarsFromDb();
     res.json({data: tableContent});
 });
 
@@ -136,6 +136,11 @@ router.post("/insert-userAccount", async (req, res) => {
         res.status(500).json({ success: false, val: -1 });
     }
 });
+//
+// router.get("/user-avatar", async (req, res) => {
+//     const av = await userAv();
+//     res.send(av);
+// });
 
 router.post("/edit-password", async (req, res) => {
     const { password } = req.body;

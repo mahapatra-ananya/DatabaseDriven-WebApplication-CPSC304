@@ -32,6 +32,7 @@ async function userDetails() {
     const bioElement = document.getElementById('bio');
     const regionElement = document.getElementById('region');
     const countryElement = document.getElementById('country');
+    const avatarElement = document.getElementById('avatar');
 
     const resultResponse = await fetch('/user-details', {
         method: 'GET'
@@ -46,6 +47,7 @@ async function userDetails() {
     if (bioElement.innerHTML) {bioElement.innerHTML = '';}
     if (usernameElement.innerHTML) {usernameElement.innerHTML = '';}
     if (countryElement.innerHTML) {countryElement.innerHTML = '';}
+    if (avatarElement.innerHTML) {avatarElement.innerHTML = '';}
 
     console.log(responseContent);
 
@@ -54,6 +56,7 @@ async function userDetails() {
     bioElement.innerHTML = "Bio: " + responseContent[0][2];
     regionElement.innerHTML = "Region: " + responseContent[0][3];
     countryElement.innerHTML = "Country: " + responseContent[0][4];
+    avatarElement.innerHTML = "Avatar: " + responseContent[0][5];
 }
 
 

@@ -142,6 +142,23 @@ async function fetchAndDisplayUsers() {
     });
 }
 
+async function setAvatar() {
+    const avatarElem = document.getElementById('avatar');
+
+    const response = await fetch('user-details', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const responseContent = responseData.data;
+
+    if (avatarElem.innerHTML) {avatarElem.innerHTML = '';}
+
+    // console.log(responseContent);
+
+    avatarElem.innerHTML = responseContent[0][5];
+}
+
 
 // Fetches data from the demotable and displays it.
 async function fetchAndDisplayServers() {
@@ -188,6 +205,7 @@ window.onload = function() {
     adminOrCreate();
     premiumOrNot();
     currentPlan();
+    setAvatar();
     // document.getElementById("createAccountTable").addEventListener("submit", insertUserAccount);
     // document.getElementById("displayServers").addEventListener("click", resetDemotable);
     // document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
