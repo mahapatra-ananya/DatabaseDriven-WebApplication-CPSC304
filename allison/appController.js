@@ -218,7 +218,7 @@ router.post("/insert-joins-table", async (req, res) => {
 
     const insertResult = await allisonAppService.insertJoinsTable(Username, ServerID);
     if (insertResult) {
-        res.redirect(`/server.html?serverid=${encodeURIComponent(ServerID)}`)
+        res.json({ success: true});
     } else {
         res.status(500).json({ success: false });
     }
