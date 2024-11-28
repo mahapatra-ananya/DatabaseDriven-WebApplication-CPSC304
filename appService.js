@@ -80,78 +80,12 @@ async function testOracleConnection() {
     });
 }
 
-async function fetchDemotableFromDb() {
-    return await withOracleDB(async (connection) => {
-        const result = await connection.execute('SELECT * FROM DEMOTABLE');
-        return result.rows;
-    }).catch(() => {
-        return [];
-    });
-}
-
-async function initiateDemotable() {
-    return await withOracleDB(async (connection) => {
-        try {
-            await connection.execute(`DROP TABLE DEMOTABLE`);
-        } catch(err) {
-            console.log('Table might not exist, proceeding to create...');
-        }
-
-        const result = await connection.execute(`
-            CREATE TABLE DEMOTABLE (
-                id NUMBER PRIMARY KEY,
-                name VARCHAR2(20)
-            )
-        `);
-        return true;
-    }).catch(() => {
-        return false;
-    });
-}
-
-async function insertDemotable(id, name) {
-    return await withOracleDB(async (connection) => {
-        const result = await connection.execute(
-            `INSERT INTO DEMOTABLE (id, name) VALUES (:id, :name)`,
-            [id, name],
-            { autoCommit: true }
-        );
-
-        return result.rowsAffected && result.rowsAffected > 0;
-    }).catch(() => {
-        return false;
-    });
-}
-
-async function updateNameDemotable(oldName, newName) {
-    return await withOracleDB(async (connection) => {
-        const result = await connection.execute(
-            `UPDATE DEMOTABLE SET name=:newName where name=:oldName`,
-            [newName, oldName],
-            { autoCommit: true }
-        );
-
-        return result.rowsAffected && result.rowsAffected > 0;
-    }).catch(() => {
-        return false;
-    });
-}
-
-async function countDemotable() {
-    return await withOracleDB(async (connection) => {
-        const result = await connection.execute('SELECT Count(*) FROM DEMOTABLE');
-        return result.rows[0][0];
-    }).catch(() => {
-        return -1;
-    });
-}
-
 /////////////////////// GLOBAL INITIALIZE TABLE AND FETCH //////////////////////////////////////////
 
 /*Initializing All Tables*/
 async function initiateAllTables() {
 
-    const scriptPath = path.resolve(__dirname, '../304_InitializeTables.sql');
+    const scriptPath = path.resolve(__dirname, './304_InitializeTablesDelete.sql');
     return await withOracleDB(async (connection) => {
         try {
             // Get the SQL Script
@@ -513,6 +447,21 @@ async function fetchServerPageChannels(ServerID) {
     });
 }
 
+async function fetchEventDetails(EventID) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT EventName, EventDateTime, Duration, Details, Username
+            FROM Event
+       WHERE EventID=:EventID`,
+            [EventID]
+        );
+
+        return result.rows;
+    }).catch(() => {
+        return false;
+    });
+}
+
 ////////////////////////////////////////////// KAREN //////////////////////////////////////////////////
 async function insertCalendartable(CalendarID, CalendarName, UserName) {
     return await withOracleDB(async (connection) => {
@@ -608,11 +557,6 @@ async function insertEventtable(EventID, EventName, EventDateTime, Duration, Det
 
 module.exports = {
     testOracleConnection,
-    fetchDemotableFromDb,
-    initiateDemotable, 
-    insertDemotable, 
-    updateNameDemotable, 
-    countDemotable,
 
     initiateAllTables,
     fetchPaymentTableFromDb,
@@ -644,6 +588,7 @@ module.exports = {
     isUserGeneralMember,
     fetchServerPageInfo,
     fetchServerPageChannels,
+    fetchEventDetails,
 
     insertCalendartable,
     updateNameCalendartable,

@@ -1,5 +1,5 @@
 const express = require('express');
-const allisonAppService = require('./allisonAppService');
+const appService = require('./allisonAppService');
 
 const router = express.Router();
 
@@ -7,7 +7,7 @@ const router = express.Router();
 // API endpoints
 // Modify or extend these routes based on your project's needs.
 router.get('/check-db-connection', async (req, res) => {
-    const isConnect = await allisonAppService.testOracleConnection();
+    const isConnect = await appService.testOracleConnection();
     if (isConnect) {
         res.send('connected');
     } else {
@@ -16,13 +16,13 @@ router.get('/check-db-connection', async (req, res) => {
 });
 
 router.get('/demotable', async (req, res) => {
-    const tableContent = await allisonAppService.fetchDemotableFromDb();
+    const tableContent = await appService.fetchDemotableFromDb();
     res.json({data: tableContent});
 });
 
 router.post("/initiate-demotable", async (req, res) => {
     // const initiateResult = await allisonAppService.initiateDemotable();
-    const initiateResult = await allisonAppService.initiateAllTables();
+    const initiateResult = await appService.initiateAllTables();
     if (initiateResult) {
         res.json({ success: true });
     } else {
@@ -32,7 +32,7 @@ router.post("/initiate-demotable", async (req, res) => {
 
 router.post("/insert-demotable", async (req, res) => {
     const { id, name, color } = req.body;
-    const insertResult = await allisonAppService.insertDemotable(id, name, color);
+    const insertResult = await appService.insertDemotable(id, name, color);
     if (insertResult) {
         res.json({ success: true });
     } else {
@@ -42,7 +42,7 @@ router.post("/insert-demotable", async (req, res) => {
 
 router.post("/update-name-demotable", async (req, res) => {
     const { oldName, newName } = req.body;
-    const updateResult = await allisonAppService.updateNameDemotable(oldName, newName);
+    const updateResult = await appService.updateNameDemotable(oldName, newName);
     if (updateResult) {
         res.json({ success: true });
     } else {
@@ -51,7 +51,7 @@ router.post("/update-name-demotable", async (req, res) => {
 });
 
 router.get('/count-demotable', async (req, res) => {
-    const tableCount = await allisonAppService.countDemotable();
+    const tableCount = await appService.countDemotable();
     if (tableCount >= 0) {
         res.json({
             success: true,
@@ -67,63 +67,63 @@ router.get('/count-demotable', async (req, res) => {
     ///////////////////////////////////////////////////////////////////////////////////////////////
     /*GET endpoints*/
     router.get('/paymenttable', async (req, res) => {
-        const tableContent = await allisonAppService.fetchPaymentTableFromDb();
+        const tableContent = await appService.fetchPaymentTableFromDb();
         res.json({data: tableContent});
     });
     router.get('/tiertable', async (req, res) => {
-        const tableContent = await allisonAppService.fetchTierTableFromDb();
+        const tableContent = await appService.fetchTierTableFromDb();
         res.json({data: tableContent});
     });
     router.get('/premiumplantable', async (req, res) => {
-        const tableContent = await allisonAppService.fetchPremiumPlanTableFromDb();
+        const tableContent = await appService.fetchPremiumPlanTableFromDb();
         res.json({data: tableContent});
     });
     router.get('/locationtable', async (req, res) => {
-        const tableContent = await allisonAppService.fetchLocationTableFromDb();
+        const tableContent = await appService.fetchLocationTableFromDb();
         res.json({data: tableContent});
     });
     router.get('/avatartable', async (req, res) => {
-        const tableContent = await allisonAppService.fetchAvatarTableFromDb();
+        const tableContent = await appService.fetchAvatarTableFromDb();
         res.json({data: tableContent});
     });
     router.get('/useraccounttable', async (req, res) => {
-        const tableContent = await allisonAppService.fetchUserAccountTableFromDb();
+        const tableContent = await appService.fetchUserAccountTableFromDb();
         res.json({data: tableContent});
     });
     router.get('/calendartable', async (req, res) => {
-        const tableContent = await allisonAppService.fetchCalendarTableFromDb();
+        const tableContent = await appService.fetchCalendarTableFromDb();
         res.json({data: tableContent});
     });
     router.get('/eventtable', async (req, res) => {
-        const tableContent = await allisonAppService.fetchEventTableFromDb();
+        const tableContent = await appService.fetchEventTableFromDb();
         res.json({data: tableContent});
     });
     router.get('/servertable', async (req, res) => {
-        const tableContent = await allisonAppService.fetchServerTableFromDb();
+        const tableContent = await appService.fetchServerTableFromDb();
         res.json({data: tableContent});
     });
     router.get('/channeltable', async (req, res) => {
-        const tableContent = await allisonAppService.fetchChannelTableFromDb();
+        const tableContent = await appService.fetchChannelTableFromDb();
         res.json({data: tableContent});
     });
     router.get('/generalmembertable', async (req, res) => {
-        const tableContent = await allisonAppService.fetchGeneralMemberTableFromDb();
+        const tableContent = await appService.fetchGeneralMemberTableFromDb();
         res.json({data: tableContent});
     });
     router.get('/administratortable', async (req, res) => {
-        const tableContent = await allisonAppService.fetchAdministratorTableFromDb();
+        const tableContent = await appService.fetchAdministratorTableFromDb();
         res.json({data: tableContent});
     });
     router.get('/messagetable', async (req, res) => {
-        const tableContent = await allisonAppService.fetchMessageTableFromDb();
+        const tableContent = await appService.fetchMessageTableFromDb();
         res.json({data: tableContent});
     });
     router.get('/postedtotable', async (req, res) => {
-        const tableContent = await allisonAppService.fetchPostedToTableFromDb();
+        const tableContent = await appService.fetchPostedToTableFromDb();
         res.json({data: tableContent});
     });
     router.get('/joinstable', async (req, res) => {
-        const tableContent = await allisonAppService.fetchJoinsTableFromDb();
+        const tableContent = await appService.fetchJoinsTableFromDb();
         res.json({data: tableContent});
     });
 
@@ -132,10 +132,10 @@ router.get('/count-demotable', async (req, res) => {
 
 router.post("/insert-calendar-table", async (req, res) => {
     const { CalendarName } = req.body;
-    const newCalendarId = await allisonAppService.generateCalendarId();
+    const newCalendarId = await appService.generateCalendarId();
     console.log(`newCalendarID: ${newCalendarId}`)
 
-    const insertResult = await allisonAppService.insertCalendarTable(newCalendarId, CalendarName);
+    const insertResult = await appService.insertCalendarTable(newCalendarId, CalendarName);
     if (insertResult) {
         res.json({ success: true, calendarID: newCalendarId });
     } else {
@@ -145,12 +145,12 @@ router.post("/insert-calendar-table", async (req, res) => {
 
 router.post("/insert-server-table", async (req, res) => {
     const { ServerName, AvatarID, CalendarID, Username } = req.body;
-    const newServerId = await allisonAppService.generateServerId();
-    const adminsPlanID = await allisonAppService.getAdminPlanID(Username);
+    const newServerId = await appService.generateServerId();
+    const adminsPlanID = await appService.getAdminPlanID(Username);
     console.log(`newServerID: ${newServerId} 
     \nadminPlanID: ${adminsPlanID}`)
 
-    const insertResult = await allisonAppService.insertServerTable(newServerId, ServerName, adminsPlanID, CalendarID, AvatarID);
+    const insertResult = await appService.insertServerTable(newServerId, ServerName, adminsPlanID, CalendarID, AvatarID);
     if (insertResult) {
         res.json({ success: true, serverID: newServerId });
     } else {
@@ -160,7 +160,7 @@ router.post("/insert-server-table", async (req, res) => {
 
 router.post("/insert-administrator-table", async (req, res) => {
     const { Username, Tag, Signature, ServerID } = req.body;
-    const insertResult = await allisonAppService.insertAdministratorTable(Username, Tag, Signature, ServerID);
+    const insertResult = await appService.insertAdministratorTable(Username, Tag, Signature, ServerID);
     if (insertResult) {
         res.json({ success: true});
     } else {
@@ -175,7 +175,7 @@ router.post("/insert-channel-table", async (req, res) => {
     for (const channel of channels) {
         try {
             console.log(channel)
-            await allisonAppService.insertChannelTable(channelID, channel, serverID);
+            await appService.insertChannelTable(channelID, channel, serverID);
             channelID++;
         } catch (err) {
             console.log('error inserting channel', err)
@@ -201,7 +201,7 @@ router.post('/join-server-list', async (req, res) => {
     const { Username } = req.body;
 
     // STEP 1: SELECT the servers the current user has NOT joined AND NOT an admin of
-    const filteredUserServers = await allisonAppService.fetchFilteredUserServers(Username);
+    const filteredUserServers = await appService.fetchFilteredUserServers(Username);
     console.log(`appController: FilteredUserServers: ${filteredUserServers}`)
 
     if (filteredUserServers) {
@@ -216,7 +216,7 @@ router.post('/join-server-list', async (req, res) => {
 router.post("/insert-joins-table", async (req, res) => {
     const { Username, ServerID } = req.body;
 
-    const insertResult = await allisonAppService.insertJoinsTable(Username, ServerID);
+    const insertResult = await appService.insertJoinsTable(Username, ServerID);
     if (insertResult) {
         res.json({ success: true});
     } else {
@@ -227,11 +227,11 @@ router.post("/insert-joins-table", async (req, res) => {
 router.post("/insert-general-member-table", async (req, res) => {
     const { Username } = req.body;
 
-    const checkUserIsGeneralMember = await allisonAppService.isUserGeneralMember(Username)
+    const checkUserIsGeneralMember = await appService.isUserGeneralMember(Username)
     console.log(`isusergeneralmember: ${checkUserIsGeneralMember}`)
     let insertResult
     if (!checkUserIsGeneralMember) {
-         insertResult = await allisonAppService.insertGeneralMemberTable(Username);
+         insertResult = await appService.insertGeneralMemberTable(Username);
     }
 
     if (insertResult || checkUserIsGeneralMember) {
@@ -246,7 +246,7 @@ router.post('/serverpage', async (req, res) => {
     const { ServerID } = req.body;
     console.log('SERVERPAGE SERVERID' + ServerID)
 
-    const serverPageInfo = await allisonAppService.fetchServerPageInfo(ServerID);
+    const serverPageInfo = await appService.fetchServerPageInfo(ServerID);
     console.log(`appController: serverPageInfo: ${serverPageInfo}`)
 
     if (serverPageInfo) {
@@ -259,7 +259,7 @@ router.post('/serverpage', async (req, res) => {
 router.post('/serverpage-channels', async (req, res) => {
     const { ServerID } = req.body;
 
-    const serverPageChannels = await allisonAppService.fetchServerPageChannels(ServerID);
+    const serverPageChannels = await appService.fetchServerPageChannels(ServerID);
     console.log(`appController: serverPageChannels: ${serverPageChannels}`)
 
     if (serverPageChannels) {
@@ -274,11 +274,12 @@ router.post('/server/calendar', async (req, res) => {
     res.redirect(`/Calendar.html?calendarid=${encodeURIComponent(CalendarID)}`)
 });
 
+
 //////////////////////////////////////// EVENT SELECTION
 router.post('/filter-events', async (req, res) => {
     const { QueryString } = req.body;
 
-    const filteredEvents = await allisonAppService.fetchFilteredEvents(QueryString);
+    const filteredEvents = await appService.fetchFilteredEvents(QueryString);
     console.log(`appController: filter events: ${filteredEvents}`)
 
     if (filteredEvents) {

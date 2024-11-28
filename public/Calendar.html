@@ -68,6 +68,15 @@
                         onclick = "editEvent()">
                     Edit
                 </button>
+<!--                TODO: REMOVE LATER OnLY FOR PLANNING-->
+                <form id="insertEventtable">
+                    EventName: <input type="text" id="insertEventName" placeholder="Enter Event Name" maxlength="20"> <br><br>
+                    EventDateTime: <input type="datetime-local" id="insertEventTime" placeholder="Enter Event Start" maxlength="20"> <br><br>
+                    Duration: <input type="number" id="insertEventDuration" placeholder="Enter Event Duration"> <br><br>
+                    Details: <input type="text" id="insertEventDetail" placeholder="Enter Event Details" maxlength="250"> <br><br>
+                    EventUserName: <input type="text" id="insertEventUserName" placeholder="Enter Event User Name" maxlength="20"> <br><br>
+                    <button type="submit"> insert </button> <br>
+                </form>
             </li>
         </ul>
     </div>

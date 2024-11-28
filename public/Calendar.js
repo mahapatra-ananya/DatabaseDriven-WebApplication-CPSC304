@@ -130,6 +130,88 @@ async function getEventsOnDate() {
     fetchDailyEvent(); //this is called to update display after getting events filtered by date
 }
 
+function toDatetimeLocal(dateTime) {
+    const date = new Date(dateTime);
+
+    const pad = (num) => String(num).padStart(2, '0');
+
+    const year = date.getFullYear();
+    const month = pad(date.getMonth() + 1);
+    const day = pad(date.getDate());
+    const hours = pad(date.getHours());
+    const minutes = pad(date.getMinutes());
+
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+}
+
+async function displayEditForm(listItem, eventID) {
+    // GET EVENT DETAILS
+    const response = await fetch('/edit-event-details', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            EventID: eventID,
+        })
+    });
+
+    const responseData = await response.json();
+    const eventDetailsData = responseData.EventDetails;
+    console.log(eventDetailsData);
+
+    // CREATE EDIT FORM WITH PRE-EXISTING INFORMATION
+    const eventName = eventDetailsData[0][0];
+    const eventDateTime = eventDetailsData[0][1];
+    const eventDuration = eventDetailsData[0][2];
+    const eventDetails = eventDetailsData[0][3];
+    console.log(`name ${eventName} \n datetime ${eventDateTime} \n duration ${eventDuration} \n details ${eventDetails}`)
+
+    // p; Edit Event with ID:
+    const editEventMsg = document.createElement('h4')
+    editEventMsg.textContent = `Edit Event ${eventID}`;
+
+    const editEventForm = document.createElement('form');
+    editEventForm.id = `edit${eventID}`;
+    editEventForm.classname = 'editEventForm'
+
+    // EventName
+    const eventNameLabel = document.createElement('label')
+    eventNameLabel.textContent = "Event Name: ";
+    eventNameLabel.for = 'newEventName'
+    const eventNameInput = document.createElement('input')
+    eventNameInput.type = 'text'
+    eventNameInput.value = eventName;
+    eventNameInput.id = 'newEventName'
+    editEventForm.appendChild(eventNameLabel);
+    editEventForm.appendChild(eventNameInput);
+    editEventForm.appendChild(document.createElement('br'));
+
+    // EventDateTime
+    const eventDateTimeLabel = document.createElement('label')
+    eventDateTimeLabel.textContent = "Event DateTime: ";
+    eventDateTimeLabel.for = 'newEventDateTime'
+    const eventDateTimeInput = document.createElement('input')
+    eventDateTimeInput.type = 'datetime-local'
+console.log(`TRY : ${toDatetimeLocal(eventDateTime)}`)
+
+    eventDateTimeInput.value = toDatetimeLocal(eventDateTime);
+
+    eventDateTimeInput.id = 'newEventDateTime'
+    editEventForm.appendChild(eventDateTimeLabel);
+    editEventForm.appendChild(eventDateTimeInput);
+
+    // Duration
+
+    // Details
+
+    // Update button
+
+
+    listItem.appendChild(editEventMsg);
+    listItem.appendChild(editEventForm);
+    // editEvent(eventID);
+}
 
 function displayReminders() {
     reminderList.innerHTML = "";
@@ -150,8 +232,9 @@ function displayReminders() {
             document.createElement("button");
         editButton.className = "edit-event";
         editButton.textContent = "Edit";
+        // editButton.addEventListener('click', displayEditForm)
         editButton.onclick = function () {
-            editEvent(eventID);
+            displayEditForm(listItem, eventID);
         };
 
         listItem.appendChild(editButton);
@@ -161,6 +244,9 @@ function displayReminders() {
 }
 
 function editEvent(eventID) {
+    //
+
+
     //TODO: link directs away from here to an edit event page, passing in eventID being edited
     console.log(`this event is: ` + eventID);
 }
