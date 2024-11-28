@@ -273,21 +273,19 @@ async function purchasePlan(purchase) {
         );
         console.log(result);
 
-        // const result2 = await connection.execute(
-        //     `UPDATE Server SET PlanID=:purchase where ServerID=(SELECT Server.ServerID FROM Server, Administrator WHERE Server.ServerID = Administrator.ServerID AND Administrator.Username=:currentUser)`,
-        //     [purchase, currentUser],
-        //     {autocommit: true}
-        // );
-        const result2 = await connection.execute(
-            `UPDATE Server SET PlanID=:purchase where ServerID=(Select Server.ServerID FROM Server, Administrator WHERE Server.ServerID = Administrator.ServerID AND Administrator.Username=:currentUser)`,
-            [purchase, currentUser]
-        );
+        const isAdmin = await checkIfAdmin();
+        if (isAdmin[0]) {
+            const result2 = await connection.execute(
+                `UPDATE Server SET PlanID=:purchase where ServerID=(Select Server.ServerID FROM Server, Administrator WHERE Server.ServerID = Administrator.ServerID AND Administrator.Username=:currentUser)`,
+                [purchase, currentUser]
+            );
+            const result3 = await connection.execute(`commit`);
+            console.log(result2)
 
-        const result3 = await connection.execute(`commit`);
-
-        console.log(result2)
-
-        return (result.rowsAffected && result.rowsAffected > 0) && (result2.rowsAffected && result2.rowsAffected > 0);
+            return (result.rowsAffected && result.rowsAffected > 0) && (result2.rowsAffected && result2.rowsAffected > 0);
+        } else {
+            return result.rowsAffected && result.rowsAffected > 0;
+        }
     }).catch(() => {
         return false;
     });
