@@ -207,17 +207,45 @@ VALUES (2, 'Friendsgiving', to_timestamp('2024/10/10 03:30', 'YYYY/MM/DD HH24 MI
 INSERT INTO Event(EventID, EventName, EventDateTime, Duration, Details, Username)
 VALUES (1, 'Marley and Me Viewing', to_timestamp('2025/01/03 11:00', 'YYYY/MM/DD HH24 MI'), 2, 'Grab your blankets and tissues for a viewing of Marley and Me! It will be through Zoom and the link will be shared two days before the event. Please respond to Tara’s message in the socials channel if you will be joining.', 'ali123');
 INSERT INTO Event(EventID, EventName, EventDateTime, Duration, Details, Username)
-VALUES (3, 'Christmas', to_timestamp('2024/12/24 00:00', 'YYYY/MM/DD HH24 MI'), 24, 'Christmas Holiday', NULL);
+VALUES (3, 'Christmas', to_timestamp('2024/12/24 00:00', 'YYYY/MM/DD HH24 MI'), NULL, 'Christmas Holiday', NULL);
 INSERT INTO Event(EventID, EventName, EventDateTime, Duration, Details, Username)
 VALUES (4, 'Book Review 1',to_timestamp('2024/12/03 10:30', 'YYYY/MM/DD HH24 MI'), 3, 'Details will be posted shortly', 'abcdefg');
 INSERT INTO Event(EventID, EventName, EventDateTime, Duration, Details, Username)
 VALUES (5, 'Book Review 2', to_timestamp('2024/12/27 10:30', 'YYYY/MM/DD HH24 MI'), 3, 'Details will be posted shortly', 'racekar');
 INSERT INTO Event(EventID, EventName, EventDateTime, Duration, Details, Username)
-VALUES (6, 'Book Review 3',to_timestamp('2024/12/03 9:30', 'YYYY/MM/DD HH24 MI'), 6, 'Best book ever', 'abcdefg');
+VALUES (6, 'Book Review 3',to_timestamp('2024/12/03 16:30', 'YYYY/MM/DD HH24 MI'), 3, 'Best book ever', 'abcdefg');
 INSERT INTO Event(EventID, EventName, EventDateTime, Duration, Details, Username)
 VALUES (7, 'Pet Conference',to_timestamp('2024/10/03 15:30', 'YYYY/MM/DD HH24 MI'), 12, 'We gather to talk about our pets', 'ananyam');
 INSERT INTO Event(EventID, EventName, EventDateTime, Duration, Details, Username)
-VALUES (8, 'Meeting of the Cute things',to_timestamp('2024/08/03 18:30', 'YYYY/MM/DD HH24 MI'), 16, 'Live Laugh Love', 'racekar');
+VALUES (8, 'Hobby Conference',to_timestamp('2024/08/03 18:30', 'YYYY/MM/DD HH24 MI'), 16, 'Live Laugh Love', 'racekar');
+INSERT INTO Event(EventID, EventName, EventDateTime, Duration, Details, Username)
+VALUES (9, 'New Years',to_timestamp('2024/01/01 00:00', 'YYYY/MM/DD HH24 MI'), NULL, 'Welcome aboard the polar express', NULL);
+INSERT INTO Event(EventID, EventName, EventDateTime, Duration, Details, Username)
+VALUES (10, 'April Fools',to_timestamp('2024/04/01 00:00', 'YYYY/MM/DD HH24 MI'), NULL, 'Honk goes the clown nose', NULL);
+INSERT INTO Event(EventID, EventName, EventDateTime, Duration, Details, Username)
+VALUES (11, 'Halloween',to_timestamp('2024/10/31 00:00', 'YYYY/MM/DD HH24 MI'), NULL, 'On the eve of all hallows', NULL);
+INSERT INTO Event(EventID, EventName, EventDateTime, Duration, Details, Username)
+VALUES (12, 'Equinox watch party',to_timestamp('2024/03/19 23:06', 'YYYY/MM/DD HH24 MI'), 4, 'From the US Naval Observatory', 'abcdefg');
+INSERT INTO Event(EventID, EventName, EventDateTime, Duration, Details, Username)
+VALUES (13, 'Solstice BBQ',to_timestamp('2024/06/20 20:51', 'YYYY/MM/DD HH24 MI'), 6, 'Nice to meat you', 'ananyam');
+INSERT INTO Event(EventID, EventName, EventDateTime, Duration, Details, Username)
+VALUES (14, 'Movie Marathon',to_timestamp('2024/05/15 18:00', 'YYYY/MM/DD HH24 MI'), 5, 'On wednesdays we wear pink', 'ananyam');
+INSERT INTO Event(EventID, EventName, EventDateTime, Duration, Details, Username)
+VALUES (15, 'Pool Party',to_timestamp('2024/07/08 12:00', 'YYYY/MM/DD HH24 MI'), 8, 'H2O just add water', 'racekar');
+INSERT INTO Event(EventID, EventName, EventDateTime, Duration, Details, Username)
+VALUES (16, 'Autumn Equinox Study Sess',to_timestamp('2024/09/22 08:44', 'YYYY/MM/DD HH24 MI'), 4, 'Crunchy leaf season', 'racekar');
+INSERT INTO Event(EventID, EventName, EventDateTime, Duration, Details, Username)
+VALUES (17, 'Midterm Study',to_timestamp('2024/08/22 08:44', 'YYYY/MM/DD HH24 MI'), 3, 'Crunchy brain season', 'abcdefg');
+INSERT INTO Event(EventID, EventName, EventDateTime, Duration, Details, Username)
+VALUES (18, 'Hackathon',to_timestamp('2024/10/22 12:15', 'YYYY/MM/DD HH24 MI'), 18, 'games games games', 'abcdefg');
+INSERT INTO Event(EventID, EventName, EventDateTime, Duration, Details, Username)
+VALUES (19, 'Valentines',to_timestamp('2024/02/14 00:00', 'YYYY/MM/DD HH24 MI'), NULL, 'love is in the air', NULL);
+INSERT INTO Event(EventID, EventName, EventDateTime, Duration, Details, Username)
+VALUES (20, 'Bake Party',to_timestamp('2024/09/14 15:30', 'YYYY/MM/DD HH24 MI'), 4, 'we all love cookies', 'abcdefg');
+INSERT INTO Event(EventID, EventName, EventDateTime, Duration, Details, Username)
+VALUES (21, 'Marvel Watchparty',to_timestamp('2024/11/14 15:30', 'YYYY/MM/DD HH24 MI'), 2, 'its a bird its a plane', 'abcdefg');
+INSERT INTO Event(EventID, EventName, EventDateTime, Duration, Details, Username)
+VALUES (22, 'Work Dinner',to_timestamp('2024/11/14 18:30', 'YYYY/MM/DD HH24 MI'), 2, 'clam chowder', 'abcdefg');
 INSERT INTO Server(ServerID, ServerName, PlanID, CalendarID, AvatarID) VALUES (1, 'Dog Lovers Unite', 1, 1, 2);
 INSERT INTO Server(ServerID, ServerName, PlanID, CalendarID, AvatarID) VALUES (2, 'recipes', NULL, 2, 2);
 INSERT INTO Server(ServerID, ServerName, PlanID, CalendarID, AvatarID) VALUES (3, 'golfishies', 5, 5, 5);
@@ -272,6 +300,59 @@ INSERT INTO PostedTo(CalendarID, EventID) VALUES (2, 8);
 INSERT INTO PostedTo(CalendarID, EventID) VALUES (5, 8);
 INSERT INTO PostedTo(CalendarID, EventID) VALUES (20, 8);
 INSERT INTO PostedTo(CalendarID, EventID) VALUES (21, 8);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (1, 9);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (2, 9);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (3, 9);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (4, 9);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (7, 9);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (20, 9);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (21, 9);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (1, 10);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (3, 10);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (4, 10);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (5, 10);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (7, 10);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (20, 10);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (2, 11);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (3, 11);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (4, 11);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (5, 11);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (7, 11);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (21, 11);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (2, 12);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (5, 12);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (20, 12);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (1, 13);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (5, 13);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (20, 13);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (21, 13);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (1, 14);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (2, 14);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (7, 14);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (1, 15);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (3, 15);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (5, 15);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (1, 16);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (20, 16);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (21, 16);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (2, 17);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (20, 17);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (21, 17);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (3, 18);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (2, 19);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (3, 19);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (5, 19);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (7, 19);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (21, 19);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (1, 20);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (7, 20);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (20, 20);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (1, 21);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (7, 21);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (3, 21);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (1, 22);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (5, 22);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (20, 22);
 INSERT INTO Joins(MemberUsername, ServerID, JoinDate) VALUES ('ali123', 2, TO_DATE ('2023-05-10', 'YYYY-MM-DD'));
 INSERT INTO Joins(MemberUsername, ServerID, JoinDate) VALUES ('ali123', 3, TO_DATE ('2024-01-09', 'YYYY-MM-DD'));
 INSERT INTO Joins(MemberUsername, ServerID, JoinDate) VALUES ('ananyam', 1, TO_DATE ('2023-09-10', 'YYYY-MM-DD'));
