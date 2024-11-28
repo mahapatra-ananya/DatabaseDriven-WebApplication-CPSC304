@@ -83,7 +83,7 @@ async function testOracleConnection() {
 /*Initializing All Tables*/
 async function initiateAllTables() {
 
-    const scriptPath = path.resolve(__dirname, '../304_InitializeTables.sql');
+    const scriptPath = path.resolve(__dirname, '../304_InitializeTablesDelete.sql');
     return await withOracleDB(async (connection) => {
         try {
             // Get the SQL Script
@@ -363,6 +363,48 @@ async function insertEventtable(EventID, EventName, EventDateTime, Duration, Det
     });
 }
 
+///////////////////////////////////////////// MERGE BELOW INTO GLOBAL DIR /////////////////////////////////////////////
+
+async function fetchBusyUser() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            'SELECT DISTINCT COUNT(e.EventID) as EventCount, e.Username as Users ' +
+            'FROM Event e GROUP BY e.Username');
+        return result.rows[0][0];
+    }).catch(() => {
+        return -1;
+    });
+}
+
+async function fetchBusyMonth(userLimit) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            'SELECT SUM(e.Duration) as TotalHours, EXTRACT(MONTH FROM e.EventDateTime) as Month, ' +
+            'EXTRACT(YEAR FROM e.EventDateTime) as Year FROM Event e ' +
+            'GROUP BY EXTRACT( MONTH FROM e.EventDateTime), EXTRACT(YEAR FROM e.EventDateTime) ' +
+            'HAVING SUM(e.Duration) > :userLimit ORDER BY SUM(e.Duration) DESC', [userLimit]
+        );
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
+async function fetchSharedEvents(Calendar1, Calendar2, Calendar3) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            'SELECT EventID FROM PostedTo MINUS SELECT EventID FROM (SELECT * FROM ' +
+            '(SELECT DISTINCT EventID FROM PostedTo) CROSS JOIN ' +
+            '(SELECT CalendarID FROM Calendar WHERE CalendarID =:Calendar1 OR CalendarID =:Calendar2 OR CalendarID =:Calendar3) ' +
+            'MINUS SELECT EventID, CalendarID FROM PostedTo)', [Calendar1, Calendar2, Calendar3]
+        );
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
+
 module.exports = {
     testOracleConnection,
 
@@ -377,21 +419,24 @@ module.exports = {
     fetchEventsOnDate,
 
     initiateAllTables,
-    fetchPaymentTableFromDb,
-    fetchTierTableFromDb,
-    fetchPremiumPlanTableFromDb,
-    fetchLocationTableFromDb,
-    fetchAvatarTableFromDb,
-    fetchUserAccountTableFromDb,
+    // fetchPaymentTableFromDb,
+    // fetchTierTableFromDb,
+    // fetchPremiumPlanTableFromDb,
+    // fetchLocationTableFromDb,
+    // fetchAvatarTableFromDb,
+    // fetchUserAccountTableFromDb,
     fetchCalendarTableFromDb,
     fetchEventTableFromDb,
-    fetchServerTableFromDb,
-    fetchChannelTableFromDb,
-    fetchGeneralMemberTableFromDb,
-    fetchAdministratorTableFromDb,
-    fetchMessageTableFromDb,
-    fetchPostedToTableFromDb,
-    fetchJoinsTableFromDb,
+    // fetchServerTableFromDb,
+    // fetchChannelTableFromDb,
+    // fetchGeneralMemberTableFromDb,
+    // fetchAdministratorTableFromDb,
+    // fetchMessageTableFromDb,
+    // fetchPostedToTableFromDb,
+    // fetchJoinsTableFromDb,
+    fetchBusyUser,
+    fetchBusyMonth,
+    fetchSharedEvents
 
 
     // getEventDatesFromCalendar

@@ -214,6 +214,10 @@ INSERT INTO Event(EventID, EventName, EventDateTime, Duration, Details, Username
 VALUES (5, 'Book Review 2', to_timestamp('2024/12/27 10:30', 'YYYY/MM/DD HH24 MI'), 3, 'Details will be posted shortly', 'racekar');
 INSERT INTO Event(EventID, EventName, EventDateTime, Duration, Details, Username)
 VALUES (6, 'Book Review 3',to_timestamp('2024/12/03 9:30', 'YYYY/MM/DD HH24 MI'), 6, 'Best book ever', 'abcdefg');
+INSERT INTO Event(EventID, EventName, EventDateTime, Duration, Details, Username)
+VALUES (7, 'Pet Conference',to_timestamp('2024/10/03 15:30', 'YYYY/MM/DD HH24 MI'), 12, 'We gather to talk about our pets', 'ananyam');
+INSERT INTO Event(EventID, EventName, EventDateTime, Duration, Details, Username)
+VALUES (8, 'Meeting of the Cute things',to_timestamp('2024/08/03 18:30', 'YYYY/MM/DD HH24 MI'), 16, 'Live Laugh Love', 'racekar');
 INSERT INTO Server(ServerID, ServerName, PlanID, CalendarID, AvatarID) VALUES (1, 'Dog Lovers Unite', 1, 1, 2);
 INSERT INTO Server(ServerID, ServerName, PlanID, CalendarID, AvatarID) VALUES (2, 'recipes', NULL, 2, 2);
 INSERT INTO Server(ServerID, ServerName, PlanID, CalendarID, AvatarID) VALUES (3, 'golfishies', 5, 5, 5);
@@ -254,9 +258,20 @@ VALUES (139, 'are we ready to vote on book of the month?', 1, 5, to_timestamp('2
 INSERT INTO PostedTo(CalendarID, EventID) VALUES (1, 1);
 INSERT INTO PostedTo(CalendarID, EventID) VALUES (3, 2);
 INSERT INTO PostedTo(CalendarID, EventID) VALUES (4, 2);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (7, 2);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (3, 3);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (4, 3);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (7, 3);
 INSERT INTO PostedTo(CalendarID, EventID) VALUES (21, 4);
 INSERT INTO PostedTo(CalendarID, EventID) VALUES (21, 5);
 INSERT INTO PostedTo(CalendarID, EventID) VALUES (21, 6);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (1, 7);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (5, 7);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (1, 8);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (2, 8);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (5, 8);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (20, 8);
+INSERT INTO PostedTo(CalendarID, EventID) VALUES (21, 8);
 INSERT INTO Joins(MemberUsername, ServerID, JoinDate) VALUES ('ali123', 2, TO_DATE ('2023-05-10', 'YYYY-MM-DD'));
 INSERT INTO Joins(MemberUsername, ServerID, JoinDate) VALUES ('ali123', 3, TO_DATE ('2024-01-09', 'YYYY-MM-DD'));
 INSERT INTO Joins(MemberUsername, ServerID, JoinDate) VALUES ('ananyam', 1, TO_DATE ('2023-09-10', 'YYYY-MM-DD'));

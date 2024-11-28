@@ -82,7 +82,7 @@ router.post('/fetch-EventsOnDate', async (req, res) => {
 
     const { selectedCalendar, selectedYear, selectedMonth, selectedDate } = req.body;
     const result = await karenappService.fetchEventsOnDate(selectedCalendar, selectedYear, selectedMonth, selectedDate);
-    console.log("reached fetch-EventsOnDate");
+    // console.log("reached fetch-EventsOnDate");
     res.json({ data: result });
 });
 
@@ -119,5 +119,23 @@ router.get('/count-Eventtable', async (req, res) => {
     }
 });
 
+///////////////////////////////////////////// MERGE BELOW INTO GLOBAL DIR /////////////////////////////////////////////
+
+router.get('/fetch-BusyUser', async (req, res) => {
+    const result = await karenappService.fetchBusyUser();
+    res.json({ data: result });
+});
+
+router.post("/fetch-BusyMonth", async (req, res) => {
+    const { userLimit } = req.body;
+    const result = await karenappService.fetchBusyMonth(userLimit);
+    res.json({ data: result });
+});
+
+router.post("/fetch-SharedEvents", async (req, res) => {
+    const { Calendar1, Calendar2, Calendar3 } = req.body;
+    const result = await karenappService.fetchSharedEvents(Calendar1, Calendar2, Calendar3);
+    res.json({ data: result });
+});
 
 module.exports = router;
