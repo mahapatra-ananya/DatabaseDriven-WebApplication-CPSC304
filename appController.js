@@ -67,6 +67,21 @@ router.get('/count-demotable', async (req, res) => {
     }
 });
 
+
+/////////////////////////////////////////DELETE EVENT//////////////////////////////
+
+router.post("/delete-event", async (req, res) => {
+    const { eventID } = req.body;
+
+    const deleteResult = await appService.deleteEvent(eventID);
+    if (deleteResult) {
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
+
 ///////////////////////////////////////// ALLISON APPSERVICE /////////////////////////////////////////
 /////////////////////////////////////////SERVER PAGE//////////////////////////////////////////
 router.post('/serverpage', async (req, res) => {

@@ -166,6 +166,39 @@ function editEvent(eventID) {
 }
 
 
+///////////////////////////////////// Standalone delete function ////////////////////////////////////
+
+// below function executes upon clicking the delete button on the edit event page
+
+async function deleteButton(event) {
+    event.preventDefault();
+    await deleteEvent(eventID); //TODO: pass in appropriate eventID + add eventlistener to the button in the window section
+}
+
+
+async function deleteEvent(eventID) {
+    const response = await fetch('/delete-event', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            eventID: eventID
+        })
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('deleteResultMsg');
+
+
+    if (responseData.success) {
+        messageElement.textContent = "Event deleted successfully!";
+        //TODO: redirect back to calendar page if this is a separate event page, remove from page if same
+    } else {
+        messageElement.textContent = "Error deleting event!";
+    }
+}
+
 
 
 /////////////////////////////////////////////////// CALENDAR ///////////////////////////////////////////////////////
@@ -274,7 +307,7 @@ window.onload = function() {
     urlParam = new URLSearchParams(window.location.search); // TODO: make sure we call on window load
     selectedCalendarID = urlParam.get('calendarid'); // TODO: try to get calendarid
     document.getElementById("findCalendarID").addEventListener("submit", getEventDateTime)
-
+    document.getElementById('deleteButton').addEventListener("click", deleteButton)
     fetchEventonDate();
     fetchDailyEvent();
 
