@@ -316,6 +316,54 @@ async function loginUser(username, passwordInput) {
     });
 }
 
+async function projectPlans(pID, tier, pI, mL, theme, bP, sP) {
+    let selectedColumns = [];
+
+    // Add the corresponding columns to the selectedColumns array based on the flags
+    if (pID) {
+        selectedColumns.push('PlanID'); // Assuming pID is a column in PremiumPlan
+    }
+    if (tier) {
+        selectedColumns.push('PremiumPlan.Tier'); // Assuming 'tier' is a column in Tier
+    }
+    if (pI) {
+        selectedColumns.push('PremiumPlan.PaymentInterval'); // Assuming pI is a column in PaymentInterval
+    }
+    if (mL) {
+        selectedColumns.push('MemberLimit'); // Assuming mL is a column in PremiumPlan
+    }
+    if (theme) {
+        selectedColumns.push('Theme'); // Assuming theme is a column in PremiumPlan
+    }
+    if (bP) {
+        selectedColumns.push('BasePrice'); // Assuming bP is a column in PremiumPlan
+    }
+    if (sP) {
+        selectedColumns.push('SubscriptionPayment'); // Assuming sP is a column in PremiumPlan
+    }
+
+    if (selectedColumns.length === 0) {
+        return [];
+    }
+
+    let columnsString = selectedColumns.join(', ');
+
+    console.log(`Generated SQL Query: SELECT ${columnsString} FROM PremiumPlan INNER JOIN Tier ON PremiumPlan.Tier = Tier.Tier INNER JOIN Payment ON PremiumPlan.PaymentInterval = Payment.PaymentInterval`);
+
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT ${columnsString} 
+                 FROM PremiumPlan
+                 INNER JOIN Tier ON PremiumPlan.Tier = Tier.Tier
+                 INNER JOIN Payment ON PremiumPlan.PaymentInterval = Payment.PaymentInterval`
+        );
+        console.log(result.rows);
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
 async function checkIfAdmin() {
     return await withOracleDB(async (connection) => {
 
@@ -448,7 +496,9 @@ async function fetchUserDetailsFromDb() {
 async function fetchPremiumPlanTableFromDb() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute('SELECT distinct PlanID, PREMIUMPLAN.Tier, PREMIUMPLAN.PaymentInterval, MemberLimit, Theme, BasePrice, SubscriptionPayment FROM PREMIUMPLAN, PAYMENT, TIER WHERE PREMIUMPLAN.Tier=Tier.Tier AND PREMIUMPLAN.PaymentInterval=Payment.PaymentInterval');
+        // console.log(result.rows)
         return result.rows;
+
     }).catch(() => {
         return [];
     });
@@ -623,6 +673,7 @@ module.exports = {
     fetchPremiumPlanTableFromDb,
     fetchPremiumPlanIDsFromDb,
     deleteAccount,
+    projectPlans,
     fetchLocationTableFromDb,
     fetchAvatarTableFromDb,
     fetchUserAccountTableFromDb,

@@ -63,13 +63,89 @@ async function purchasePremiumPlan(event) {
     }
 }
 
-async function displayAllPlans() {
-    const tableElement = document.getElementById('allPlans');
-    const tableBody = tableElement.querySelector('tbody');
+// async function displayAllPlans() {
+//     // event.preventDefault();
+//
+//     const tableElement = document.getElementById('allPlans');
+//     const tableBody = tableElement.querySelector('tbody');
+//
+//     const response = await fetch('/allPlans', {
+//         method: 'GET'
+//     });
+//
+//     const responseData = await response.json();
+//     const demotableContent = responseData.data;
+//
+//     // Always clear old, already fetched data before new fetching process.
+//     if (tableBody) {
+//         tableBody.innerHTML = '';
+//     }
+//
+//     demotableContent.forEach(user => {
+//         const row = tableBody.insertRow();
+//         // const radioCell = row.insertCell(0);
+//         // radioCell.
+//         user.forEach((field, index) => {
+//             const cell = row.insertCell(index);
+//             cell.textContent = field;
+//         });
+//     });
+// }
 
-    const response = await fetch('/allPlans', {
-        method: 'GET'
+async function displayAllPlansProject(event) {
+    event.preventDefault();
+
+    const tableElement = document.getElementById('viewTablePlans');
+    const tableBody = tableElement.querySelector('tbody');
+    // const tableHead = tableElement.querySelector('thead');
+
+    const planIDElem = document.getElementById('planID');
+    const tierElem = document.getElementById('tier');
+    const paymIntElem = document.getElementById('paymentInterval');
+    const membLimElem = document.getElementById('memberLimit');
+    const themeElem = document.getElementById('theme');
+    const bpElem = document.getElementById('basePrice');
+    const subsPayElem = document.getElementById('subscriptionPayment');
+
+    const response = await fetch('project-plans', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            pID: planIDElem.checked,
+            tier: tierElem.checked,
+            pI: paymIntElem.checked,
+            mL: membLimElem.checked,
+            theme: themeElem.checked,
+            bP: bpElem.checked,
+            sP: subsPayElem.checked
+        })
     });
+
+    // let head = [];
+    //
+    // if (planIDElem.checked) {
+    //     head.push("Plan ID");
+    // }
+    // if (tierElem.checked) {
+    //     head.push("Tier");
+    // }
+    // if (paymIntElem.checked) {
+    //     head.push("Payment Interval");
+    // }
+    // if (membLimElem.checked) {
+    //     head.push("Member Limit");
+    // }
+    // if (themeElem.checked) {
+    //     head.push("Theme");
+    // }
+    // if (bpElem.checked) {
+    //     head.push("Base Price");
+    // }
+    // if (subsPayElem.checked) {
+    //     head.push("Subscription Payment");
+    // }
 
     const responseData = await response.json();
     const demotableContent = responseData.data;
@@ -78,6 +154,9 @@ async function displayAllPlans() {
     if (tableBody) {
         tableBody.innerHTML = '';
     }
+    // if (tableHead) {
+    //     tableHead.innerHTML = '';
+    // }
 
     demotableContent.forEach(user => {
         const row = tableBody.insertRow();
@@ -87,6 +166,42 @@ async function displayAllPlans() {
             const cell = row.insertCell(index);
             cell.textContent = field;
         });
+    });
+    //
+    // head.forEach(user => {
+    //     const row = tableHead.insertRow();
+    //     // const radioCell = row.insertCell(0);
+    //     // radioCell.
+    //     user.forEach((field, index) => {
+    //         const cell = row.insertCell(index);
+    //         cell.textContent = field;
+    //     });
+    // });
+}
+
+async function displaySelectOptions() {
+    const element = document.getElementById('purchase');
+    // const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/allPlanIDs', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const planContent = responseData.data;
+
+    // Always clear old, already fetched data before new fetching process.
+    if (element.innerHTML) {
+        element.innerHTML = '';
+    }
+
+    planContent.forEach(planID => {
+        const option = document.createElement('option');
+        // button.style.height = '100px';
+        // button.style.width = '280px';
+        option.textContent = planID;
+        element.appendChild(option);
+        // containerElement.appendChild(document.createElement('br'));
     });
 }
 
@@ -129,10 +244,13 @@ window.onload = function() {
     // adminOrCreate();
     // premiumOrNot();
     currentPlan();
-    displayAllPlans();
+    // displayAllPlans();
     document.getElementById("purchasePlan").addEventListener("submit", purchasePremiumPlan);
+    document.getElementById("viewPlans").addEventListener("submit", displayAllPlansProject);
     // document.getElementById("displayServers").addEventListener("click", resetDemotable);
     // document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
     // document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
     // document.getElementById("countDemotable").addEventListener("click", countDemotable);
 };
+
+

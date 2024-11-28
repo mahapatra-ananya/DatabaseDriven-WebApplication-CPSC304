@@ -25,107 +25,69 @@
 <h3 id="displayPlan"></h3>
 
 <div>
-<!--    <p>Purchase a new plan:</p>-->
+    <p>Choose the premium plan options you would like to view:</p> <br><br>
 
-        <table id="allPlans">
-            <thead>
-            <tr>
-<!--                <th></th>-->
-                <th>PlanID</th>
-                <th>Tier</th>
-                <th>Payment Interval</th>
-                <th>Member Limit</th>
-                <th>Theme</th>
-                <th>Base Price</th>
-                <th>Subscription Payment</th>
+    <form id="viewPlans">
+        <input type="checkbox" id="planID" name="planID" value="planID">
+        <label for="planID">Plan ID</label><br>
+        <input type="checkbox" id="tier" name="tier" value="tier">
+        <label for="tier">Tier</label><br>
+        <input type="checkbox" id="paymentInterval" name="paymentInterval" value="paymentInterval">
+        <label for="paymentInterval">Payment Interval</label><br>
+        <input type="checkbox" id="memberLimit" name="memberLimit" value="memberLimit">
+        <label for="memberLimit">Member Limit</label><br>
+        <input type="checkbox" id="theme" name="theme" value="theme">
+        <label for="theme">Theme</label><br>
+        <input type="checkbox" id="basePrice" name="basePrice" value="basePrice">
+        <label for="basePrice">Base Price</label><br>
+        <input type="checkbox" id="subscriptionPayment" name="subscriptionPayment" value="subscriptionPayment">
+        <label for="subscriptionPayment">Subscription Payment</label><br><br>
+        <button type="submit"> View </button> <br><br>
+    </form>
 
-            </tr>
-            </thead>
-            <tbody>
-<!--                <td><input type="radio" id="plan1" name="plan" value="Plan 1"></td>&ndash;&gt;-->
-            </tbody>
-<!--            <tr>-->
-<!--                <td><input type="radio" id="plan1" name="plan" value="Plan 1"></td>-->
-<!--                <td><label for="plan1">1</label></td>-->
-<!--                <td>Basic</td>-->
-<!--                <td>12</td>-->
-<!--                <td>1</td>-->
-<!--                <td>1</td>-->
-<!--                <td>10</td>-->
-<!--                <td>#000000</td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <td><input type="radio" id="plan2" name="plan" value="Plan 2"></td>-->
-<!--                <td><label for="plan2">2</label></td>-->
-<!--                <td>Silver</td>-->
-<!--                <td>24</td>-->
-<!--                <td>1</td>-->
-<!--                <td>1</td>-->
-<!--                <td>50</td>-->
-<!--                <td>#111111</td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <td><input type="radio" id="plan3" name="plan" value="Plan 3"></td>-->
-<!--                <td><label for="plan3">3</label></td>-->
-<!--                <td>Gold</td>-->
-<!--                <td>60</td>-->
-<!--                <td>6</td>-->
-<!--                <td>1</td>-->
-<!--                <td>100</td>-->
-<!--                <td>#000000</td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <td><input type="radio" id="plan4" name="plan" value="Plan 4"></td>-->
-<!--                <td><label for="plan4">4</label></td>-->
-<!--                <td>Platinum</td>-->
-<!--                <td>120</td>-->
-<!--                <td>12</td>-->
-<!--                <td>12</td>-->
-<!--                <td>150</td>-->
-<!--                <td>#FFFFFF</td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <td><input type="radio" id="plan5" name="plan" value="Plan 5"></td>-->
-<!--                <td><label for="plan5">5</label></td>-->
-<!--                <td>Royal</td>-->
-<!--                <td>180</td>-->
-<!--                <td>12</td>-->
-<!--                <td>12</td>-->
-<!--                <td>200</td>-->
-<!--                <td>#CCCCCC</td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <td><input type="radio" id="plan11" name="plan" value="Plan 11"></td>-->
-<!--                <td><label for="plan11">11</label></td>-->
-<!--                <td>Basic</td>-->
-<!--                <td>12</td>-->
-<!--                <td>6</td>-->
-<!--                <td>1</td>-->
-<!--                <td>50</td>-->
-<!--                <td>#FFFFFF</td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <td><input type="radio" id="plan12" name="plan" value="Plan 12"></td>-->
-<!--                <td><label for="plan12">12</label></td>-->
-<!--                <td>Basic</td>-->
-<!--                <td>12</td>-->
-<!--                <td>12</td>-->
-<!--                <td>12</td>-->
-<!--                <td>60</td>-->
-<!--                <td>#123456</td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <td><input type="radio" id="plan21" name="plan" value="Plan 21"></td>-->
-<!--                <td><label for="plan21">21</label></td>-->
-<!--                <td>Gold</td>-->
-<!--                <td>60</td>-->
-<!--                <td>6</td>-->
-<!--                <td>1</td>-->
-<!--                <td>150</td>-->
-<!--                <td>#AAAAAA</td>-->
-<!--            </tr>-->
-        </table>
-        <br>
+</div>
+
+<table id="viewTablePlans">
+    <thead>
+    <!--            <tr>-->
+    <!--&lt;!&ndash;                <th></th>&ndash;&gt;-->
+    <!--                <th>PlanID</th>-->
+    <!--                <th>Tier</th>-->
+    <!--                <th>Payment Interval</th>-->
+    <!--                <th>Member Limit</th>-->
+    <!--                <th>Theme</th>-->
+    <!--                <th>Base Price</th>-->
+    <!--                <th>Subscription Payment</th>-->
+
+    <!--            </tr>-->
+    </thead>
+    <tbody>
+    <!--                <td><input type="radio" id="plan1" name="plan" value="Plan 1"></td>&ndash;&gt;-->
+    </tbody>
+</table> <br>
+
+<!--<div>-->
+
+<!--        <table id="allPlans">-->
+<!--            <thead>-->
+<!--&lt;!&ndash;            <tr>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <th></th>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                <th>PlanID</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th>Tier</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th>Payment Interval</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th>Member Limit</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th>Theme</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th>Base Price</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th>Subscription Payment</th>&ndash;&gt;-->
+
+<!--&lt;!&ndash;            </tr>&ndash;&gt;-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--&lt;!&ndash;                <td><input type="radio" id="plan1" name="plan" value="Plan 1"></td>&ndash;&gt;&ndash;&gt;-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--        <br>-->
+
     <form id="purchasePlan">
         <label for="purchase">Choose Plan:</label>
         <select name="purchase" id="purchase"></select>
@@ -140,3 +102,4 @@
 
 </body>
 </html>
+
