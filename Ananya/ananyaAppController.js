@@ -35,6 +35,7 @@ router.get('/demotable', async (req, res) => {
 
 router.get('/allAccounts', async (req, res) => {
     const tableContent = await appService.fetchAccountsFromDb();
+
     res.json({data: tableContent});
 });
 
@@ -46,6 +47,7 @@ router.get('/user-details', async (req, res) => {
 
 router.get('/allPlans', async (req, res) => {
     const tableContent = await appService.fetchPremiumPlanTableFromDb();
+    // console.log(tableContent);
     res.json({data: tableContent});
 });
 
@@ -53,6 +55,41 @@ router.get('/allPlanIDs', async (req, res) => {
     const tableContent = await appService.fetchPremiumPlanIDsFromDb();
     res.json({data: tableContent});
 });
+
+router.post('/project-plans', async (req, res) => {
+    const { pID, tier, pI, mL, theme, bP, sP } = req.body;
+    const tableContent = await appService.projectPlans(pID, tier, pI, mL, theme, bP, sP);
+    res.json({data: tableContent});
+});
+
+//
+// router.get('/allTiers', async (req, res) => {
+//     const tableContent = await appService.fetchTiersFromDb();
+//     res.json({data: tableContent});
+// });
+// router.get('/allMembLims', async (req, res) => {
+//     const tableContent = await appService.fetchMembLimsFromDb();
+//     res.json({data: tableContent});
+// });
+// router.get('/allPaymInts', async (req, res) => {
+//     const tableContent = await appService.fetchPaymIntsFromDb();
+//     res.json({data: tableContent});
+// });
+//
+// router.get('/allThemes', async (req, res) => {
+//     const tableContent = await appService.fetchThemesFromDb();
+//     res.json({data: tableContent});
+// });
+//
+// router.get('/allbps', async (req, res) => {
+//     const tableContent = await appService.fetchbpsFromDb();
+//     res.json({data: tableContent});
+// });
+//
+// router.get('/allSubsPays', async (req, res) => {
+//     const tableContent = await appService.fetchSubsPaysFromDb();
+//     res.json({data: tableContent});
+// });
 
 router.get('/allRegions', async (req, res) => {
     const tableContent = await appService.fetchRegionsFromDb();
