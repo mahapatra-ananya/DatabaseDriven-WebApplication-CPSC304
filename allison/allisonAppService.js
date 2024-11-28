@@ -482,6 +482,7 @@ async function isUserGeneralMember(Username) {
 }
 
 async function fetchServerPageInfo(ServerID) {
+    console.log(`fetchServerPageInfo: ${ServerID}`)
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
             `SELECT s.ServerName, s.AvatarID, s.PlanID, s.CalendarID, p.Tier, p.MemberLimit, p.Theme
@@ -505,6 +506,16 @@ async function fetchServerPageChannels(ServerID) {
        WHERE ServerID=:ServerID`,
             [ServerID]
         );
+
+        return result.rows;
+    }).catch(() => {
+        return false;
+    });
+}
+async function fetchFilteredEvents(QueryString) {
+    console.log(QueryString)
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(QueryString);
 
         return result.rows;
     }).catch(() => {
@@ -549,5 +560,6 @@ module.exports = {
     insertGeneralMemberTable,
     isUserGeneralMember,
     fetchServerPageInfo,
-    fetchServerPageChannels
+    fetchServerPageChannels,
+    fetchFilteredEvents
 };

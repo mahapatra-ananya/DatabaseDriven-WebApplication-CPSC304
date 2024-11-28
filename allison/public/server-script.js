@@ -4,6 +4,8 @@ let CALENDARID;
 
 async function fetchAndDisplayServerInformation() {
     // TODO: NEED TO FIRST CHECK IF USER HAS ACCESS TO THIS SERVER
+    urlParam = new URLSearchParams(window.location.search);
+    SERVERID = urlParam.get('serverid');
 
     // GET SERVER PAGE INFO
     const serverPageInfoResponse = await fetch('/serverpage', {
@@ -111,8 +113,8 @@ async function goToServerCalendar(event) {
     });
 
     if (response.redirected) {
-        NEWSERVERID = ''
-        CALENDARID = null;
+        // NEWSERVERID = ''
+        // CALENDARID = null;
         window.location.href = response.url;
     } else {
         alert('failed to redirect')

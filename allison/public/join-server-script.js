@@ -1,5 +1,25 @@
 // TODO: UPDATE username
 const USERNAME = 'GojoSatoru'
+let SERVERID;
+
+async function goToServerPage(event) {
+    event.preventDefault();
+    const response = await fetch('/server', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            ServerID: SERVERID,
+        })
+    });
+
+    if (response.redirected) {
+        window.location.href = response.url;
+    } else {
+        alert('failed to redirect')
+    }
+}
 
 async function insertJoinServerAndGo(event) {
     event.preventDefault();
@@ -38,8 +58,8 @@ async function insertJoinServerAndGo(event) {
         })
     });
 
-    // const insertJoinsResponseData = await insertJoinsResponse.json();
-    if (insertJoinsResponse.redirected) {
+    const insertJoinsResponseData = await insertJoinsResponse.json();
+    if (insertJoinsResponseData.success) {
         console.log('success inserting user in joins table')
         // window.location.href = insertJoinsResponse.url;
         const insertServerGroup = document.querySelector('#serverList');
@@ -49,30 +69,12 @@ async function insertJoinServerAndGo(event) {
         const goToServerBtn = document.createElement('button');
         goToServerBtn.textContent = 'Go to Server';
         /////// TODO: WAIT
-        goToServerBtn.addEventListener('click', async function () {
-            const response = await fetch('/server', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    ServerID: joinServerID,
-                })
-            });
-
-            if (response.redirected) {
-                window.location.href = response.url;
-            } else {
-                alert('failed to redirect')
-            }
-        })
-        insertServerGroup.appendChild(successMsg)
-        insertServerGroup.appendChild(goToServerBtn)
-    } else {
-        alert('Error joining Server')
-        return;
-    }
+        SERVERID = joinServerID;
+        goToServerBtn.addEventListener('click', goToServerPage)
+        insertServerGroup.appendChild(successMsg);
+        insertServerGroup.appendChild(goToServerBtn);
 }
+    }
 
 async function fetchAndDisplayFilteredServers() {
     const insertServerGroup = document.querySelector('#serverList');

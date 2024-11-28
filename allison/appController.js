@@ -218,7 +218,7 @@ router.post("/insert-joins-table", async (req, res) => {
 
     const insertResult = await allisonAppService.insertJoinsTable(Username, ServerID);
     if (insertResult) {
-        res.redirect(`/server.html?serverid=${encodeURIComponent(ServerID)}`)
+        res.json({ success: true});
     } else {
         res.status(500).json({ success: false });
     }
@@ -272,6 +272,20 @@ router.post('/serverpage-channels', async (req, res) => {
 router.post('/server/calendar', async (req, res) => {
     const { CalendarID } = req.body;
     res.redirect(`/Calendar.html?calendarid=${encodeURIComponent(CalendarID)}`)
+});
+
+//////////////////////////////////////// EVENT SELECTION
+router.post('/filter-events', async (req, res) => {
+    const { QueryString } = req.body;
+
+    const filteredEvents = await allisonAppService.fetchFilteredEvents(QueryString);
+    console.log(`appController: filter events: ${filteredEvents}`)
+
+    if (filteredEvents) {
+        res.json({ success: true, filteredEvents: filteredEvents});
+    } else {
+        res.status(500).json({ success: false });
+    }
 });
 
 module.exports = router;
