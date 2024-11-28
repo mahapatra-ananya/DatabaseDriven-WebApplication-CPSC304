@@ -154,10 +154,12 @@ async function insertUserAccount(username, displayName, password, bio, region, a
         );
         if (retVal.rows[0][0] > 0) {return 0;}
 
+        const av = await getAvatarIDFromIcon(avatar);
+
         const result = await connection.execute(
             `INSERT INTO UserAccount(Username, DisplayName, UserPassword, Bio, Region, AvatarID, PlanID)
-                VALUES (:username, :displayName, :password, :bio, :region, :avatar, NULL)`,
-            [username, displayName, password, bio, region, avatar],
+                VALUES (:username, :displayName, :password, :bio, :region, :av, NULL)`,
+            [username, displayName, password, bio, region, av],
             { autoCommit: true }
         );
         currentUser = username;
@@ -166,6 +168,19 @@ async function insertUserAccount(username, displayName, password, bio, region, a
         }
     }).catch(() => {
         return -1;
+    });
+}
+
+async function getAvatarIDFromIcon(icon) {
+    console.log(icon);
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            'SELECT distinct AvatarID FROM Avatar WHERE Avatar.IconDescription=:icon', [icon]
+        );
+        console.log(result.rows);
+        return result.rows[0][0];
+    }).catch(() => {
+        return 0;
     });
 }
 
@@ -230,13 +245,15 @@ async function editRegion(region) {
         return false;
     });
 }
+
 async function editAvatar(avatar) {
     return await withOracleDB(async (connection) => {
         // console.log(region);
+        const av = await getAvatarIDFromIcon(avatar);
 
         const result = await connection.execute(
-            'UPDATE UserAccount SET AvatarID=:avatar where Username=:currentUser',
-            [avatar, currentUser],
+            'UPDATE UserAccount SET AvatarID=:av where Username=:currentUser',
+            [av, currentUser],
             { autoCommit: true }
         );
 
@@ -483,7 +500,7 @@ async function fetchTierTableFromDb() {
 async function fetchUserDetailsFromDb() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            'SELECT distinct DisplayName, Username, Bio, UserAccount.Region, Country FROM UserAccount, Location WHERE Username=:currentUser AND UserAccount.Region=Location.Region', [currentUser]
+            'SELECT distinct DisplayName, Username, Bio, UserAccount.Region, Country, IconDescription FROM UserAccount, Location, Avatar WHERE Username=:currentUser AND UserAccount.Region=Location.Region AND Avatar.AvatarID = UserAccount.AvatarID', [currentUser]
         );
         return result.rows;
     }).catch(() => {
@@ -514,11 +531,24 @@ async function fetchPremiumPlanIDsFromDb() {
 async function fetchAvatarIDsFromDb() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute('SELECT distinct AvatarID FROM AVATAR');
+        // console.log(result.rows);
+        return result.rows;
+
+    }).catch(() => {
+        return [];
+    });
+}
+
+async function fetchAvatarsFromDb() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT distinct IconDescription FROM AVATAR');
+        // console.log(result.rows);
         return result.rows;
     }).catch(() => {
         return [];
     });
 }
+
 
 async function fetchRegionsFromDb() {
     return await withOracleDB(async (connection) => {
@@ -672,6 +702,7 @@ module.exports = {
     fetchPremiumPlanIDsFromDb,
     deleteAccount,
     projectPlans,
+    fetchAvatarsFromDb,
     fetchLocationTableFromDb,
     fetchAvatarTableFromDb,
     fetchUserAccountTableFromDb,

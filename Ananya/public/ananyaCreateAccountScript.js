@@ -152,7 +152,7 @@ async function displayRegionAndAvatarOptions() {
         method: 'GET'
     });
 
-    const avatarResponse = await fetch('/allAvatarIDs', {
+    const avatarResponse = await fetch('/allAvatars', {
         method: 'GET'
     });
 

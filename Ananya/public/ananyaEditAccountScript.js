@@ -203,41 +203,41 @@ async function editAvatar(event) {
 
 
 
-async function editAccount(event) {
-    event.preventDefault();
-
-    // const passwordValue = document.getElementById('Password').value;
-    // const displayNameValue = document.getElementById('DisplayName').value;
-    // const bioValue = document.getElementById('Bio').value;
-    // const regionValue = document.getElementById('Region').value;
-    const avatarValue = document.getElementById('Avatar').value;
-
-    // document.getElementById('DisplayName').setAttribute("placeholder", "placeholder value");
-
-    const response = await fetch('/edit-avatar', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            // displayName: displayNameValue,
-            // password: passwordValue,
-            // bio: bioValue,
-            // region: regionValue,
-            avatar: avatarValue
-        })
-    });
-
-    const responseData = await response.json();
-    const messageElement = document.getElementById('editResultMsg');
-
-
-    if (responseData.success) {
-        messageElement.textContent = "Avatar saved successfully!";
-    } else {
-        messageElement.textContent = "Error saving avatar!";
-    }
-}
+// async function editAccount(event) {
+//     event.preventDefault();
+//
+//     // const passwordValue = document.getElementById('Password').value;
+//     // const displayNameValue = document.getElementById('DisplayName').value;
+//     // const bioValue = document.getElementById('Bio').value;
+//     // const regionValue = document.getElementById('Region').value;
+//     const avatarValue = document.getElementById('Avatar').value;
+//
+//     // document.getElementById('DisplayName').setAttribute("placeholder", "placeholder value");
+//
+//     const response = await fetch('/edit-avatar', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify({
+//             // displayName: displayNameValue,
+//             // password: passwordValue,
+//             // bio: bioValue,
+//             // region: regionValue,
+//             avatar: avatarValue
+//         })
+//     });
+//
+//     const responseData = await response.json();
+//     const messageElement = document.getElementById('editResultMsg');
+//
+//
+//     if (responseData.success) {
+//         messageElement.textContent = "Avatar saved successfully!";
+//     } else {
+//         messageElement.textContent = "Error saving avatar!";
+//     }
+// }
 
 
 async function displayRegionAndAvatarOptions() {
@@ -248,7 +248,7 @@ async function displayRegionAndAvatarOptions() {
         method: 'GET'
     });
 
-    const avatarResponse = await fetch('/allAvatarIDs', {
+    const avatarResponse = await fetch('/allAvatars', {
         method: 'GET'
     });
 
