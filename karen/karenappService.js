@@ -365,16 +365,16 @@ async function insertEventtable(EventID, EventName, EventDateTime, Duration, Det
 
 ///////////////////////////////////////////// MERGE BELOW INTO GLOBAL DIR /////////////////////////////////////////////
 
-async function fetchBusyUser() {
-    return await withOracleDB(async (connection) => {
-        const result = await connection.execute(
-            'SELECT DISTINCT COUNT(e.EventID) as EventCount, e.Username as Users ' +
-            'FROM Event e GROUP BY e.Username');
-        return result.rows[0][0];
-    }).catch(() => {
-        return -1;
-    });
-}
+// async function fetchBusyUser() {
+//     return await withOracleDB(async (connection) => {
+//         const result = await connection.execute(
+//             'SELECT DISTINCT COUNT(e.EventID) as EventCount, e.Username as Users ' +
+//             'FROM Event e GROUP BY e.Username');
+//         return result.rows[0][0];
+//     }).catch(() => {
+//         return -1;
+//     });
+// }
 
 async function fetchBusyMonth(userLimit) {
     return await withOracleDB(async (connection) => {
@@ -390,14 +390,10 @@ async function fetchBusyMonth(userLimit) {
     });
 }
 
-async function fetchSharedEvents(Calendar1, Calendar2, Calendar3) {
+async function fetchSharedEvents(query) {
+    console.log(query);
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute(
-            'SELECT EventID FROM PostedTo MINUS SELECT EventID FROM (SELECT * FROM ' +
-            '(SELECT DISTINCT EventID FROM PostedTo) CROSS JOIN ' +
-            '(SELECT CalendarID FROM Calendar WHERE CalendarID =:Calendar1 OR CalendarID =:Calendar2 OR CalendarID =:Calendar3) ' +
-            'MINUS SELECT EventID, CalendarID FROM PostedTo)', [Calendar1, Calendar2, Calendar3]
-        );
+        const result = await connection.execute(query);
         return result.rows;
     }).catch(() => {
         return [];
@@ -434,7 +430,8 @@ module.exports = {
     // fetchMessageTableFromDb,
     // fetchPostedToTableFromDb,
     // fetchJoinsTableFromDb,
-    fetchBusyUser,
+
+    // fetchBusyUser, // TODO to uncomment
     fetchBusyMonth,
     fetchSharedEvents
 
