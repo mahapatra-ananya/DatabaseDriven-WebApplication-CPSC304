@@ -118,7 +118,7 @@ function isValidDay(input) {
     return input <= 31;
 }
 
-function applyFilters() {
+async function applyFilters() {
     // clean up leftover error messages
     const leftOverErrorMessages = document.querySelectorAll('.error-message');
     for (const msg of leftOverErrorMessages) {
@@ -132,7 +132,7 @@ function applyFilters() {
 
     // GET THE FILTERITEMS
     const filterItems = document.querySelectorAll('.filterItem');
-    let queryString = '';
+    let queryString = 'SELECT * FROM Event WHERE';
 
     //////////////////// Get first filter item
     const firstFilterItem = document.querySelector('.firstFilterItem');
@@ -151,7 +151,7 @@ function applyFilters() {
                 firstFilterItem.appendChild(errorMessage);
                 return;
             } else {
-                queryString = `EXTRACT(year from EventDateTime) ${firstOperator} ${firstInput}`;
+                queryString = `${queryString} EXTRACT(year from EventDateTime) ${firstOperator} ${firstInput}`;
             }
         } else if (firstFilter === 'month') {
             if (!isValidMonthInput(firstInput)) {
@@ -159,7 +159,7 @@ function applyFilters() {
                 firstFilterItem.appendChild(errorMessage);
                 return;
             } else {
-                queryString = `EXTRACT(month from EventDateTime) ${firstOperator} ${firstInput}`;
+                queryString = `${queryString} EXTRACT(month from EventDateTime) ${firstOperator} ${firstInput}`;
             }
         } else if (firstFilter === 'day') {
             if (!isValidDay(firstInput)) {
@@ -167,10 +167,10 @@ function applyFilters() {
                 firstFilterItem.appendChild(errorMessage);
                 return;
             } else {
-                queryString = `EXTRACT(month from EventDateTime) ${firstOperator} ${firstInput}`;
+                queryString = `${queryString} EXTRACT(month from EventDateTime) ${firstOperator} ${firstInput}`;
             }
         } else if (firstFilter === 'duration') {
-            queryString = `Duration ${firstOperator} ${firstInput}`;
+            queryString = `${queryString} Duration ${firstOperator} ${firstInput}`;
         }
     }
 
@@ -235,6 +235,25 @@ function applyFilters() {
 
     // ELSE FETCH AND DISPLAY FILTERED EVENTS ORDERED BY ASCENDING
 
+    //////////////////////// QUERY WITH THE FILTERS
+    const response = await fetch('/filter-events', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            QueryString: queryString,
+        })
+    });
+
+    const responseData = await response.json();
+    const filteredEvents = responseData.filteredEvents;
+    console.log(filteredEvents);
+
+    // Always clear old, already fetched data before new fetching process.
+    // if (insertServerGroup) {
+    //     insertServerGroup.innerHTML = '';
+    // }
 }
 
 

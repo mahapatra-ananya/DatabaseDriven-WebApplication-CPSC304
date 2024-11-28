@@ -274,4 +274,18 @@ router.post('/server/calendar', async (req, res) => {
     res.redirect(`/Calendar.html?calendarid=${encodeURIComponent(CalendarID)}`)
 });
 
+//////////////////////////////////////// EVENT SELECTION
+router.post('/filter-events', async (req, res) => {
+    const { QueryString } = req.body;
+
+    const filteredEvents = await allisonAppService.fetchFilteredEvents(QueryString);
+    console.log(`appController: filter events: ${filteredEvents}`)
+
+    if (filteredEvents) {
+        res.json({ success: true, filteredEvents: filteredEvents});
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
 module.exports = router;
