@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Calendar Selection Search</title>
+    <link rel="stylesheet" href="./calendar-selection-search.css"/>
+</head>
+<body>
+    <div class="searchQuery">
+        <h2>Add filters to search for events</h2>
+        <div class="filterItem firstFilterItem">
+            <select name="filter" class="filter-select">
+                <option value="">--Filter--</option>
+                <option value="year">Year</option>
+                <option value="month">Month</option>
+                <option value="day">Day</option>
+                <option value="duration">Duration</option>
+            </select>
+            <select name="operator" class="operator-select">
+                <option value="">--Operator--</option>
+                <option value=">">></option>
+                <option value="<"><</option>
+                <option value="=">=</option>
+                <option value=">=">>=</option>
+                <option value=">=">=<</option>
+            </select>
+            <input type="number" class="filterInput" placeholder="Enter a number" min="1"/>
+        </div>
+<!--        <div class="filterItem">-->
+<!--            <select name="andOR" class="andOr-select">-->
+<!--                <option value="">&#45;&#45;Logical Operator&#45;&#45;</option>-->
+<!--                <option value="AND">AND</option>-->
+<!--                <option value="OR">OR</option>-->
+<!--            </select>-->
+<!--            <select name="filter" class="filter-select">-->
+<!--                <option value="">&#45;&#45;Filter&#45;&#45;</option>-->
+<!--                <option value="year">Year</option>-->
+<!--                <option value="month">Month</option>-->
+<!--                <option value="day">Day</option>-->
+<!--                <option value="duration">Duration</option>-->
+<!--            </select>-->
+<!--            <select name="operator" class="operator-select">-->
+<!--                <option value="">&#45;&#45;Operator&#45;&#45;</option>-->
+<!--                <option value=">">></option>-->
+<!--                <option value="<"><</option>-->
+<!--                <option value="=">=</option>-->
+<!--                <option value=">=">>=</option>-->
+<!--                <option value=">=">=<</option>-->
+<!--            </select>-->
+<!--            <input type="number" class="filterInput" placeholder="Enter a number"/>-->
+<!--        </div>-->
+    </div>
+    <button class="addFilterBtn">+Filter</button>
+    <button class="applyFiltersBtn">Apply Filters</button>
+
+<script src="./calendar-selection-search-script.js"></script>
+</body>
+</html>

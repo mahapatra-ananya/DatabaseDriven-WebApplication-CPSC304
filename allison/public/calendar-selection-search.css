@@ -1,0 +1,27 @@
+.searchQuery {
+    margin-bottom: 10px;
+}
+.filterItem {
+    margin-left: 60px;
+    margin-top: 10px;
+    bottom: 10px;
+}
+
+.firstFilterItem {
+    margin-left: 10px;
+}
+
+.addFilterBtn {
+    display: block;
+    margin-left: 60px;
+    margin-bottom: 10px;
+}
+
+.applyFiltersBtn {
+    background-color: #518EFF;
+    color: white;
+}
+
+.andOr-select, .filter-select, .operator-select {
+    margin-right: 10px;
+}
