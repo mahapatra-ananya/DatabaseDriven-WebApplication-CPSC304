@@ -471,17 +471,17 @@ async function fetchEventDetails(EventID) {
     });
 }
 
-async function updateEventDetails(EventID, EventName, EventDateTime, Duration, Details, Username ) {
+async function updateEventDetails(EventID, EventName, Duration, Details, Username ) {
+    console.log("appService", EventID, EventName, Duration, Details, Username )
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
             `UPDATE EVENT
-              SET EventName = :EventName, EventDateTime = :EventDateTime, Duration = :Duration, Details = :Details, Username = :Username
-            FROM Event
+              SET EventName = :EventName, Duration = :Duration, Details = :Details, Username = :Username
        WHERE EventID=:EventID`,
-            [EventID, EventName, EventDateTime, Duration, Details, Username ],
-            {autoCommit: true}
+            [EventID, EventName, Duration, Details, Username ],
         );
 
+        const result2 = await connection.execute('commit');
         return true;
     }).catch(() => {
         return false;
@@ -604,6 +604,42 @@ async function deleteEvent(eventID) {
     });
 }
 
+/////////////////////////////////Karen's additions
+async function fetchBusyUser() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            'SELECT DISTINCT COUNT(e.EventID) as EventCount, e.Username as Users ' +
+            'FROM Event e GROUP BY e.Username ORDER BY COUNT(e.EventID)');
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
+async function fetchBusyMonth(userLimit) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            'SELECT SUM(e.Duration) as TotalHours, EXTRACT(MONTH FROM e.EventDateTime) as Month, ' +
+            'EXTRACT(YEAR FROM e.EventDateTime) as Year FROM Event e ' +
+            'GROUP BY EXTRACT( MONTH FROM e.EventDateTime), EXTRACT(YEAR FROM e.EventDateTime) ' +
+            'HAVING SUM(e.Duration) > :userLimit ORDER BY SUM(e.Duration) DESC', [userLimit]
+        );
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
+async function fetchSharedEvents(query) {
+    console.log(query);
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(query);
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
 module.exports = {
     testOracleConnection,
 
@@ -649,5 +685,9 @@ module.exports = {
     fetchEventDates,
     fetchEventsOnDate,
     fetchCalendarTableFromDb,
-    fetchEventTableFromDb
+    fetchEventTableFromDb,
+
+    fetchBusyUser,
+    fetchBusyMonth,
+    fetchSharedEvents
 };

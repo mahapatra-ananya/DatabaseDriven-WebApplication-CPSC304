@@ -1,5 +1,6 @@
 const express = require('express');
 const appService = require('./appService');
+const karenappService = require("./karen/karenappService");
 // const allisonAppService = require("./allison/allisonAppService");
 //const appService = require('./allisonAppService');
 //const appService = require('./karenappService');
@@ -191,9 +192,11 @@ router.post('/edit-event-details', async (req, res) => {
     }
 });
 
-router.put('/update-event-details', async (req, res) => {
-    const { EventID, EventName, EventDateTime, Duration, Details, Username } = req.body;
-    const eventDetails = await appService.updateEventDetails(EventID, EventName, EventDateTime, Duration, Details, Username );
+router.post('/update-event-details', async (req, res) => {
+    const { EventID, EventName, Duration, Details, Username } = req.body;
+    // const { EventID, EventName, EventDateTime, Duration, Details, Username } = req.body;
+    const eventDetails = await appService.updateEventDetails(EventID, EventName, Duration, Details, Username );
+    // const eventDetails = await appService.updateEventDetails(EventID, EventName, EventDateTime, Duration, Details, Username );
     console.log(`appController: edit event details: ${eventDetails}`)
 
     if (eventDetails) {
@@ -309,12 +312,33 @@ router.get('/count-Eventtable', async (req, res) => {
 
 router.post("/delete-event", async (req, res) => {
    const { eventID } = req.body;
-    const deleteResult = await appService.deleteEvent();
+    const deleteResult = await appService.deleteEvent(eventID);
     if (deleteResult) {
         res.json({ success: true });
     } else {
         res.status(500).json({ success: false });
     }
+});
+
+//////////////////////Karen's addition
+
+router.get('/fetch-BusyUser', async (req, res) => {
+    const result = await karenappService.fetchBusyUser();
+    res.json({ data: result });
+});
+
+router.post("/fetch-BusyMonth", async (req, res) => {
+    const { userLimit } = req.body;
+    const result = await karenappService.fetchBusyMonth(userLimit);
+    res.json({ data: result });
+});
+
+router.post("/fetch-SharedEvents", async (req, res) => {
+    const { query } = req.body;
+    console.log("reached fetch-SharedEvents");
+    const result = await karenappService.fetchSharedEvents(query);
+    console.log("returned from fetch-SharedEvents");
+    res.json({ data: result });
 });
 
 module.exports = router;

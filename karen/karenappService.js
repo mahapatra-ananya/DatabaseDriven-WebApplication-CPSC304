@@ -347,6 +347,7 @@ async function countEventtable() {
 async function insertEventtable(EventID, EventName, EventDateTime, Duration, Details, EventUsername) {
 
     const testTime = new Date(EventDateTime);
+    console.log(`TIME BEING INSERTED: ${EventDateTime}`);
 
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(

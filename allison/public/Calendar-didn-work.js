@@ -1,15 +1,15 @@
 /*
- * These functions below are for various webpage functionalities. 
+ * These functions below are for various webpage functionalities.
  * Each function serves to process data on the frontend:
  *      - Before sending requests to the backend.
  *      - After receiving responses from the backend.
- * 
+ *
  * To tailor them to your specific needs,
- * adjust or expand these functions to match both your 
- *   backend endpoints 
- * and 
+ * adjust or expand these functions to match both your
+ *   backend endpoints
+ * and
  *   HTML structure.
- * 
+ *
  */
 
 
@@ -28,12 +28,12 @@ async function checkDbConnection() {
     statusElem.style.display = 'inline';
 
     response.text()
-    .then((text) => {
-        statusElem.textContent = text;
-    })
-    .catch((error) => {
-        statusElem.textContent = 'connection timed out';  // Adjust error handling if required.
-    });
+        .then((text) => {
+            statusElem.textContent = text;
+        })
+        .catch((error) => {
+            statusElem.textContent = 'connection timed out';  // Adjust error handling if required.
+        });
 }
 
 /////////////////////////////////////////////// GLOBALS ///////////////////////////////////////////////
@@ -387,17 +387,7 @@ function displayReminders() {
             displayEditForm(listItem, eventID);
         };
 
-        let deleteButton =
-            document.createElement("button");
-        deleteButton.className = "delete-event";
-        deleteButton.textContent = "Delete";
-        // editButton.addEventListener('click', displayEditForm)
-        deleteButton.onclick = function () {
-            deleteButtonFunc(eventID);
-        };
-
         listItem.appendChild(editButton);
-        listItem.appendChild(deleteButton);
         reminderList.appendChild(listItem);
     }
     console.log("called print reminders");
@@ -411,39 +401,6 @@ function editEvent(eventID) {
     console.log(`this event is: ` + eventID);
 }
 
-
-///////////////////////////////////// Standalone delete function ////////////////////////////////////
-
-// below function executes upon clicking the delete button on the edit event page
-
-async function deleteButtonFunc(eventID) {
-    event.preventDefault();
-    await deleteEvent(eventID); //TODO: pass in appropriate eventID + add eventlistener to the button in the window section
-}
-
-
-async function deleteEvent(eventID) {
-    const response = await fetch('/delete-event', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            eventID: eventID
-        })
-    });
-
-    const responseData = await response.json();
-    const messageElement = document.getElementById('deleteResultMsg');
-    fetchEventonDate();
-    fetchDailyEvent();
-    // if (responseData.success) {
-    //     messageElement.textContent = "Event deleted successfully!";
-    //     //TODO: remove event from page
-    // } else {
-    //     messageElement.textContent = "Error deleting event!";
-    // }
-}
 
 
 
@@ -553,7 +510,7 @@ window.onload = function() {
     urlParam = new URLSearchParams(window.location.search); // TODO: make sure we call on window load
     selectedCalendarID = urlParam.get('calendarid'); // TODO: try to get calendarid
     document.getElementById("findCalendarID").addEventListener("submit", getEventDateTime)
-    // document.getElementById('deleteButton').addEventListener("click", deleteButton)
+
     fetchEventonDate();
     fetchDailyEvent();
 
