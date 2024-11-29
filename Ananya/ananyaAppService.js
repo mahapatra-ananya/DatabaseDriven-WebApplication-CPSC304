@@ -671,9 +671,9 @@ async function fetchJoinsTableFromDb() {
 
 
 module.exports = {
-    // testOracleConnection,
+    testOracleConnection,
     // fetchDemotableFromDb,
-    // initiateAllTables,
+    initiateAllTables,
     insertUserAccount,
     fetchAccountsFromDb,
     loginUser,

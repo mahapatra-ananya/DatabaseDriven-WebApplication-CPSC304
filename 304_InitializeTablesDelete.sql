@@ -173,6 +173,20 @@ VALUES (10, 'Circle', '#FFFFFF', 'White Circle');
 INSERT INTO UserAccount(Username, DisplayName, UserPassword, Bio, Region, AvatarID, PlanID)
 VALUES ('ali123', 'Allison Ko', 'aliko123lovesdogs', 'Hi, I’m Ali and I love dogs. I’m from UBC and I’m studying Computer Science, currently enrolled in a databases course with Dr. Rachel Pottinger.', 'Vancouver', 1, 1);
 INSERT INTO UserAccount(Username, DisplayName, UserPassword, Bio, Region, AvatarID, PlanID)
+VALUES ('alispam', 'Allison Spam', 'aliko123lovesdogs', 'Hi, I’m Ali’s spam.', 'Vancouver', 1, 1);
+INSERT INTO UserAccount(Username, DisplayName, UserPassword, Bio, Region, AvatarID, PlanID)
+VALUES ('alispamagain', 'Allison again', 'aliko123lovesdogs', 'Hi, I’m Ali’s spam again.', 'Vancouver', 5, 5);
+INSERT INTO UserAccount(Username, DisplayName, UserPassword, Bio, Region, AvatarID, PlanID)
+VALUES ('alispamyetagain', 'Allison yet again', 'aliko123lovesdogs', 'Hi, I’m Ali’s spam AGAIN.', 'Vancouver', 1, 3);
+INSERT INTO UserAccount(Username, DisplayName, UserPassword, Bio, Region, AvatarID, PlanID)
+VALUES ('alifake', 'Allison fake', 'aliko123lovesdogs', 'Hi, I’m Ali trying to lay low.', 'Vancouver', 2, 1);
+INSERT INTO UserAccount(Username, DisplayName, UserPassword, Bio, Region, AvatarID, PlanID)
+VALUES ('alistopmakingsomany', 'Allison', 'aliko123lovesdogs', 'Hi, I’m Allison AGAIN hahahsorry we just wanna debug.', 'Virginia', 1, 1);
+INSERT INTO UserAccount(Username, DisplayName, UserPassword, Bio, Region, AvatarID, PlanID)
+VALUES ('ananyaspam', 'Spamananya', 'shdie38uwnjfvjvkewfjwiw03nl', 'Creating this to make Allison feel better about her million spams', 'Vancouver', 1, 1);
+INSERT INTO UserAccount(Username, DisplayName, UserPassword, Bio, Region, AvatarID, PlanID)
+VALUES ('racekaren', 'Karen', 'hotpotatoes', 'Same tbh.', 'Vancouver', 1, 11);
+INSERT INTO UserAccount(Username, DisplayName, UserPassword, Bio, Region, AvatarID, PlanID)
 VALUES ('ananyam', 'Ananya Mahapatra', 'shdie38uwnjfvjvkewfjwiw03nl', 'i like lurking', 'Vancouver', 3, NULL);
 INSERT INTO UserAccount(Username, DisplayName, UserPassword, Bio, Region, AvatarID, PlanID)
 VALUES ('racekar', 'Karen Li', 'hotpotatoes', 'Hello! I am very excited to be here. I like goldfish, books and hiking.', 'Ottawa', 1, 5);
@@ -282,6 +296,13 @@ INSERT INTO GeneralMember(Username, Signature) VALUES ('racekar', 'Love from Ott
 INSERT INTO GeneralMember(Username, Signature) VALUES ('dylan_x', NULL);
 INSERT INTO GeneralMember(Username, Signature) VALUES ('goldfishlover', 'there’s plenty of fish in the sea…');
 INSERT INTO GeneralMember(Username, Signature) VALUES ('abcdefg', 'yo!');
+INSERT INTO GeneralMember(Username, Signature) VALUES ('alispam', 'hey!');
+INSERT INTO GeneralMember(Username, Signature) VALUES ('alispamagain', 'hey again!');
+INSERT INTO GeneralMember(Username, Signature) VALUES ('alispamyetagain', 'hey yet again!');
+INSERT INTO GeneralMember(Username, Signature) VALUES ('alifake', 'mannnnn hey again!');
+INSERT INTO GeneralMember(Username, Signature) VALUES ('alistopmakingsomany', 'hey AGAIN!');
+INSERT INTO GeneralMember(Username, Signature) VALUES ('ananyaspam', 'yo!');
+INSERT INTO GeneralMember(Username, Signature) VALUES ('racekaren', 'yo!');
 INSERT INTO Administrator(Username, Tag, Signature, ServerID) VALUES ('ali123', 'admin', 'all things dogs!', 1);
 INSERT INTO Administrator(Username, Tag, Signature, ServerID) VALUES ('ananyam', 'Big Brother', 'happy', 2);
 INSERT INTO Administrator(Username, Tag, Signature, ServerID) VALUES ('racekar', 'admin', 'be nice', 3);
@@ -396,3 +417,10 @@ INSERT INTO Joins(MemberUsername, ServerID, JoinDate) VALUES ('racekar', 5, TO_D
 INSERT INTO Joins(MemberUsername, ServerID, JoinDate) VALUES ('dylan_x', 2, TO_DATE ('2023-12-12', 'YYYY-MM-DD'));
 INSERT INTO Joins(MemberUsername, ServerID, JoinDate) VALUES ('abcdefg', 1, TO_DATE ('2022-07-03', 'YYYY-MM-DD'));
 INSERT INTO Joins(MemberUsername, ServerID, JoinDate) VALUES ('abcdefg', 4, TO_DATE ('2023-01-06', 'YYYY-MM-DD'));
+INSERT INTO Joins(MemberUsername, ServerID, JoinDate) VALUES ('alispam', 1, TO_DATE ('2024-11-29', 'YYYY-MM-DD'));
+INSERT INTO Joins(MemberUsername, ServerID, JoinDate) VALUES ('alispamagain', 1, TO_DATE ('2024-11-29', 'YYYY-MM-DD'));
+INSERT INTO Joins(MemberUsername, ServerID, JoinDate) VALUES ('alispamyetagain', 1, TO_DATE ('2024-11-28', 'YYYY-MM-DD'));
+INSERT INTO Joins(MemberUsername, ServerID, JoinDate) VALUES ('alifake', 1, TO_DATE ('2024-11-29', 'YYYY-MM-DD'));
+INSERT INTO Joins(MemberUsername, ServerID, JoinDate) VALUES ('alistopmakingsomany', 1, TO_DATE ('2024-11-29', 'YYYY-MM-DD'));
+INSERT INTO Joins(MemberUsername, ServerID, JoinDate) VALUES ('ananyaspam', 1, TO_DATE ('2024-11-29', 'YYYY-MM-DD'));
+INSERT INTO Joins(MemberUsername, ServerID, JoinDate) VALUES ('racekaren', 1, TO_DATE ('2024-11-29', 'YYYY-MM-DD'));
