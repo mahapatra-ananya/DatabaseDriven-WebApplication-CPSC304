@@ -373,7 +373,7 @@ WHERE (s.PlanID = p.PlanID OR s.PlanID IS NULL)
   AND (s.ServerID IN (SELECT DISTINCT s1.ServerID
                       FROM Server s1, PremiumPlan p1
                       WHERE s1.PlanID = p1.PlanID
-                        AND p1.MemberLimit > (SELECT Count(DISTINCT j2.ServerID) FROM Joins j2 WHERE j2.ServerID = s1.ServerID)) 
+                        AND p1.MemberLimit > (SELECT Count(j2.ServerID) FROM Joins j2 WHERE j2.ServerID = s1.ServerID)) 
       OR s.ServerID IN (SELECT DISTINCT s2.ServerID
                         FROM Server s2
                         WHERE s2.PlanID IS NULL
@@ -397,7 +397,7 @@ async function fetchFilteredUserServersCount(Username){
                AND (s.ServerID IN (SELECT DISTINCT s1.ServerID
                                    FROM Server s1, PremiumPlan p1
                                    WHERE s1.PlanID = p1.PlanID
-                                     AND p1.MemberLimit > (SELECT Count(DISTINCT j2.ServerID) FROM Joins j2 WHERE j2.ServerID = s1.ServerID))
+                                     AND p1.MemberLimit > (SELECT Count(j2.ServerID) FROM Joins j2 WHERE j2.ServerID = s1.ServerID))
                  OR s.ServerID IN (SELECT DISTINCT s2.ServerID
                                    FROM Server s2
                                    WHERE s2.PlanID IS NULL
