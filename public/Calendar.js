@@ -387,6 +387,15 @@ function displayReminders() {
             displayEditForm(listItem, eventID);
         };
 
+        let deleteButton =
+            document.createElement("button");
+        deleteButton.className = "delete-event";
+        deleteButton.textContent = "Delete";
+        // editButton.addEventListener('click', displayEditForm)
+        deleteButton.onclick = function () {
+            deleteButtonFunc(eventID);
+        };
+
         listItem.appendChild(editButton);
         reminderList.appendChild(listItem);
     }
@@ -401,6 +410,39 @@ function editEvent(eventID) {
     console.log(`this event is: ` + eventID);
 }
 
+
+///////////////////////////////////// Standalone delete function ////////////////////////////////////
+
+// below function executes upon clicking the delete button on the edit event page
+
+async function deleteButtonFunc(eventID) {
+    event.preventDefault();
+    await deleteEvent(eventID); //TODO: pass in appropriate eventID + add eventlistener to the button in the window section
+}
+
+
+async function deleteEvent(eventID) {
+    const response = await fetch('/delete-event', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            eventID: eventID
+        })
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('deleteResultMsg');
+
+
+    if (responseData.success) {
+        messageElement.textContent = "Event deleted successfully!";
+        //TODO: remove event from page
+    } else {
+        messageElement.textContent = "Error deleting event!";
+    }
+}
 
 
 
@@ -510,7 +552,7 @@ window.onload = function() {
     urlParam = new URLSearchParams(window.location.search); // TODO: make sure we call on window load
     selectedCalendarID = urlParam.get('calendarid'); // TODO: try to get calendarid
     document.getElementById("findCalendarID").addEventListener("submit", getEventDateTime)
-
+    document.getElementById('deleteButton').addEventListener("click", deleteButton)
     fetchEventonDate();
     fetchDailyEvent();
 
