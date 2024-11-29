@@ -388,11 +388,11 @@ async function checkIfAdmin() {
         );
         if (retVal.rows[0][0] !== 0) { // if user is an admin
             const serverName = await connection.execute(
-                'SELECT distinct ServerName FROM Administrator, Server WHERE Administrator.Username=:currentUser AND Administrator.ServerID=Server.ServerID', [currentUser]
+                'SELECT distinct ServerName, Server.ServerID FROM Administrator, Server WHERE Administrator.Username=:currentUser AND Administrator.ServerID=Server.ServerID', [currentUser]
             );
-            return [true, serverName.rows[0][0]];
+            return [true, serverName.rows[0][0], serverName.rows[0][1]];
         } else {
-            return [false, ""]
+            return [false, "", ""]
 
         }
     }).catch(() => {

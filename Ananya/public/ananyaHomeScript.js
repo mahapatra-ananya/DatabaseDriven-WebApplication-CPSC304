@@ -85,12 +85,20 @@ async function adminOrCreate() {
         button.style.height = '100px';
         button.style.width = '280px';
         button.textContent = 'Your Server: ' + responseData.serverName;
+        button.value = responseData.ServerID;
+        button.addEventListener('click', goToServer);
         buttonElem.appendChild(button);
     } else {
         const button = document.createElement('button');
         button.textContent = 'Create a Server';
+        button.addEventListener('click', goToCreateServer);
         buttonElem.appendChild(button);
     }
+}
+
+async function goToCreateServer(event) {
+    event.preventDefault();
+    window.location.href = "create-server.html";
 }
 
 
@@ -215,26 +223,26 @@ async function goToServer(event) {
     }
 }
 
-//TODO: implement
-async function goToCalendar(event) {
-    event.preventDefault();
-    // const joinServerID = event.target.value;
-    const response = await fetch('/server', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            CalendarID: UserCalendarID,
-        })
-    });
-
-    if (response.redirected) {
-        window.location.href = response.url;
-    } else {
-        alert('failed to redirect')
-    }
-}
+// //TODO: implement
+// async function goToCalendar(event) {
+//     event.preventDefault();
+//     // const joinServerID = event.target.value;
+//     const response = await fetch('/server', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify({
+//             CalendarID: UserCalendarID,
+//         })
+//     });
+//
+//     if (response.redirected) {
+//         window.location.href = response.url;
+//     } else {
+//         alert('failed to redirect')
+//     }
+// }
 
 
 
@@ -249,7 +257,7 @@ window.onload = function() {
     premiumOrNot();
     currentPlan();
     setAvatar();
-    document.getElementById("calendar").addEventListener("click", goToCalendar);
+    // document.getElementById("calendar").addEventListener("click", goToCalendar);
     // document.getElementById("createAccountTable").addEventListener("submit", insertUserAccount);
     // document.getElementById("displayServers").addEventListener("click", resetDemotable);
     // document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
