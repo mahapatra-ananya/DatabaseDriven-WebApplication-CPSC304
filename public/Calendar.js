@@ -130,19 +130,19 @@ async function getEventsOnDate() {
     fetchDailyEvent(); //this is called to update display after getting events filtered by date
 }
 
-function toDatetimeLocal(dateTime) {
-    const date = new Date(dateTime);
-
-    const pad = (num) => String(num).padStart(2, '0');
-
-    const year = date.getFullYear();
-    const month = pad(date.getMonth() + 1);
-    const day = pad(date.getDate());
-    const hours = pad(date.getHours());
-    const minutes = pad(date.getMinutes());
-
-    return `${year}-${month}-${day}T${hours}:${minutes}`;
-}
+// function toDatetimeLocal(dateTime) {
+//     const date = new Date(dateTime);
+//
+//     const pad = (num) => String(num).padStart(2, '0');
+//
+//     const year = date.getFullYear();
+//     const month = pad(date.getMonth() + 1);
+//     const day = pad(date.getDate());
+//     const hours = pad(date.getHours());
+//     const minutes = pad(date.getMinutes());
+//
+//     return `${year}-${month}-${day}T${hours}:${minutes}`;
+// }
 
 async function updateEvent(listItem, eventID, eventNameInput, durationInput, detailsInput, usernameInput) {
     // const response = await fetch('/update-event-details', {
@@ -255,18 +255,18 @@ async function displayEditForm(listItem, eventID) {
     editEventForm.appendChild(document.createElement('br'));
 
     // EventDateTime
-    const eventDateTimeLabel = document.createElement('label')
-    eventDateTimeLabel.textContent = "Event DateTime: ";
-    eventDateTimeLabel.for = 'newEventDateTime'
-    const eventDateTimeInput = document.createElement('input')
-    eventDateTimeInput.type = 'datetime-local'
-    console.log(`TRY : ${toDatetimeLocal(eventDateTime)}`)
-    eventDateTimeInput.value = toDatetimeLocal(eventDateTime);
-    eventDateTimeInput.id = 'newEventDateTime'
-    editEventForm.appendChild(eventDateTimeLabel);
-    editEventForm.appendChild(eventDateTimeInput);
-    editEventForm.appendChild(document.createElement('br'));
-
+    // const eventDateTimeLabel = document.createElement('label')
+    // eventDateTimeLabel.textContent = "Event DateTime: ";
+    // eventDateTimeLabel.for = 'newEventDateTime'
+    // const eventDateTimeInput = document.createElement('input')
+    // eventDateTimeInput.type = 'datetime-local'
+    // console.log(`TRY : ${toDatetimeLocal(eventDateTime)}`)
+    // eventDateTimeInput.value = toDatetimeLocal(eventDateTime);
+    // eventDateTimeInput.id = 'newEventDateTime'
+    // editEventForm.appendChild(eventDateTimeLabel);
+    // editEventForm.appendChild(eventDateTimeInput);
+    // editEventForm.appendChild(document.createElement('br'));
+    //
     // Duration
     const durationLabel = document.createElement('label')
     durationLabel.textContent = "Duration (hrs): ";
@@ -360,6 +360,7 @@ async function displayEditForm(listItem, eventID) {
     listItem.appendChild(editEventMsg);
     listItem.appendChild(editEventForm);
     listItem.appendChild(updateBtn);
+    // listItem.appendChild(updateBtn);
     // editEvent(eventID);
 }
 
