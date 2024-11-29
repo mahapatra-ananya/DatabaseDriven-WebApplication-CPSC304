@@ -97,11 +97,31 @@ async function fetchAndDisplayFilteredServers() {
     console.log(filteredServers);
 
 
+    //////////////JOIN SERVER LIST COUNT/////////////////
+    const serverCountResponse = await fetch('/join-server-count', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            Username: USERNAME,
+        })
+    });
 
-    // Always clear old, already fetched data before new fetching process.
+    const serverCountData = await serverCountResponse.json();
+    const serverCount = serverCountData.filteredServersCount;
+    console.log("filtered server count", serverCount);
+
     if (insertServerGroup) {
         insertServerGroup.innerHTML = '';
     }
+
+    const serverCountMsg = document.createElement('p')
+    serverCountMsg.textContent = `Available Servers to Join: ${serverCount}`;
+    insertServerGroup.appendChild(serverCountMsg)
+
+
+    // Always clear old, already fetched data before new fetching process.
 
     if (filteredServers.length > 0) {
         filteredServers.forEach(server => {

@@ -145,6 +145,20 @@ router.post('/join-server-list', async (req, res) => {
     }
 });
 
+router.post('/join-server-count', async (req, res) => {
+    const { Username } = req.body;
+
+    // STEP 1: SELECT the servers the current user has NOT joined AND NOT an admin of
+    const filteredUserServers = await appService.fetchFilteredUserServersCount(Username);
+    console.log(`appController: FilteredUserServers: ${filteredUserServers}`)
+
+    if (filteredUserServers) {
+        res.json({ success: true, filteredServersCount: filteredUserServers[0][0]});
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
 /* INSERT JOIN SERVER AND GENERAL MEMBER*/
 
 router.post("/insert-joins-table", async (req, res) => {

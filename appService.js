@@ -386,6 +386,30 @@ WHERE (s.PlanID = p.PlanID OR s.PlanID IS NULL)
     });
 }
 
+async function fetchFilteredUserServersCount(Username){
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT COUNT(DISTINCT s.ServerID)
+             FROM Server s, PremiumPlan p, Joins j
+             WHERE (s.PlanID = p.PlanID OR s.PlanID IS NULL)
+               AND s.ServerID NOT IN (SELECT j1.ServerID FROM Joins j1 WHERE j1.MemberUsername =:Username)
+               AND s.ServerID NOT IN (SELECT a.ServerID FROM Administrator a WHERE a.Username =:Username)
+               AND (s.ServerID IN (SELECT DISTINCT s1.ServerID
+                                   FROM Server s1, PremiumPlan p1
+                                   WHERE s1.PlanID = p1.PlanID
+                                     AND p1.MemberLimit > (SELECT Count(DISTINCT j2.ServerID) FROM Joins j2 WHERE j2.ServerID = s1.ServerID))
+                 OR s.ServerID IN (SELECT DISTINCT s2.ServerID
+                                   FROM Server s2
+                                   WHERE s2.PlanID IS NULL
+                                     and s2.ServerID IN (SELECT j3.ServerID FROM Joins j3 GROUP BY j3.ServerID HAVING Count(j3.ServerID) < 5)))
+             ORDER BY s.ServerID`,
+            [Username])
+        return result.rows;
+    }).catch(() => {
+        return false;
+    });
+}
+
 /*Insert Joins Table*/
 async function insertJoinsTable(Username, ServerID){
     return await withOracleDB(async (connection) => {
@@ -1248,6 +1272,7 @@ module.exports = {
     fetchEventsOnDate,
     fetchCalendarTableFromDb,
     fetchEventTableFromDb,
+    fetchFilteredUserServersCount,
 
     fetchBusyUser,
     fetchBusyMonth,
