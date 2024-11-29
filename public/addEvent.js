@@ -95,10 +95,11 @@ async function insertEventtable(event) {
     const messageElement = document.getElementById('EventinsertResultMsg');
 
     if (responseData.success) {
-        messageElement.textContent = "Event Data inserted successfully!";
+        currEventID = idValue; // track event last inserted // TODO add to allisons
+        messageElement.textContent = "Event added successfully!";
         fetchEventTableData();
     } else {
-        messageElement.textContent = "Error inserting Event data!";
+        messageElement.textContent = "Error adding Event!";
     }
 }
 
