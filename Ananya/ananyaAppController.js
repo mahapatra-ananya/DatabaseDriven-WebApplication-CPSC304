@@ -202,6 +202,11 @@ router.post("/delete-account", async (req, res) => {
     }
 });
 
+router.post('/server', async (req, res) => {
+    const { ServerID } = req.body;
+    res.redirect(`/server.html?serverid=${encodeURIComponent(ServerID)}`)
+});
+
 router.post("/purchase-plan", async (req, res) => {
     const { purchase } = req.body;
     const purchaseResult = await appService.purchasePlan(purchase);

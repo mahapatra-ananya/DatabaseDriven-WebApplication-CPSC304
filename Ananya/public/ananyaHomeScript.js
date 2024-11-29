@@ -187,10 +187,53 @@ async function fetchAndDisplayServers() {
         const button = document.createElement('button');
         button.style.height = '100px';
         button.style.width = '280px';
-        button.textContent = server;
+        button.textContent = server[1];
+        button.value = server[0];
+        button.addEventListener('click', goToServer);
         containerElement.appendChild(button);
         containerElement.appendChild(document.createElement('br'));
     });
+}
+
+async function goToServer(event) {
+    event.preventDefault();
+    const joinServerID = event.target.value;
+    const response = await fetch('/server', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            ServerID: joinServerID,
+        })
+    });
+
+    if (response.redirected) {
+        window.location.href = response.url;
+    } else {
+        alert('failed to redirect')
+    }
+}
+
+//TODO: implement
+async function goToCalendar(event) {
+    event.preventDefault();
+    // const joinServerID = event.target.value;
+    const response = await fetch('/server', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            CalendarID: UserCalendarID,
+        })
+    });
+
+    if (response.redirected) {
+        window.location.href = response.url;
+    } else {
+        alert('failed to redirect')
+    }
 }
 
 
@@ -206,6 +249,7 @@ window.onload = function() {
     premiumOrNot();
     currentPlan();
     setAvatar();
+    document.getElementById("calendar").addEventListener("click", goToCalendar);
     // document.getElementById("createAccountTable").addEventListener("submit", insertUserAccount);
     // document.getElementById("displayServers").addEventListener("click", resetDemotable);
     // document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
