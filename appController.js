@@ -1,5 +1,6 @@
 const express = require('express');
 const appService = require('./appService');
+const karenappService = require("./karen/karenappService");
 // const allisonAppService = require("./allison/allisonAppService");
 //const appService = require('./allisonAppService');
 //const appService = require('./karenappService');
@@ -317,6 +318,27 @@ router.post("/delete-event", async (req, res) => {
     } else {
         res.status(500).json({ success: false });
     }
+});
+
+//////////////////////Karen's addition
+
+router.get('/fetch-BusyUser', async (req, res) => {
+    const result = await karenappService.fetchBusyUser();
+    res.json({ data: result });
+});
+
+router.post("/fetch-BusyMonth", async (req, res) => {
+    const { userLimit } = req.body;
+    const result = await karenappService.fetchBusyMonth(userLimit);
+    res.json({ data: result });
+});
+
+router.post("/fetch-SharedEvents", async (req, res) => {
+    const { query } = req.body;
+    console.log("reached fetch-SharedEvents");
+    const result = await karenappService.fetchSharedEvents(query);
+    console.log("returned from fetch-SharedEvents");
+    res.json({ data: result });
 });
 
 module.exports = router;
