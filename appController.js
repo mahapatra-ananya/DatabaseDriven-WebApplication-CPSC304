@@ -605,6 +605,12 @@ router.post("/insert-channel-table", async (req, res) => {
     }
 });
 
+///////////////////////////////////Karen added below 11/29
 
+router.post("/insert-EventToCalendar", async (req, res) => {
+    const { CalendarID, EventID } = req.body;
+    const result = await appService.postEventToCalendar(CalendarID, EventID);
+    res.json({ success: result });
+});
 
 module.exports = router;

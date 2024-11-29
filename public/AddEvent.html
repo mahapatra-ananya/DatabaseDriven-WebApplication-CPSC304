@@ -26,7 +26,7 @@
 
     <h2> Create an Event </h2>
     <form id="insertEventtable">
-        EventID: <input type="number" step="1" id="insertEventId" placeholder="Enter Event ID" required> <br><br>
+        EventID: <input type="number" step="1" min = "1" id="insertEventId" placeholder="Enter Event ID" required> <br><br>
         EventName: <input type="text" id="insertEventName" placeholder="Enter Event Name" maxlength="20" required> <br><br>
         EventDateTime: <input type="datetime-local" id="insertEventTime" placeholder="Enter Event Start" maxlength="20" required> <br><br>
         Duration: <input type="number" id="insertEventDuration" placeholder="Enter Event Duration"> <br><br>
@@ -36,6 +36,17 @@
         <button type="submit"> insert </button> <br>
     </form>
     <div id="EventinsertResultMsg"></div>
+
+<!--karen added start-->
+
+    <form id="insertToCalendar">
+         <div id="checkboxesCalendars"></div><div>
+        <button type="submit"> Post to Calendar </button> </div><br>
+    </form>
+
+<div id="insertIntoCalendarResultMsg"></div><br>
+
+<!--karen added end-->
 
 <br><hr><br> <!-- ========================================================================= -->
 <!-- ===================================================================================== -->

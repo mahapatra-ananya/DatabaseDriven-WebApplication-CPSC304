@@ -119,7 +119,7 @@ router.get('/count-Eventtable', async (req, res) => {
     }
 });
 
-///////////////////////////////////////////// MERGE BELOW INTO GLOBAL DIR /////////////////////////////////////////////
+///////////////////////////////////////////// MERGED /////////////////////////////////////////////
 
 router.get('/fetch-BusyUser', async (req, res) => {
     const result = await karenappService.fetchBusyUser();
@@ -140,5 +140,12 @@ router.post("/fetch-SharedEvents", async (req, res) => {
     res.json({ data: result });
 });
 
+////////////////////////////////TODO TO ADD TO ALLISONS BELOW
+
+router.post("/insert-EventToCalendar", async (req, res) => {
+    const { CalendarID, EventID } = req.body;
+    const result = await karenappService.postEventToCalendar(CalendarID, EventID);
+    res.json({ success: result });
+});
 
 module.exports = router;

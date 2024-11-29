@@ -67,6 +67,8 @@ async function checkDbConnection() {
 //     }
 // }
 
+let currEventID = -1; // set up tracker for event ID // TODO add to allisons
+
 // Fetches data from the calendar table and displays it.
 async function fetchAndDisplayEvent() {
     const tableElement = document.getElementById('Eventtable');
@@ -123,12 +125,159 @@ async function insertEventtable(event) {
     const messageElement = document.getElementById('EventinsertResultMsg');
 
     if (responseData.success) {
-        messageElement.textContent = "Event Data inserted successfully!";
+        currEventID = idValue; // track event last inserted // TODO add to allisons
+        messageElement.textContent = "Event Data created successfully!";
         fetchEventTableData();
     } else {
-        messageElement.textContent = "Error inserting Event data!";
+        messageElement.textContent = "Error creating Event!";
     }
 }
+
+////////////////////////////////TODO TO ADD TO ALLISONS BELOW
+
+async function getAllCalendarIDName() {
+
+    //this is general getter fn that already exists in controller to appservice
+    const response = await fetch('/Calendartable', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const allCalendarTables = responseData.data;
+
+    allCalendars = []; // local array to store retrieved calenadr table
+    allCalendarTables.forEach(calendar => {
+        calendar.forEach((ind, field) => {
+            allCalendars.push(ind);
+        });
+    });
+
+    // get gui checkbox div to populate
+    let allCalendarList = document.getElementById('checkboxesCalendars');
+    document.getElementById('checkboxesCalendars').innerHTML='';
+
+    for (let i = 0; i < allCalendars.length/3; i++) {       //ID, name, username
+        let CalendarID = allCalendars[i*3];                          // Access CalendarID
+        let CalendarTitle = allCalendars[(i*3) + 1];                 // Access CalendarName
+
+        var label= document.createElement("label");
+        var description = document.createTextNode(CalendarTitle);
+        var checkbox = document.createElement("input");
+
+        checkbox.type = "checkbox";    // make the element a checkbox
+        checkbox.name = CalendarTitle;      // give it a name we can check on the server side
+        checkbox.value = CalendarID;         // make its value "calendarID"
+
+
+        label.appendChild(checkbox);   // add the box to the element
+        label.appendChild(description);// add the description to the element
+
+        allCalendarList.appendChild(label);
+    }
+}
+
+async function insertAllEventsIntoCalendar(event) {
+    event.preventDefault();
+
+    var checkedboxes = [];
+    var checkednames = [];
+    var checkboxes = document.querySelectorAll('input[type=checkbox]:checked');
+
+    for (var i = 0; i < checkboxes.length; i++) {
+        checkedboxes.push(checkboxes[i].value)
+    }
+    for (var i = 0; i < checkboxes.length; i++) {
+        checkednames.push(checkboxes[i].name)
+    }
+
+    console.log(checkedboxes);//confirm we got the right calendar id's back
+
+    const messageElement = document.getElementById('insertIntoCalendarResultMsg');
+    let messages = '';
+
+
+    if (checkedboxes.length < 1) {
+        messages = "Please check at least one calendar";
+    } else if (currEventID < 0) {
+        messages = "Please create an event before adding to calendar";
+    } else {
+        for (var i = 0; i < checkedboxes.length; i++) {
+            let msg = await insertIntoCalendar(checkedboxes[i]);
+            let name = checkednames[i];
+            messages = `${messages} ${msg} ${name}! `;
+        }
+    }
+    messageElement.textContent = messages;
+    fetchEventTableData();
+}
+
+
+async function insertIntoCalendar(CalendaridValue) {
+
+    // const CalendaridValue = document.getElementById('insertIntoCalendarID').value;
+    const EventidValue = currEventID;
+    // const messageElement = document.getElementById('insertIntoCalendarResultMsg');
+
+    // if (EventidValue < 0) {
+    //     // messageElement.textContent = "Please make new event first before adding to a calendar!";
+    //     return "Please make new event first before adding to a calendar!";
+    // } else {
+        const response = await fetch('/insert-EventToCalendar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                CalendarID: CalendaridValue,
+                EventID: EventidValue
+            })
+        });
+
+        const responseData = await response.json();
+
+        if (responseData.success) {
+            // messageElement.textContent = "Event posted to calendar successfully!";
+            return "Event posted to ";
+        } else {
+            // messageElement.textContent = "Error posting event to calendar!";
+            return "Error posting event to ";
+        }
+    // }
+
+}
+
+// async function insertIntoCalendar(event) {
+//
+//
+//     const CalendaridValue = document.getElementById('insertIntoCalendarID').value;
+//     const EventidValue = currEventID;
+//     const messageElement = document.getElementById('insertIntoCalendarResultMsg');
+//
+//     if (EventidValue < 0) {
+//         messageElement.textContent = "Please make new event first before adding to a calendar!";
+//     } else {
+//         const response = await fetch('/insert-EventToCalendar', {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             },
+//             body: JSON.stringify({
+//                 CalendarID: CalendaridValue,
+//                 EventID: EventidValue
+//             })
+//         });
+//
+//         const responseData = await response.json();
+//
+//         if (responseData.success) {
+//             messageElement.textContent = "Event posted to calendar successfully!";
+//             fetchEventTableData();
+//         } else {
+//             messageElement.textContent = "Error posting event to calendar!";
+//         }
+//     }
+//
+// }
 
 
 // ---------------------------------------------------------------
@@ -139,6 +288,7 @@ window.onload = function() {
 
     // fetchCalendarTableData();
     fetchEventTableData();
+    getAllCalendarIDName(); // TODO: add to allison
 
     // document.getElementById("resetAllTables").addEventListener("click", resetAllTables);
     // document.getElementById("insertCalendartable").addEventListener("submit", insertCalendartable);
@@ -147,6 +297,8 @@ window.onload = function() {
 
     //document.getElementById("resetEventtable").addEventListener("click", resetEventtable);
     document.getElementById("insertEventtable").addEventListener("submit", insertEventtable);
+
+    document.getElementById("insertToCalendar").addEventListener("submit", insertAllEventsIntoCalendar); // TODO: add to allisons
     // document.getElementById("countEventtable").addEventListener("click", countEventtable);
 
     // document.getElementById("findCalendarID").addEventListener("submit", getEventDates);

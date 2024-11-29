@@ -364,7 +364,7 @@ async function insertEventtable(EventID, EventName, EventDateTime, Duration, Det
     });
 }
 
-///////////////////////////////////////////// MERGE BELOW INTO GLOBAL DIR /////////////////////////////////////////////
+///////////////////////////////////////////// MERGED /////////////////////////////////////////////
 
 async function fetchBusyUser() {
     return await withOracleDB(async (connection) => {
@@ -401,6 +401,22 @@ async function fetchSharedEvents(query) {
     });
 }
 
+////////////////////////////////TODO TO ADD TO ALLISONS BELOW
+
+async function postEventToCalendar(CalendarID, EventID) {
+
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `INSERT INTO POSTEDTO (CalendarID, EventID) 
+            VALUES (:CalendarID, :EventID)`,
+            [CalendarID, EventID],
+            { autoCommit: true }
+        );
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
 
 module.exports = {
     testOracleConnection,
@@ -434,7 +450,9 @@ module.exports = {
 
     fetchBusyUser,
     fetchBusyMonth,
-    fetchSharedEvents
+    fetchSharedEvents,
+
+    postEventToCalendar // TODO add to allison
 
 
     // getEventDatesFromCalendar

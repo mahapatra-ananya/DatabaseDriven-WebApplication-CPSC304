@@ -130,6 +130,109 @@ async function insertEventtable(event) {
     }
 }
 
+///////////////////////////////KAREN ADDED BELOW
+
+async function getAllCalendarIDName() {
+
+    //this is general getter fn that already exists in controller to appservice
+    const response = await fetch('/Calendartable', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const allCalendarTables = responseData.data;
+
+    allCalendars = []; // local array to store retrieved calenadr table
+    allCalendarTables.forEach(calendar => {
+        calendar.forEach((ind, field) => {
+            allCalendars.push(ind);
+        });
+    });
+
+    // get gui checkbox div to populate
+    let allCalendarList = document.getElementById('checkboxesCalendars');
+    document.getElementById('checkboxesCalendars').innerHTML='';
+
+    for (let i = 0; i < allCalendars.length/3; i++) {       //ID, name, username
+        let CalendarID = allCalendars[i*3];                          // Access CalendarID
+        let CalendarTitle = allCalendars[(i*3) + 1];                 // Access CalendarName
+
+        var label= document.createElement("label");
+        var description = document.createTextNode(CalendarTitle);
+        var checkbox = document.createElement("input");
+
+        checkbox.type = "checkbox";    // make the element a checkbox
+        checkbox.name = CalendarTitle;      // give it a name we can check on the server side
+        checkbox.value = CalendarID;         // make its value "calendarID"
+
+
+        label.appendChild(checkbox);   // add the box to the element
+        label.appendChild(description);// add the description to the element
+
+        allCalendarList.appendChild(label);
+    }
+}
+
+async function insertAllEventsIntoCalendar(event) {
+    event.preventDefault();
+
+    var checkedboxes = [];
+    var checkednames = [];
+    var checkboxes = document.querySelectorAll('input[type=checkbox]:checked');
+
+    for (var i = 0; i < checkboxes.length; i++) {
+        checkedboxes.push(checkboxes[i].value)
+    }
+    for (var i = 0; i < checkboxes.length; i++) {
+        checkednames.push(checkboxes[i].name)
+    }
+
+    console.log(checkedboxes);//confirm we got the right calendar id's back
+
+    const messageElement = document.getElementById('insertIntoCalendarResultMsg');
+    let messages = '';
+
+
+    if (checkedboxes.length < 1) {
+        messages = "Please check at least one calendar";
+    } else if (currEventID < 0) {
+        messages = "Please create an event before adding to calendar";
+    } else {
+        for (var i = 0; i < checkedboxes.length; i++) {
+            let msg = await insertIntoCalendar(checkedboxes[i]);
+            let name = checkednames[i];
+            messages = `${messages} ${msg} ${name}! `;
+        }
+    }
+    messageElement.textContent = messages;
+    fetchEventTableData();
+}
+
+
+async function insertIntoCalendar(CalendaridValue) {
+
+    const EventidValue = currEventID;
+    const response = await fetch('/insert-EventToCalendar', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            CalendarID: CalendaridValue,
+            EventID: EventidValue
+        })
+    });
+
+    const responseData = await response.json();
+
+    if (responseData.success) {
+        return "Event posted to ";
+    } else {
+        return "Error posting event to ";
+    }
+
+
+}
 
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
@@ -137,27 +240,16 @@ async function insertEventtable(event) {
 window.onload = function() {
     checkDbConnection();
 
-    // fetchCalendarTableData();
     fetchEventTableData();
+    getAllCalendarIDName(); // added by karen
 
-    // document.getElementById("resetAllTables").addEventListener("click", resetAllTables);
-    // document.getElementById("insertCalendartable").addEventListener("submit", insertCalendartable);
-    // document.getElementById("updataNameCalendartable").addEventListener("submit", updateNameCalendartable);
-    // document.getElementById("countCalendartable").addEventListener("click", countCalendartable);
 
-    //document.getElementById("resetEventtable").addEventListener("click", resetEventtable);
     document.getElementById("insertEventtable").addEventListener("submit", insertEventtable);
-    // document.getElementById("countEventtable").addEventListener("click", countEventtable);
+    document.getElementById("insertToCalendar").addEventListener("submit", insertAllEventsIntoCalendar); // added by karen
 
-    // document.getElementById("findCalendarID").addEventListener("submit", getEventDates);
 };
 
-// General function to refresh the displayed table data. 
-// You can invoke this after any table-modifying operation to keep consistency.
-// function fetchCalendarTableData() {
-//     fetchAndDisplayCalendar();
-// }
-//
+// General function to refresh the displayed table data.
 function fetchEventTableData() {
     fetchAndDisplayEvent();
 }
