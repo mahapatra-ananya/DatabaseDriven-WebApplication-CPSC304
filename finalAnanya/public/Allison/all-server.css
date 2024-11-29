@@ -1,0 +1,8 @@
+h1 {
+    color: #0098ff;
+}
+
+#allison-nav {
+    display: flex;
+    justify-content: space-around;
+}

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create a Server</title>
+    <link rel="stylesheet" href="./all-server.css"/>
+    <link rel="stylesheet" href="./create-server.css"/>
+</head>
+<body>
+<!--<nav id="allison-nav">-->
+<!--    <a href="#">Home</a>-->
+<!--    <a href="./index.html">Index</a>-->
+
+<!--    <a href="./create-server.html">Create a Server</a>-->
+<!--    <a href="./server.html">Server</a>-->
+<!--    <a href="./join-server.html">Join a Server</a>-->
+<!--    <a href="./server-admin-metrics.html">Server Admin Metrics</a>-->
+<!--</nav>-->
+<div>
+    <a href="./ananyaHome.html">
+        <button>
+            <img src="./home_icon.png" alt="HomeIcon" width="50" height="50">
+        </button>
+    </a>
+</div>
+    <h1>Create a Server</h1>
+<form id="insertServer">
+    <div class="formComponent">
+        <label for="insertServerName" style="display:block">Enter a Server Name</label>
+        <input type="text" id="insertServerName" placeholder="Server Name" required>
+    </div>
+    <div class="formComponent">
+        <label for="insertAvatar">Select a Server Avatar</label>
+        <div id="insertAvatar">
+        </div>
+    </div>
+    <div class="formComponent">
+        <label for="insertChannelGroup">Add Channels</label>
+        <div id="insertChannelGroup">
+            <input type="text" class="newChannel" placeholder="Channel Name" required/>
+        </div>
+        <a href='#' id="addChannelBtn">+ Channel</a>
+    </div>
+    <div class="formComponent">
+        <label for="insertTag">Enter an admin tag</label>
+        <input type="text" id="insertTag" placeholder="Admin Tag"/>
+    </div>
+    <div class="formComponent">
+        <label for="insertSignature">Enter a signature for this server</label>
+        <input type="text" id="insertSignature" placeholder="Server Signature"/>
+    </div>
+    <button id="createServerBtn" type="submit">Create Server</button>
+</form>
+
+<div id="onInsertServerSuccess">
+    <p>You have successfully created the <span id="successServerName"></span> Server!</p>
+    <p>Select 'Next' to go to your server's page</p>
+    <button id="nextBtn">Next</button>
+</div>
+
+<script src="./create-server-script.js"></script>
+</body>
+</html>

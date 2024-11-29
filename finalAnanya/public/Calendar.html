@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- This meta tag ensures that the website renders correctly across different device sizes, enhancing mobile responsiveness. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Link to the external CSS stylesheet. Uncomment if you wish to customize or add styling. -->
+    <link rel="stylesheet" href="./styles.css">
+
+    <title>Calendar View</title>
+</head>
+<body>
+<div>
+    <a href="./ananyaHome.html">
+        <button>
+            <img src="./home_icon.png" alt="HomeIcon" width="50" height="50">
+        </button>
+    </a>
+</div>
+
+    <h2> Select Calendar ID to filter on</h2>
+    <form id="findCalendarID">
+        CalendarID: <input type="number" step="1" id="filterCalendarID" required> <br><br>
+        <button type="submit"> submit </button> <br>
+    </form>
+    <div id="EventDateResultMsg"></div>
+<br/>
+    <!-- ===================================================================================== -->
+
+    <div class="Calendar">
+        <div class="header">
+            <button id="prevMonth"> ‹ </button>
+            <div id="monthYear"></div>
+            <button id="nextMonth"> › </button>
+        </div>
+        <div class="calendar-body">
+            <div class="calendar-weekdays">
+                <div>Sun</div>
+                <div>Mon</div>
+                <div>Tue</div>
+                <div>Wed</div>
+                <div>Thu</div>
+                <div>Fri</div>
+                <div>Sat</div>
+            </div>
+            <div class="calendar-dates">
+                <!-- Dates will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <div id="reminder-section">
+        <h3>Reminders</h3>
+        <!-- List to display reminders -->
+        <ul id="reminderList">
+            <li data-event-id="1">
+                <strong>Event Title</strong>
+                - Event Description on Event Date
+                <button class="edit-event"
+                        onclick = "editEvent()">
+                    Edit
+                </button>
+<!--                TODO: REMOVE LATER OnLY FOR PLANNING-->
+                <form id="insertEventtable">
+                    EventName: <input type="text" id="insertEventName" placeholder="Enter Event Name" maxlength="20"> <br><br>
+                    EventDateTime: <input type="datetime-local" id="insertEventTime" placeholder="Enter Event Start" maxlength="20"> <br><br>
+                    Duration: <input type="number" id="insertEventDuration" placeholder="Enter Event Duration"> <br><br>
+                    Details: <input type="text" id="insertEventDetail" placeholder="Enter Event Details" maxlength="250"> <br><br>
+                    EventUserName: <input type="text" id="insertEventUserName" placeholder="Enter Event User Name" maxlength="20"> <br><br>
+                    <button type="submit"> insert </button> <br>
+                </form>
+            </li>
+        </ul>
+    </div>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <h2>Add an Event</h2>
+    <a href="./AddEvent.html">
+        <button id = "goToAddEvent">Add an Event </button> </a>
+
+    <br><br>
+
+    <h2>Add a Calendar</h2>
+    <a href="./addCalendar.html">
+        <button id = "goToAddCalendar">Add a Calendar </button> </a>
+
+    <br><br>
+
+    <h2>See Activity Metrics</h2>
+    <a href="./ActivityMetrics.html">
+        <button id = "goToActovotu">Activity Metrics </button> </a>
+
+    <br><br>
+
+<hr><br> <!-- ========================================================================= -->
+<!-- ===================================================================================== -->
+<!-- Display the current status of the database connection.
+     !!HERE TO HELP U DEBUGGING, NOT REQUIRED IN YOUR OWN PROJECT!!
+     -->
+<h3>Database Connection Status:
+    <!-- An in-line placeholder to display connection status. -->
+    <span id="dbStatus"> </span>
+    <!-- A loading GIF, will be hided once get the status. -->
+    <img id="loadingGif" class="loading-gif" src="loading_100px.gif" alt="Loading...">
+</h3>
+
+    <!-- ===================================================================================== -->
+    <!-- External JavaScript file that contains the functionality/logic for the operations above. -->
+    <script src="Calendar.js"></script>
+</body>
+</html>

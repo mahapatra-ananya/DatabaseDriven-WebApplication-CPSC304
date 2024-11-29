@@ -1,0 +1,47 @@
+#searchQuery {
+    width: 75%;
+    margin-right: 5px;
+}
+
+#searchGroup {
+    display: flex;
+    justify-content: center;
+}
+
+#serverList {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: 30px;
+    margin-left: 30px;
+    margin-right: 30px;
+    background-color: #d9d9d9;
+}
+
+.serverItem {
+    display: flex;
+    flex-direction: row;
+    height: 50px;
+    background-color: #EEEBEB;
+    margin: 10px
+}
+
+.serverName {
+    flex: 2;
+    margin-left: 10px;
+    font-size: large;
+}
+
+.serverId {
+    flex: 0.5;
+    color: #4c4c4c;
+}
+
+.joinServerBtn {
+    flex: 0.5;
+    align-self: center;
+    background-color: #518EFF;
+    color: white;
+    height: 30px;
+    margin-right: 5px;
+}

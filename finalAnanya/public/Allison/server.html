@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ServerName</title>
+    <link rel="stylesheet" href="./all-server.css"/>
+    <link rel="stylesheet" href="./server.css"/>
+</head>
+<body>
+<nav id="allison-nav">
+    <a href="./index.html">Index</a>
+    <a href="./create-server.html">Create a Server</a>
+    <a href="./server.html">Server</a>
+    <a href="./join-server.html">Join a Server</a>
+    <a href="./server-admin-metrics.html">Server Admin Metrics</a>
+</nav>
+<div class="serverContainer">
+
+    <div class="leftMenu">
+        <div class="serverInformation">
+            <h1 class="serverName"></h1>
+            <div class="serverAvatar"></div>
+            <h4 class="serverPlan"></h4>
+        </div>
+        <div class="serverCalendar">
+            <!--            <p class="serverCalendarName">ServerName Calendar</p>-->
+            <button class="serverCalendarBtn"></button>
+        </div>
+        <div class="channelList">
+        </div>
+    </div>
+
+    <div class="channelChat">
+        <h3 class="channelNameChat">ChannelName Chat</h3>
+        <div class="currentUserMessage message">
+            <p class="messageContent">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc fringilla bibendum ornare. Suspendisse ornare mauris sit amet elit vestibulum volutpat. Quisque vel enim pharetra, congue quam eget, gravida eros. Etiam tempor rutrum dui eget gravida. Donec vestibulum vulputate ligula sed dictum. Cras sit amet nisl id lorem faucibus ultrices id in urna. Phasellus aliquam vestibulum sapien, sit amet interdum justo fermentum in. In vel ante id lorem gravida dignissim.</p>
+            <div class="userAvatar"></div>
+        </div>
+        <div class="message">
+            <div class="userAvatar"></div>
+            <p class="messageContent">MessageContent</p>
+        </div>
+        <div id="sendMessageGroup">
+            <input type="text" id="messageInput" placeholder="Send a Message"/>
+            <button id="messageBtn">Send</button>
+        </div>
+    </div>
+
+    <script src="./server-script.js"></script>
+</div>
+</body>
+</html>

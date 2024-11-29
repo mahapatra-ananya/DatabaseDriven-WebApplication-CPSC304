@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- This meta tag ensures that the website renders correctly across different device sizes, enhancing mobile responsiveness. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Link to the external CSS stylesheet. Uncomment if you wish to customize or add styling. -->
+    <!-- <link rel="stylesheet" href="styles.css">   -->
+
+    <title>Database Application</title>
+</head>
+<body>
+<div>
+    <a href="./ananyaHome.html">
+        <button>
+            <img src="home_icon.png" alt="HomeIcon" width="50" height="50">
+        </button>
+    </a>
+</div>
+
+<h2>Back to Calendar</h2>
+<a href="Calendar.html">
+    <button id = "goToCalendar">Back to Calendar</button> </a>
+
+
+<!--<h2>Reset and Populate All tables</h2>-->
+<!--<p>If you wish to reset the table press on the reset button. If this is the first time you're running this page, you MUST use reset</p>-->
+<!--<button id="resetAllTables"> Populate </button> <br>-->
+<!-- A placeholder to display messages related to the reset operation. -->
+<!--<div id="resetResultMsg"></div>-->
+
+<!--  TODO -->
+<!--<br><hr><br> &lt;!&ndash; ========================================================================= &ndash;&gt;-->
+
+<h2> Create a New Calendar </h2>
+<form id="insertCalendartable">
+    CalendarID: <input type="number" step="1" id="insertCalendarId" placeholder="Enter Calendar ID" required> <br><br>
+    CalendarName: <input type="text" id="insertCalendarName" placeholder="Enter Calendar Name" maxlength="20"> <br><br>
+    UserName: <input type="text" id="insertUserName" placeholder="Enter User Name" maxlength="20"> <br><br>
+    <button type="submit"> insert </button> <br>
+</form>
+<div id="insertResultMsg"></div>
+
+<br><hr><br> <!-- ========================================================================= -->
+<!-- Show 'Demotable'.
+    Data will be fetched and inserted here dynamically using JavaScript. -->
+<h2>Show Calendar table</h2>
+<table id="Calendartable" border="1">
+    <thead>
+    <tr>
+        <!--Table head, need to be adjusted accordingly to align with your own.-->
+        <th>CalendarID</th>
+        <th>CalendarName</th>
+        <th>UserName</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<br><hr/><br>
+<!-- ===================================================================================== -->
+<!-- Display the current status of the database connection.
+     !!HERE TO HELP U DEBUGGING, NOT REQUIRED IN YOUR OWN PROJECT!!
+     -->
+<h3>Database Connection Status:
+    <!-- An in-line placeholder to display connection status. -->
+    <span id="dbStatus"> </span>
+    <!-- A loading GIF, will be hided once get the status. -->
+    <img id="loadingGif" class="loading-gif" src="loading_100px.gif" alt="Loading...">
+</h3>
+
+<br><hr><br> <!-- ========================================================================= -->
+
+<!-- ===================================================================================== -->
+<!-- External JavaScript file that contains the functionality/logic for the operations above. -->
+<script src="addCalendar.js"></script>
+</body>
+</html>

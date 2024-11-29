@@ -1,0 +1,31 @@
+#addChannelBtn {
+    border: grey solid 1px;
+    padding: 2px;
+}
+
+#insertChannelGroup {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.newChannel {
+    top: 5px;
+    margin-bottom: 5px;
+    width: 25%
+}
+
+#createServerBtn {
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.formComponent {
+    margin-top: 10px;
+}
+
+#onInsertServerSuccess {
+    display: none;
+}

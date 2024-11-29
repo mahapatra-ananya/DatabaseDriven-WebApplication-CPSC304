@@ -1,12 +1,10 @@
 const oracledb = require('oracledb');
+const loadEnvFile = require('./utils/envUtil');
 const path = require('path')
 const fs = require('fs')
-const connection = require("oracledb/lib/connection");
-const loadEnvFile = require("./utils/envUtil");
-// require('dotenv').config();
+
 
 const envVariables = loadEnvFile('./.env');
-
 
 // Database configuration setup. Ensure your .env file has the required database credentials.
 const dbConfig = {
@@ -18,7 +16,6 @@ const dbConfig = {
     poolIncrement: 1,
     poolTimeout: 60
 };
-
 
 // initialize connection pool
 async function initializeConnectionPool() {
@@ -82,78 +79,11 @@ async function testOracleConnection() {
     });
 }
 
-async function fetchDemotableFromDb() {
-    return await withOracleDB(async (connection) => {
-        const result = await connection.execute('SELECT * FROM DEMOTABLE');
-        return result.rows;
-    }).catch(() => {
-        return [];
-    });
-}
-
-async function initiateDemotable() {
-    return await withOracleDB(async (connection) => {
-        try {
-            await connection.execute(`DROP TABLE DEMOTABLE`);
-        } catch(err) {
-            console.log('Table might not exist, proceeding to create...');
-        }
-
-        const result = await connection.execute(`
-            CREATE TABLE DEMOTABLE (
-                                       id NUMBER PRIMARY KEY,
-                                       name VARCHAR2(20),
-                                        color VARCHAR2(20)
-            )
-        `);
-        return true;
-    }).catch(() => {
-        return false;
-    });
-}
-
-async function insertDemotable(id, name, color) {
-    return await withOracleDB(async (connection) => {
-        const result = await connection.execute(
-            `INSERT INTO DEMOTABLE (id, name, color) VALUES (:id, :name, :color)`,
-            [id, name, color],
-            { autoCommit: true }
-        );
-
-        return result.rowsAffected && result.rowsAffected > 0;
-    }).catch(() => {
-        return false;
-    });
-}
-
-async function updateNameDemotable(oldName, newName) {
-    return await withOracleDB(async (connection) => {
-        const result = await connection.execute(
-            `UPDATE DEMOTABLE SET name=:newName where name=:oldName`,
-            [newName, oldName],
-            { autoCommit: true }
-        );
-
-        return result.rowsAffected && result.rowsAffected > 0;
-    }).catch(() => {
-        return false;
-    });
-}
-
-async function countDemotable() {
-    return await withOracleDB(async (connection) => {
-        const result = await connection.execute('SELECT Count(*) FROM DEMOTABLE');
-        return result.rows[0][0];
-    }).catch(() => {
-        return -1;
-    });
-}
-
-////////////////////////////////////////////////////////////
+///////////////////////////////// GLOBAL POPULATE SCRIPT //////////////////////////////////
 /*Initializing All Tables*/
 async function initiateAllTables() {
 
-    const scriptPath = path.resolve(__dirname, '../304_InitializeTables.sql');
+    const scriptPath = path.resolve(__dirname, '../304_InitializeTablesDelete.sql');
     return await withOracleDB(async (connection) => {
         try {
             // Get the SQL Script
@@ -322,12 +252,30 @@ async function fetchJoinsTableFromDb() {
     });
 }
 
-/***CREATE SERVER***/
-async function insertServerTable(serverId, serverName, premiumPlanId, calendarId, avatarId) {
+////////////////////////////////////////////// POSTEDTO //////////////////////////////////////////////////
+
+// async function insertPostedtable(EventID, EventUsername) {
+//     return await withOracleDB(async (connection) => {
+//         const result = await connection.execute(
+//             `INSERT INTO PostedTo (CalendarID, EventID)
+//             VALUES (:CalendarID, :CalendarName)`,
+//             [EventID, EventUsername],
+//             { autoCommit: true }
+//         );
+//         return result.rowsAffected && result.rowsAffected > 0;
+//     }).catch(() => {
+//         return false;
+//     });
+// }
+
+
+////////////////////////////////////////////// CALENDAR //////////////////////////////////////////////////
+async function insertCalendartable(CalendarID, CalendarName, UserName) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `INSERT INTO SERVER (ServerID, ServerName, PlanID, CalendarID, AvatarID) VALUES (:serverId, :serverName, :premiumPlanId, :calendarId, :avatarId)`,
-            [serverId, serverName, premiumPlanId, calendarId, avatarId],
+            `INSERT INTO CALENDAR (CalendarID, CalendarName, UserName) 
+            VALUES (:CalendarID, :CalendarName, :UserName)`,
+            [CalendarID, CalendarName, UserName],
             { autoCommit: true }
         );
 
@@ -336,220 +284,176 @@ async function insertServerTable(serverId, serverName, premiumPlanId, calendarId
         return false;
     });
 }
-async function generateServerId() {
+
+async function updateNameCalendartable(oldName, newName) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `SELECT MAX(SERVERID) FROM SERVER`
+            `UPDATE CALENDAR SET CalendarName=:newName where CalendarName=:oldName`,
+            [newName, oldName],
+            { autoCommit: true }
         );
-        return Number(result.rows[0][0]) + 1;
+
+        return result.rowsAffected && result.rowsAffected > 0;
     }).catch(() => {
         return false;
     });
 }
 
-async function generateCalendarId() {
+async function countCalendartable() {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute(
-            `SELECT MAX(CALENDARID) FROM CALENDAR`
-        );
-
-        return Number(result.rows[0][0]) + 1;
-    }).catch(() => {
-        return false;
-    });
-}
-
-async function getAdminPlanID(currentUsername) {
-    return await withOracleDB(async (connection) => {
-        const result = await connection.execute(
-            `SELECT PlanID FROM USERACCOUNT WHERE username=:currentUsername`, [currentUsername]
-        );
-
+        const result = await connection.execute('SELECT Count(*) FROM CALENDAR');
         return result.rows[0][0];
     }).catch(() => {
-        return false;
+        return -1;
     });
 }
 
-///////**********INSERT ADMINISTRATOR TABLE**********//
-async function insertAdministratorTable(Username, Tag, Signature, ServerID) {
+////////////////////////////////////////////// EVENTS //////////////////////////////////////////////////
+
+async function fetchEventDates(selectedCalendar) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `INSERT INTO ADMINISTRATOR (Username, Tag, Signature, ServerID) VALUES (:Username, :Tag, :Signature, :ServerID)`,
-            [Username, Tag, Signature, ServerID],
-            { autoCommit: true }
+            'SELECT e.EventDateTime FROM Event e, PostedTo p WHERE e.EventID = p.EventID AND p.CalendarID=:selectedCalendar', [selectedCalendar]
         );
-
-        return result.rowsAffected && result.rowsAffected > 0;
+            return result.rows;
     }).catch(() => {
-        return false;
+        return [];
     });
 }
 
-///////**********INSERT CHANNEL TABLE**********//
-async function insertChannelTable(ChannelID, ChannelTitle, ServerID) {
+async function fetchEventsOnDate(selectedCalendar, selectedYear, selectedMonth, selectedDate) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `INSERT INTO CHANNEL (ChannelID, ChannelTitle, ServerID) VALUES (:ChannelID, :ChannelTitle, :ServerID)`,
-            [ChannelID, ChannelTitle, ServerID],
-            { autoCommit: true }
+            'SELECT e.EventID, e.EventName, e.EventDateTime, e.Duration, e.Details ' +
+            'FROM Event e, PostedTo p WHERE e.EventID = p.EventID AND p.CalendarID=:selectedCalendar ' +
+            'AND EXTRACT( YEAR FROM e.EventDateTime) =:selectedYear AND EXTRACT( MONTH FROM e.EventDateTime) =:selectedMonth ' +
+            'AND EXTRACT( DAY FROM e.EventDateTime) =:selectedDate', [selectedCalendar, selectedYear, selectedMonth, selectedDate]
         );
-
-        return result.rowsAffected && result.rowsAffected > 0;
-    }).catch(() => {
-        return false;
-    });
-}
-
-///////**********INSERT CALENDAR TABLE**********//
-async function insertCalendarTable(CalendarID, CalendarName) {
-    return await withOracleDB(async (connection) => {
-        const result = await connection.execute(
-            `INSERT INTO CALENDAR (CalendarID, CalendarName, Username) VALUES (:CalendarID, :CalendarName, null)`,
-            [CalendarID, CalendarName],
-            { autoCommit: true }
-        );
-
-        return result.rowsAffected && result.rowsAffected > 0;
-    }).catch(() => {
-        return false;
-    });
-}
-
-/////////////////***************JOIN SERVER QUERIES*********************************////////
-async function fetchFilteredUserServers(Username){
-    return await withOracleDB(async (connection) => {
-        const result = await connection.execute(
-            `SELECT DISTINCT s.ServerID, s.ServerName, s.AvatarID, s.PlanID
-FROM Server s, PremiumPlan p, Joins j
-WHERE (s.PlanID = p.PlanID OR s.PlanID IS NULL)
-  AND s.ServerID NOT IN (SELECT j1.ServerID FROM Joins j1 WHERE j1.MemberUsername =:Username) 
-  AND s.ServerID NOT IN (SELECT a.ServerID FROM Administrator a WHERE a.Username =:Username)
-  AND (s.ServerID IN (SELECT DISTINCT s1.ServerID
-                      FROM Server s1, PremiumPlan p1
-                      WHERE s1.PlanID = p1.PlanID
-                        AND p1.MemberLimit > (SELECT Count(DISTINCT j2.ServerID) FROM Joins j2 WHERE j2.ServerID = s1.ServerID)) 
-      OR s.ServerID IN (SELECT DISTINCT s2.ServerID
-                        FROM Server s2
-                        WHERE s2.PlanID IS NULL
-                          and s2.ServerID IN (SELECT j3.ServerID FROM Joins j3 GROUP BY j3.ServerID HAVING Count(j3.ServerID) < 5)))
-                          ORDER BY s.ServerID`,
-            [Username])
         return result.rows;
     }).catch(() => {
+        return [];
+    });
+}
+
+async function countEventtable() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT Count(*) FROM EVENT');
+        return result.rows[0][0];
+    }).catch(() => {
+        return -1;
+    });
+}
+
+async function insertEventtable(EventID, EventName, EventDateTime, Duration, Details, EventUsername) {
+
+    const testTime = new Date(EventDateTime);
+    console.log(`TIME BEING INSERTED: ${EventDateTime}`);
+
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `INSERT INTO EVENT (EventID, EventName, EventDateTime, Duration, Details, Username) 
+            VALUES (:EventID, :EventName, :testTime, :Duration, :Details, :EventUsername)`,
+            [EventID, EventName, testTime, Duration, Details, EventUsername],
+            { autoCommit: true }
+        );
+        console.log(testTime);
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        console.log(testTime);
         return false;
     });
 }
 
-/*Insert Joins Table*/
-async function insertJoinsTable(Username, ServerID){
+///////////////////////////////////////////// MERGED /////////////////////////////////////////////
+
+async function fetchBusyUser() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `INSERT INTO JOINS (MemberUsername, ServerID, JoinDate) VALUES (:Username, :ServerID, CURRENT_DATE)`,
-            [Username, ServerID],
+            'SELECT DISTINCT COUNT(e.EventID) as EventCount, e.Username as Users ' +
+            'FROM Event e GROUP BY e.Username ORDER BY COUNT(e.EventID)');
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
+async function fetchBusyMonth(userLimit) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            'SELECT SUM(e.Duration) as TotalHours, EXTRACT(MONTH FROM e.EventDateTime) as Month, ' +
+            'EXTRACT(YEAR FROM e.EventDateTime) as Year FROM Event e ' +
+            'GROUP BY EXTRACT( MONTH FROM e.EventDateTime), EXTRACT(YEAR FROM e.EventDateTime) ' +
+            'HAVING SUM(e.Duration) > :userLimit ORDER BY SUM(e.Duration) DESC', [userLimit]
+        );
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
+async function fetchSharedEvents(query) {
+    console.log(query);
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(query);
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
+////////////////////////////////TODO TO ADD TO ALLISONS BELOW
+
+async function postEventToCalendar(CalendarID, EventID) {
+
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `INSERT INTO POSTEDTO (CalendarID, EventID) 
+            VALUES (:CalendarID, :EventID)`,
+            [CalendarID, EventID],
             { autoCommit: true }
         );
-
         return result.rowsAffected && result.rowsAffected > 0;
     }).catch(() => {
         return false;
     });
 }
-
-/*Insert GeneralMember Table*/
-async function insertGeneralMemberTable(Username){
-    return await withOracleDB(async (connection) => {
-        const result = await connection.execute(
-            `INSERT INTO GENERALMEMBER (Username, Signature) VALUES (:Username, null)`,
-            [Username],
-            { autoCommit: true }
-        );
-
-        return result.rowsAffected && result.rowsAffected > 0;
-    }).catch(() => {
-        return false;
-    });
-}
-
-async function isUserGeneralMember(Username) {
-    return await withOracleDB(async (connection) => {
-        const result = await connection.execute(
-            `SELECT Username FROM GENERALMEMBER WHERE username=:Username`, [Username]
-        );
-
-        return result.rows.length !==0;
-    }).catch(() => {
-        return false;
-    });
-}
-
-async function fetchServerPageInfo(ServerID) {
-    return await withOracleDB(async (connection) => {
-        const result = await connection.execute(
-            `SELECT s.ServerName, s.AvatarID, s.PlanID, s.CalendarID, p.Tier, p.MemberLimit, p.Theme
-       FROM Server s, PremiumPlan p 
-       WHERE s.ServerID=:ServerID
-       AND s.PlanID=p.PlanID`,
-            [ServerID]
-        );
-
-        return result.rows;
-    }).catch(() => {
-        return false;
-    });
-}
-
-async function fetchServerPageChannels(ServerID) {
-    return await withOracleDB(async (connection) => {
-        const result = await connection.execute(
-            `SELECT ChannelID, ChannelTitle
-            FROM Channel
-       WHERE ServerID=:ServerID`,
-            [ServerID]
-        );
-
-        return result.rows;
-    }).catch(() => {
-        return false;
-    });
-}
-
-///////////////////////////////////////////////////////////////////////////////
 
 module.exports = {
     testOracleConnection,
-    fetchDemotableFromDb,
-    initiateDemotable,
-    insertDemotable,
-    updateNameDemotable,
-    countDemotable,
+
+    insertCalendartable,
+    updateNameCalendartable,
+    countCalendartable,
+
+    insertEventtable,
+    countEventtable,
+
+    fetchEventDates,
+    fetchEventsOnDate,
+
     initiateAllTables,
-    fetchPaymentTableFromDb,
-    fetchTierTableFromDb,
-    fetchPremiumPlanTableFromDb,
-    fetchLocationTableFromDb,
-    fetchAvatarTableFromDb,
-    fetchUserAccountTableFromDb,
+    // fetchPaymentTableFromDb,
+    // fetchTierTableFromDb,
+    // fetchPremiumPlanTableFromDb,
+    // fetchLocationTableFromDb,
+    // fetchAvatarTableFromDb,
+    // fetchUserAccountTableFromDb,
     fetchCalendarTableFromDb,
     fetchEventTableFromDb,
-    fetchServerTableFromDb,
-    fetchChannelTableFromDb,
-    fetchGeneralMemberTableFromDb,
-    fetchAdministratorTableFromDb,
-    fetchMessageTableFromDb,
-    fetchPostedToTableFromDb,
-    fetchJoinsTableFromDb,
-    insertServerTable,
-    generateServerId,
-    generateCalendarId,
-    getAdminPlanID,
-    insertAdministratorTable,
-    insertChannelTable,
-    insertCalendarTable,
-    fetchFilteredUserServers,
-    insertJoinsTable,
-    insertGeneralMemberTable,
-    isUserGeneralMember,
-    fetchServerPageInfo,
-    fetchServerPageChannels
+    // fetchServerTableFromDb,
+    // fetchChannelTableFromDb,
+    // fetchGeneralMemberTableFromDb,
+    // fetchAdministratorTableFromDb,
+    // fetchMessageTableFromDb,
+    // fetchPostedToTableFromDb,
+    // fetchJoinsTableFromDb,
+
+    fetchBusyUser,
+    fetchBusyMonth,
+    fetchSharedEvents,
+
+    postEventToCalendar // TODO add to allison
+
+
+    // getEventDatesFromCalendar
 };
