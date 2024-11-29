@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Account</title>
+  <link rel="stylesheet" href="./edit-account.css"/>
+</head>
+<body>
+
+<div>
+  <a href="ananyaHome.html">
+    <button>
+      <img src="home_icon.png" alt="HomeIcon" width="50" height="50">
+    </button>
+  </a>
+</div>
+
+<br>
+
+<!--<form id="editAccountTable">-->
+<!--  don't allow to edit username as it is the PK -->
+
+  <form id="passwordForm" class="inputForm">Password: <input type="password" id="Password" maxlength="50"> <br><br>
+    <button type="submit"> Save </button> <br><br>
+  </form>
+  <form id="dnForm" class="inputForm">Display Name: <input type="text" id="DisplayName" maxlength="30"> <br><br>
+    <button type="submit"> Save </button> <br><br>
+  </form>
+  <form id="bioForm" class="inputForm">Bio: <input type="text" id="Bio" maxlength="250"> <br><br>
+    <button type="submit"> Save </button> <br><br>
+  </form>
+  <form id="regionForm" class="inputForm">
+    <label for="Region">Region:</label>
+    <select name="Region" id="Region"></select>
+
+    <br><br>
+    <button type="submit"> Save </button> <br><br>
+  </form>
+  <form id="avatarForm" class="inputForm">
+    <label for="Avatar">Choose an avatar:</label>
+    <select name="Avatar" id="Avatar"></select>
+    <br> <br>
+    <button type="submit"> Save </button> <br><br>
+  </form>
+
+<!--  <button type="submit"> Save </button> <br>-->
+
+<!--</form>-->
+<br><br>
+<button id="deleteButton">Delete</button>
+
+<div id="editResultMsg"></div>
+<div id="deleteResultMsg"></div>
+
+<script src="ananyaEditAccountScript.js"></script>
+
+</body>
+</html>
