@@ -490,9 +490,9 @@ async function updateEventDetails(EventID, EventName, Duration, Details, Usernam
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
             `UPDATE EVENT
-              SET EventName = :EventName, Duration = :Duration, Details = :Details, Username = :Username
+              SET EventName =:EventName, Duration =:Duration, Details =:Details, Username =:Username
        WHERE EventID=:EventID`,
-            [EventID, EventName, Duration, Details, Username ],
+            [EventName, Duration, Details, Username, EventID],
         );
 
         const result2 = await connection.execute('commit');
