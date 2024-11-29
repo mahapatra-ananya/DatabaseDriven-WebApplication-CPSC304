@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account</title>
 </head>
 <body>
 
 <div>
-  <a href="Home.html">
+  <a href="ananyaHome.html">
     <button>
       <img src="home_icon.png" alt="HomeIcon" width="50" height="50">
     </button>
@@ -20,19 +21,24 @@
   <img src="generic_pfp.jpg" alt="CurrentAvatar" width="50" height="50">
 </div>
 
+
 <div>
-  <h3>Current Display Name</h3>
+  <h1 id="displayName"></h1>
+    <h3 id="avatar"></h3>
 <!--  all of these must be updated with the actual information, and have an option to edit (except country)-->
-  <p>Current Username</p>
-  <p>Current Bio</p>
-  <p>Current Region</p>
-  <p>Current Country</p>
+  <h3 id="username"></h3>
+  <h3 id="bio"></h3>
+  <h3 id="region"></h3>
+  <h3 id="country"></h3>
 </div>
 
-<a href="EditAccount.html">
+<a href="ananyaEditAccount.html">
   <button>Edit</button>
 </a>
 
+<!--<button id="logout">Log Out</button>-->
+
+<script src="ananyaAccountScript.js"></script>
 
 </body>
 </html>

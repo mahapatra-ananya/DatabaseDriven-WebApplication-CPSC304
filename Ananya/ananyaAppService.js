@@ -146,6 +146,7 @@ async function insertDemotable(id, name) {
 }
 
 
+
 async function insertUserAccount(username, displayName, password, bio, region, avatar) {
     return await withOracleDB(async (connection) => {
         // console.log(region);
@@ -159,7 +160,7 @@ async function insertUserAccount(username, displayName, password, bio, region, a
 
         const result = await connection.execute(
             `INSERT INTO UserAccount(Username, DisplayName, UserPassword, Bio, Region, AvatarID, PlanID)
-                VALUES (:username, :displayName, :password, :bio, :region, :av, NULL)`,
+             VALUES (:username, :displayName, :password, :bio, :region, :av, NULL)`,
             [username, displayName, password, bio, region, av],
             { autoCommit: true }
         );
@@ -368,10 +369,10 @@ async function projectPlans(pID, tier, pI, mL, theme, bP, sP) {
 
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `SELECT ${columnsString} 
-                 FROM PremiumPlan
-                 INNER JOIN Tier ON PremiumPlan.Tier = Tier.Tier
-                 INNER JOIN Payment ON PremiumPlan.PaymentInterval = Payment.PaymentInterval`
+            `SELECT ${columnsString}
+             FROM PremiumPlan
+                      INNER JOIN Tier ON PremiumPlan.Tier = Tier.Tier
+                      INNER JOIN Payment ON PremiumPlan.PaymentInterval = Payment.PaymentInterval`
         );
         console.log(result.rows);
         return result.rows;
@@ -416,7 +417,6 @@ async function checkIfHasPremium() {
 function currUser() {
     return currentUser;
 }
-
 // function currUserDisplayName() {
 //     return currentUser;
 // }
@@ -671,9 +671,9 @@ async function fetchJoinsTableFromDb() {
 
 
 module.exports = {
-    testOracleConnection,
-    fetchDemotableFromDb,
-    initiateAllTables,
+    // testOracleConnection,
+    // fetchDemotableFromDb,
+    // initiateAllTables,
     insertUserAccount,
     fetchAccountsFromDb,
     loginUser,

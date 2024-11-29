@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+    table, th, td {
+        border:1px solid black;
+    }
+</style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Plan</title>
+</head>
+<body>
+
+<div>
+    <a href="ananyaHome.html">
+        <button>
+            <img src="home_icon.png" alt="HomeIcon" width="50" height="50">
+        </button>
+    </a>
+</div>
+
+<!--<p>check</p>-->
+
+<h3 id="displayPlan"></h3>
+
+<div>
+    <p>Choose the premium plan options you would like to view:</p> <br><br>
+
+    <form id="viewPlans">
+        <input type="checkbox" id="planID" name="planID" value="planID">
+        <label for="planID">Plan ID</label><br>
+        <input type="checkbox" id="tier" name="tier" value="tier">
+        <label for="tier">Tier</label><br>
+        <input type="checkbox" id="paymentInterval" name="paymentInterval" value="paymentInterval">
+        <label for="paymentInterval">Payment Interval</label><br>
+        <input type="checkbox" id="memberLimit" name="memberLimit" value="memberLimit">
+        <label for="memberLimit">Member Limit</label><br>
+        <input type="checkbox" id="theme" name="theme" value="theme">
+        <label for="theme">Theme</label><br>
+        <input type="checkbox" id="basePrice" name="basePrice" value="basePrice">
+        <label for="basePrice">Base Price</label><br>
+        <input type="checkbox" id="subscriptionPayment" name="subscriptionPayment" value="subscriptionPayment">
+        <label for="subscriptionPayment">Subscription Payment</label><br><br>
+        <button type="submit"> View </button> <br><br>
+    </form>
+
+</div>
+
+<table id="viewTablePlans">
+    <thead >
+    <!--            <tr>-->
+    <!--&lt;!&ndash;                <th></th>&ndash;&gt;-->
+    <!--                <th>PlanID</th>-->
+    <!--                <th>Tier</th>-->
+    <!--                <th>Payment Interval</th>-->
+    <!--                <th>Member Limit</th>-->
+    <!--                <th>Theme</th>-->
+    <!--                <th>Base Price</th>-->
+    <!--                <th>Subscription Payment</th>-->
+
+    <!--            </tr>-->
+    </thead>
+    <tbody>
+    <!--                <td><input type="radio" id="plan1" name="plan" value="Plan 1"></td>&ndash;&gt;-->
+    </tbody>
+</table> <br>
+
+<!--<div>-->
+
+<!--        <table id="allPlans">-->
+<!--            <thead>-->
+<!--&lt;!&ndash;            <tr>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <th></th>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                <th>PlanID</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th>Tier</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th>Payment Interval</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th>Member Limit</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th>Theme</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th>Base Price</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th>Subscription Payment</th>&ndash;&gt;-->
+
+<!--&lt;!&ndash;            </tr>&ndash;&gt;-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--&lt;!&ndash;                <td><input type="radio" id="plan1" name="plan" value="Plan 1"></td>&ndash;&gt;&ndash;&gt;-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--        <br>-->
+
+    <form id="purchasePlan">
+        <label for="purchase">Choose Plan:</label>
+        <select name="purchase" id="purchase"></select>
+        <button type="submit"> Purchase </button> <br>
+
+    </form>
+</div>
+
+<div id="purchaseMsg"></div>
+
+<script src="ananyaPremiumPlanScript.js"></script>
+
+</body>
+</html>
+

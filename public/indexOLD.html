@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- This meta tag ensures that the website renders correctly across different device sizes, enhancing mobile responsiveness. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Link to the external CSS stylesheet. Uncomment if you wish to customize or add styling. -->
+    <!-- <link rel="stylesheet" href="styles.css">   -->
+
+    <title>Database Application</title>
+</head>
+<body>
+    <!-- ===================================================================================== -->
+    <!-- Display the current status of the database connection. 
+         !!HERE TO HELP U DEBUGGING, NOT REQUIRED IN YOUR OWN PROJECT!!
+         -->
+    <h1>Database Connection Status: 
+        <!-- An in-line placeholder to display connection status. -->
+        <span id="dbStatus"> </span>
+        <!-- A loading GIF, will be hided once get the status. -->
+        <img id="loadingGif" class="loading-gif" src="loading_100px.gif" alt="Loading...">
+    </h1>
+
+    <a href="./FrontEnd/Home.html">
+        <button id = "home-page"> Home </button> </a>
+
+    <a href="./join-server.html">
+        <button id = "join-server-page"> Join a Server </button> </a>
+
+    <a href="./Calendar.html">
+        <button id = "calendar-page"> Go to Calendar </button> </a>
+
+    <h2>Reset All Tables</h2>
+    <p>If you wish to reset the table press on the reset button. If this is the first time you're running this page, you MUST use reset</p>
+    <button id="resetDemotable"> reset </button> <br>
+    <!-- A placeholder to display messages related to the reset operation. -->
+    <div id="resetResultMsg"></div>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <h2>UserAccount Table</h2>
+    <table id="useraccounttable" border="1">
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>Username</th>
+            <th>DisplayName</th>
+            <th>UserPassword</th>
+            <th>Bio</th>
+            <th>Region</th>
+            <th>AvatarID</th>
+            <th>PlanID</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <br/>
+
+    <h2>GeneralMamber Table</h2>
+    <table id="generalmembertable" border="1">
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>Username</th>
+            <th>Signature</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <br/>
+
+    <h2>Administrator Table</h2>
+    <table id="administratortable" border="1">
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>Username</th>
+            <th>Tag</th>
+            <th>Signature</th>
+            <th>ServerID</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <br/>
+
+    <h2>Joins Table</h2>
+    <table id="joinstable" border="1">
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>ID</th>
+            <th>Server</th>
+            <th>PlanID</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <br/>
+
+    <h2>Server Table</h2>
+    <table id="servertable" border="1">
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>ID</th>
+            <th>Server</th>
+            <th>PlanID</th>
+            <th>CalendarID</th>
+            <th>AvatarID</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <br/>
+
+    <h2>Channel Table</h2>
+    <table id="channeltable" border="1">
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>ChannelID</th>
+            <th>ChannelTitle</th>
+            <th>ServerID</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <br/>
+
+    <h2>Message Table</h2>
+    <table id="messagetable" border="1">
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>MessageID</th>
+            <th>Contents</th>
+            <th>ChannelID</th>
+            <th>ServerID</th>
+            <th>MessageDateTime</th>
+            <th>Username</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <br/>
+
+    <h2>Calendar Table</h2>
+    <table id="calendartable" border="1">
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>CalendarID</th>
+            <th>CalendarName</th>
+            <th>UserName</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <br/>
+
+    <h2>Event Table</h2>
+    <table id="eventtable" border="1">
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>EventID</th>
+            <th>EventName</th>
+            <th>EventDateTime</th>
+            <th>Duration</th>
+            <th>Details</th>
+            <th>Username</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <br/>
+
+    <h2>PostedTo Table</h2>
+    <table id="postedtotable" border="1">
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>CalendarID</th>
+            <th>EventID</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <br/>
+
+    <h2>PremiumPlan Table</h2>
+    <table id="premiumplantable" border="1">
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>PlanID</th>
+            <th>Tier</th>
+            <th>PaymentInterval</th>
+            <th>MemberLimit</th>
+            <th>Theme</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <br/>
+
+    <!-- ===================================================================================== -->
+    <!-- External JavaScript file that contains the functionality/logic for the operations above. -->
+    <script src="./scripts.js"></script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 // TODO: UPDATE username
-const USERNAME = 'GojoSatoru'
+// const USERNAME = 'GojoSatoru'
+let USERNAME;
 
 async function insertJoinServerAndGo(event) {
     event.preventDefault();
@@ -74,6 +75,11 @@ async function insertJoinServerAndGo(event) {
 }
 
 async function fetchAndDisplayFilteredServers() {
+    const user = await fetch('/curr-user', {
+        method: "GET"
+    });
+    USERNAME = await user.text()
+
     const insertServerGroup = document.querySelector('#serverList');
 
     const response = await fetch('/join-server-list', {
@@ -133,9 +139,8 @@ async function fetchAndDisplayFilteredServers() {
 // Add or remove event listeners based on the desired functionalities.
 window.onload = function() {
     // checkDbConnection();
-
+    // getUser();
     fetchTableData();
-
 };
 
 
