@@ -1,0 +1,48 @@
+body {
+    margin: 50px;
+}
+.searchQuery {
+    margin-bottom: 10px;
+}
+.filterItem {
+    margin-left: 60px;
+    margin-top: 10px;
+    bottom: 10px;
+}
+
+.firstFilterItem {
+    margin-left: 10px;
+    margin-top: 10px;
+    bottom: 10px;
+}
+
+.addFilterBtn {
+    margin-left: 60px;
+    margin-bottom: 10px;
+}
+
+.applyFiltersBtn {
+    background-color: #518EFF;
+    color: white;
+}
+
+.andOr-select, .filter-select, .operator-select {
+    margin-right: 10px;
+}
+
+tr:nth-child(even) {
+    background-color: #c4d9ff;
+}
+
+th, td {
+    min-width: 100px;
+    min-height: 20px;
+}
+
+th {
+   border-bottom: 3px solid #959595;
+}
+
+table {
+    width: 100%;
+}

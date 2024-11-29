@@ -307,6 +307,20 @@ router.get('/count-Eventtable', async (req, res) => {
     }
 });
 
+//////////////////////////////////////// EVENT SELECTION
+router.post('/filter-events', async (req, res) => {
+    const { QueryString } = req.body;
+
+    const filteredEvents = await appService.fetchFilteredEvents(QueryString);
+    console.log(`appController: filter events: ${filteredEvents}`)
+
+    if (filteredEvents) {
+        res.json({ success: true, filteredEvents: filteredEvents});
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
 
 ////////////////////// Delete Event ///////////////////////
 

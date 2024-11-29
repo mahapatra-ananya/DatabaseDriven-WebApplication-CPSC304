@@ -7,6 +7,7 @@
 
     <!-- Link to the external CSS stylesheet. Uncomment if you wish to customize or add styling. -->
      <link rel="stylesheet" href="styles.css">
+     <link rel="stylesheet" href="./calendar-selection-search.css">
 
     <title>Database Application</title>
 </head>
@@ -30,6 +31,53 @@
 
     <br><br>
 
+    <br><hr><br> <!-- ========================================================================= -->
+    <div class="searchQuery">
+        <h2>Add filters to search for events</h2>
+        <div class="firstFilterItem">
+            <select name="filter" class="filter-select">
+                <option value="">--Filter--</option>
+                <option value="year">Year</option>
+                <option value="month">Month</option>
+                <option value="day">Day</option>
+                <option value="duration">Duration</option>
+            </select>
+            <select name="operator" class="operator-select">
+                <option value="">--Operator--</option>
+                <option value=">">></option>
+                <option value="<"><</option>
+                <option value="=">=</option>
+                <option value=">=">>=</option>
+                <option value="<="><=</option>
+            </select>
+            <input type="number" class="filterInput" placeholder="Enter a number" min="1"/>
+        </div>
+    </div>
+    <div class="filterBtns">
+        <button class="addFilterBtn">+Filter</button>
+        <button class="removeFilterBtn">-Filter</button>
+    </div>
+    <button class="applyFiltersBtn">Apply Filters</button>
+    <div class="filteredEvents">
+        <div class="noEventsMsgGroup">
+            <p class="noEventsMsg"></p>
+        </div>
+        <table id="filteredEventsTable">
+            <thead>
+            <tr>
+                <!--Table head, need to be adjusted accordingly to align with your own.-->
+                <th>ID</th>
+                <th>Event</th>
+                <th>Date</th>
+                <th>Duration</th>
+                <th>Details</th>
+                <th>Username</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
     <br><hr><br> <!-- ========================================================================= -->
 
     <form id="showUserTable">
@@ -77,7 +125,6 @@
 
     <br><hr><br> <!-- ========================================================================= -->
 
-
     <h2>Get Shared Events</h2>
     <form id="selectCalendarNum">
         Calendar 1: <input type="number" step="1" id="calendar1" required> <br><br>
@@ -102,6 +149,6 @@
 
     <!-- ===================================================================================== -->
     <!-- External JavaScript file that contains the functionality/logic for the operations above. -->
-    <script src="activityMetrics.js"></script>
+    <script src="./ActivityMetrics.js"></script>
 </body>
 </html>

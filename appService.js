@@ -456,6 +456,17 @@ async function fetchServerPageChannels(ServerID) {
     });
 }
 
+async function fetchFilteredEvents(QueryString) {
+    console.log(QueryString)
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(QueryString);
+
+        return result.rows;
+    }).catch(() => {
+        return false;
+    });
+}
+
 async function fetchEventDetails(EventID) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
@@ -662,6 +673,7 @@ module.exports = {
     fetchUsernames,
     updateEventDetails,
     deleteEvent,
+    fetchFilteredEvents,
     insertServerTable,
     generateServerId,
     generateCalendarId,
