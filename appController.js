@@ -191,9 +191,11 @@ router.post('/edit-event-details', async (req, res) => {
     }
 });
 
-router.put('/update-event-details', async (req, res) => {
-    const { EventID, EventName, EventDateTime, Duration, Details, Username } = req.body;
-    const eventDetails = await appService.updateEventDetails(EventID, EventName, EventDateTime, Duration, Details, Username );
+router.post('/update-event-details', async (req, res) => {
+    const { EventID, EventName, Duration, Details, Username } = req.body;
+    // const { EventID, EventName, EventDateTime, Duration, Details, Username } = req.body;
+    const eventDetails = await appService.updateEventDetails(EventID, EventName, Duration, Details, Username );
+    // const eventDetails = await appService.updateEventDetails(EventID, EventName, EventDateTime, Duration, Details, Username );
     console.log(`appController: edit event details: ${eventDetails}`)
 
     if (eventDetails) {

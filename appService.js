@@ -471,17 +471,17 @@ async function fetchEventDetails(EventID) {
     });
 }
 
-async function updateEventDetails(EventID, EventName, EventDateTime, Duration, Details, Username ) {
+async function updateEventDetails(EventID, EventName, Duration, Details, Username ) {
+    console.log("appService", EventID, EventName, Duration, Details, Username )
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
             `UPDATE EVENT
-              SET EventName = :EventName, EventDateTime = :EventDateTime, Duration = :Duration, Details = :Details, Username = :Username
-            FROM Event
+              SET EventName = :EventName, Duration = :Duration, Details = :Details, Username = :Username
        WHERE EventID=:EventID`,
-            [EventID, EventName, EventDateTime, Duration, Details, Username ],
-            {autoCommit: true}
+            [EventID, EventName, Duration, Details, Username ],
         );
 
+        const result2 = await connection.execute('commit');
         return true;
     }).catch(() => {
         return false;
