@@ -168,10 +168,6 @@ async function editRegion(event) {
 async function editAvatar(event) {
     event.preventDefault();
 
-    // const passwordValue = document.getElementById('Password').value;
-    // const displayNameValue = document.getElementById('DisplayName').value;
-    // const bioValue = document.getElementById('Bio').value;
-    // const regionValue = document.getElementById('Region').value;
     const avatarValue = document.getElementById('Avatar').value;
 
     // document.getElementById('DisplayName').setAttribute("placeholder", "placeholder value");
@@ -182,10 +178,6 @@ async function editAvatar(event) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            // displayName: displayNameValue,
-            // password: passwordValue,
-            // bio: bioValue,
-            // region: regionValue,
             avatar: avatarValue
         })
     });
