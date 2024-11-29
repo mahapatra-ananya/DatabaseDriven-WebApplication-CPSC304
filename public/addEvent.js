@@ -37,35 +37,7 @@ async function checkDbConnection() {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
-//
-// // TODO: grab pieces and use in updateEvent
-// async function updateNameCalendartable(event) {
-//     event.preventDefault();
-//
-//     const oldNameValue = document.getElementById('updateOldName').value;
-//     const newNameValue = document.getElementById('updateNewName').value;
-//
-//     const response = await fetch('/update-name-Calendartable', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify({
-//             oldName: oldNameValue,
-//             newName: newNameValue
-//         })
-//     });
-//
-//     const responseData = await response.json();
-//     const messageElement = document.getElementById('updateNameResultMsg');
-//
-//     if (responseData.success) {
-//         messageElement.textContent = "Name updated successfully!";
-//         fetchCalendarTableData();
-//     } else {
-//         messageElement.textContent = "Error updating name!";
-//     }
-// }
+
 
 // Fetches data from the calendar table and displays it.
 async function fetchAndDisplayEvent() {
@@ -131,6 +103,8 @@ async function insertEventtable(event) {
 }
 
 ///////////////////////////////KAREN ADDED BELOW
+
+let currEventID = -1;
 
 async function getAllCalendarIDName() {
 
