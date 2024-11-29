@@ -16,6 +16,7 @@ const dbConfig = {
     poolTimeout: 60
 };
 
+var currentUser;
 
 // initialize connection pool
 async function initializeConnectionPool() {
@@ -284,6 +285,7 @@ async function generateServerId() {
             `SELECT MAX(SERVERID) FROM SERVER`
         );
         return Number(result.rows[0][0]) + 1;
+        // return Number(result.rows[0][0]);
     }).catch(() => {
         return false;
     });
@@ -296,6 +298,7 @@ async function generateCalendarId() {
         );
 
         return Number(result.rows[0][0]) + 1;
+        // return Number(result.rows[0][0]);
     }).catch(() => {
         return false;
     });
@@ -431,7 +434,7 @@ async function fetchServerPageInfo(ServerID) {
             `SELECT s.ServerName, s.AvatarID, s.PlanID, s.CalendarID, p.Tier, p.MemberLimit, p.Theme
        FROM Server s, PremiumPlan p 
        WHERE s.ServerID=:ServerID
-       AND s.PlanID=p.PlanID OR s.PLANID IS NULL`,
+       AND s.PlanID=p.PlanID`,
             [ServerID]
         );
 

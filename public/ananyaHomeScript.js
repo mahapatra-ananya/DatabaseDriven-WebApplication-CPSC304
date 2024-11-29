@@ -85,7 +85,8 @@ async function adminOrCreate() {
         button.style.height = '100px';
         button.style.width = '280px';
         button.textContent = 'Your Server: ' + responseData.serverName;
-        button.value = responseData.ServerID;
+        // button.value = responseData.ServerID;
+        button.value = responseData.serverID;
         button.addEventListener('click', goToServer);
         buttonElem.appendChild(button);
     } else {
@@ -196,6 +197,7 @@ async function fetchAndDisplayServers() {
         button.style.height = '100px';
         button.style.width = '280px';
         button.textContent = server[1];
+        console.log(server[0])
         button.value = server[0];
         button.addEventListener('click', goToServer);
         containerElement.appendChild(button);

@@ -11,18 +11,13 @@
     <title>Calendar View</title>
 </head>
 <body>
-    <!-- ===================================================================================== -->
-    <!-- Display the current status of the database connection. 
-         !!HERE TO HELP U DEBUGGING, NOT REQUIRED IN YOUR OWN PROJECT!!
-         -->
-    <h1>Database Connection Status: 
-        <!-- An in-line placeholder to display connection status. -->
-        <span id="dbStatus"> </span>
-        <!-- A loading GIF, will be hided once get the status. -->
-        <img id="loadingGif" class="loading-gif" src="loading_100px.gif" alt="Loading...">
-    </h1>
-
-    <br><hr><br> <!-- ========================================================================= -->
+<div>
+    <a href="./ananyaHome.html">
+        <button>
+            <img src="./home_icon.png" alt="HomeIcon" width="50" height="50">
+        </button>
+    </a>
+</div>
 
     <h2> Select Calendar ID to filter on</h2>
     <form id="findCalendarID">
@@ -30,7 +25,7 @@
         <button type="submit"> submit </button> <br>
     </form>
     <div id="EventDateResultMsg"></div>
-
+<br/>
     <!-- ===================================================================================== -->
 
     <div class="Calendar">
@@ -84,24 +79,34 @@
     <br><hr><br> <!-- ========================================================================= -->
 
     <h2>Add an Event</h2>
-    <a href="addEvent.html">
+    <a href="./AddEvent.html">
         <button id = "goToAddEvent">Add an Event </button> </a>
 
     <br><br>
 
     <h2>Add a Calendar</h2>
-    <a href="addCalendar.html">
+    <a href="./addCalendar.html">
         <button id = "goToAddCalendar">Add a Calendar </button> </a>
 
     <br><br>
 
     <h2>See Activity Metrics</h2>
-    <a href="ActivityMetrics.html">
+    <a href="./ActivityMetrics.html">
         <button id = "goToActovotu">Activity Metrics </button> </a>
 
     <br><br>
 
-
+<hr><br> <!-- ========================================================================= -->
+<!-- ===================================================================================== -->
+<!-- Display the current status of the database connection.
+     !!HERE TO HELP U DEBUGGING, NOT REQUIRED IN YOUR OWN PROJECT!!
+     -->
+<h3>Database Connection Status:
+    <!-- An in-line placeholder to display connection status. -->
+    <span id="dbStatus"> </span>
+    <!-- A loading GIF, will be hided once get the status. -->
+    <img id="loadingGif" class="loading-gif" src="loading_100px.gif" alt="Loading...">
+</h3>
 
     <!-- ===================================================================================== -->
     <!-- External JavaScript file that contains the functionality/logic for the operations above. -->
