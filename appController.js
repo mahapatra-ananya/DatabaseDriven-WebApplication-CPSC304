@@ -89,6 +89,11 @@ router.get('/joinstable', async (req, res) => {
     res.json({data: tableContent});
 });
 
+router.get('/usernames', async (req, res) => {
+    const tableContent = await appService.fetchUsernames();
+    res.json({data: tableContent});
+});
+
 ///////////////////////////////////////// ALLISON APPSERVICE /////////////////////////////////////////
 /////////////////////////////////////////SERVER PAGE//////////////////////////////////////////
 router.post('/serverpage', async (req, res) => {
@@ -181,6 +186,18 @@ router.post('/edit-event-details', async (req, res) => {
 
     if (eventDetails) {
         res.json({ success: true, EventDetails: eventDetails});
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
+router.put('/update-event-details', async (req, res) => {
+    const { EventID, EventName, EventDateTime, Duration, Details, Username } = req.body;
+    const eventDetails = await appService.updateEventDetails(EventID, EventName, EventDateTime, Duration, Details, Username );
+    console.log(`appController: edit event details: ${eventDetails}`)
+
+    if (eventDetails) {
+        res.json({ success: true});
     } else {
         res.status(500).json({ success: false });
     }

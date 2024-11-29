@@ -144,7 +144,42 @@ function toDatetimeLocal(dateTime) {
     return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
 
+async function updateEvent(listItem, eventID, eventNameInput, eventDateTimeInput, durationInput, detailsInput, usernameInput) {
+    const response = await fetch('/update-event-details', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            EventID: eventID,
+            EventName: eventNameInput,
+            EventDateTime: eventDateTimeInput,
+            Duration: durationInput,
+            Details: detailsInput,
+            Username: usernameInput
+        })
+    });
+
+    const responseData = await response.json();
+    if (responseData.success) {
+        const updateSuccessMsg = document.createElement('p')
+        updateSuccessMsg.textContent = 'Successfully updated Event details!';
+        updateSuccessMsg.className = 'successMsg'
+        listItem.appendChild(updateSuccessMsg)
+    } else {
+        const updateSuccessMsg = document.createElement('p')
+        updateSuccessMsg.textContent = 'Error updating Event details';
+        updateSuccessMsg.className = 'successMsg'
+        listItem.appendChild(updateSuccessMsg)
+    }
+}
+
 async function displayEditForm(listItem, eventID) {
+    //TODO:  IF THERE IS ALREADY A FORM, REMOVE PREV FORM
+    // const lastChild = listItem.lastChild
+    // if (lastChild.className === 'editEventForm' || lastChild.className === 'successMsg') {
+    //     lastChild.remove()
+    // }
     // GET EVENT DETAILS
     const response = await fetch('/edit-event-details', {
         method: 'POST',
@@ -160,11 +195,30 @@ async function displayEditForm(listItem, eventID) {
     const eventDetailsData = responseData.EventDetails;
     console.log(eventDetailsData);
 
+    const usernamesResponse = await fetch('/usernames', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    const usernamesResponseData = await usernamesResponse.json();
+    const usernamesRaw = usernamesResponseData.data;
+    // console.log(usernamesRaw);
+
+    const usernames = []
+    for (const row of usernamesRaw) {
+        usernames.push(row[0]);
+    }
+    console.log(`usernames: ${usernames}`)
+
+
     // CREATE EDIT FORM WITH PRE-EXISTING INFORMATION
     const eventName = eventDetailsData[0][0];
     const eventDateTime = eventDetailsData[0][1];
     const eventDuration = eventDetailsData[0][2];
     const eventDetails = eventDetailsData[0][3];
+    const eventUsername = eventDetailsData[0][4];
     console.log(`name ${eventName} \n datetime ${eventDateTime} \n duration ${eventDuration} \n details ${eventDetails}`)
 
     // p; Edit Event with ID:
@@ -172,7 +226,7 @@ async function displayEditForm(listItem, eventID) {
     editEventMsg.textContent = `Edit Event ${eventID}`;
 
     const editEventForm = document.createElement('form');
-    editEventForm.id = `edit${eventID}`;
+    editEventForm.id = `editEventForm`;
     editEventForm.classname = 'editEventForm'
 
     // EventName
@@ -193,23 +247,77 @@ async function displayEditForm(listItem, eventID) {
     eventDateTimeLabel.for = 'newEventDateTime'
     const eventDateTimeInput = document.createElement('input')
     eventDateTimeInput.type = 'datetime-local'
-console.log(`TRY : ${toDatetimeLocal(eventDateTime)}`)
-
+    console.log(`TRY : ${toDatetimeLocal(eventDateTime)}`)
     eventDateTimeInput.value = toDatetimeLocal(eventDateTime);
-
     eventDateTimeInput.id = 'newEventDateTime'
     editEventForm.appendChild(eventDateTimeLabel);
     editEventForm.appendChild(eventDateTimeInput);
+    editEventForm.appendChild(document.createElement('br'));
 
     // Duration
+    const durationLabel = document.createElement('label')
+    durationLabel.textContent = "Duration (hrs): ";
+    durationLabel.for = 'newDuration'
+    const durationInput = document.createElement('input')
+    durationInput.type = 'number'
+    durationInput.value = eventDuration;
+    durationInput.id = 'newDuration'
+    editEventForm.appendChild(durationLabel);
+    editEventForm.appendChild(durationInput);
+    editEventForm.appendChild(document.createElement('br'));
 
     // Details
+    const detailsLabel = document.createElement('label')
+    detailsLabel.textContent = "Details: "
+    detailsLabel.for = 'newDetails'
+    const detailsInput = document.createElement('input')
+    detailsInput.type = 'text'
+    detailsInput.value = eventDetails;
+    detailsInput.id = 'newDuration'
+    editEventForm.appendChild(detailsLabel);
+    editEventForm.appendChild(detailsInput);
+    editEventForm.appendChild(document.createElement('br'));
+
+    // Usernames
+    const usernameLabel = document.createElement('label')
+    usernameLabel.textContent = 'Username'
+    usernameLabel.for = 'usernameInput'
+    const usernameSelect = document.createElement('select')
+    usernameSelect.id = 'usernameInput'
+    const defaultUsername = eventUsername;
+    const defaultUsernameOption = document.createElement('option');
+    defaultUsernameOption.textContent = defaultUsername;
+    defaultUsernameOption.value = defaultUsername;
+    usernameSelect.appendChild(defaultUsernameOption);
+
+    for (const username of usernames) {
+        if (username !== defaultUsername) {
+            const usernameOption = document.createElement('option');
+            usernameOption.value = username;
+            usernameOption.textContent = username;
+            usernameSelect.appendChild(usernameOption);
+        }
+    }
+    editEventForm.appendChild(usernameLabel);
+    editEventForm.appendChild(usernameSelect);
+    editEventForm.appendChild(document.createElement('br'));
+
+    const usernameInput = document.querySelector('#usernameInput');
+    // console.log(`usernameinput : ${usernameInput.value}`)
 
     // Update button
+    const updateBtn = document.createElement('button')
+    updateBtn.className = 'updateBtn'
+    updateBtn.textContent = 'Update';
+    updateBtn.addEventListener('click', function () {
+        console.log('updateEvent: ', eventNameInput.value, eventDateTimeInput.value, durationInput.value, detailsInput.value, usernameInput.value)
+        updateEvent(listItem, eventID, eventNameInput.value, eventDateTimeInput.value, durationInput.value, detailsInput.value, usernameInput.value);
+    })
 
 
     listItem.appendChild(editEventMsg);
     listItem.appendChild(editEventForm);
+    listItem.appendChild(updateBtn);
     // editEvent(eventID);
 }
 

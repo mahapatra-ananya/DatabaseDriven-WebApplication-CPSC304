@@ -254,6 +254,15 @@ async function fetchJoinsTableFromDb() {
     });
 }
 
+async function fetchUsernames(){
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT Username FROM UserAccount');
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
 ////////////////////////////////////////// ALLISON  //////////////////////////////////////////
 /***CREATE SERVER***/
 async function insertServerTable(serverId, serverName, premiumPlanId, calendarId, avatarId) {
@@ -462,6 +471,23 @@ async function fetchEventDetails(EventID) {
     });
 }
 
+async function updateEventDetails(EventID, EventName, EventDateTime, Duration, Details, Username ) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `UPDATE EVENT
+              SET EventName = :EventName, EventDateTime = :EventDateTime, Duration = :Duration, Details = :Details, Username = :Username
+            FROM Event
+       WHERE EventID=:EventID`,
+            [EventID, EventName, EventDateTime, Duration, Details, Username ],
+            {autoCommit: true}
+        );
+
+        return true;
+    }).catch(() => {
+        return false;
+    });
+}
+
 ////////////////////////////////////////////// KAREN //////////////////////////////////////////////////
 async function insertCalendartable(CalendarID, CalendarName, UserName) {
     return await withOracleDB(async (connection) => {
@@ -555,25 +581,6 @@ async function insertEventtable(EventID, EventName, EventDateTime, Duration, Det
     });
 }
 
-//////////////////////////////////DELETE EVENT//////////////////////////////////////
-
-async function deleteEvent(eventID) {
-    return await withOracleDB(async (connection) => {
-        // console.log(region);
-
-        const result = await connection.execute(
-            'DELETE FROM Event where EventID=:eventID',
-            [eventID],
-            // { autoCommit: true }
-        );
-        const result2 = await connection.execute('commit');
-
-        return result.rowsAffected && result.rowsAffected > 0;
-    }).catch(() => {
-        return false;
-    });
-}
-
 module.exports = {
     testOracleConnection,
 
@@ -593,7 +600,9 @@ module.exports = {
     fetchMessageTableFromDb,
     fetchPostedToTableFromDb,
     fetchJoinsTableFromDb,
-    deleteEvent,
+    fetchUsernames,
+    updateEventDetails,
+
     insertServerTable,
     generateServerId,
     generateCalendarId,
