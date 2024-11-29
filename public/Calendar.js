@@ -397,6 +397,7 @@ function displayReminders() {
         };
 
         listItem.appendChild(editButton);
+        listItem.appendChild(deleteButton);
         reminderList.appendChild(listItem);
     }
     console.log("called print reminders");
@@ -434,14 +435,14 @@ async function deleteEvent(eventID) {
 
     const responseData = await response.json();
     const messageElement = document.getElementById('deleteResultMsg');
-
-
-    if (responseData.success) {
-        messageElement.textContent = "Event deleted successfully!";
-        //TODO: remove event from page
-    } else {
-        messageElement.textContent = "Error deleting event!";
-    }
+    fetchEventonDate();
+    fetchDailyEvent();
+    // if (responseData.success) {
+    //     messageElement.textContent = "Event deleted successfully!";
+    //     //TODO: remove event from page
+    // } else {
+    //     messageElement.textContent = "Error deleting event!";
+    // }
 }
 
 
@@ -552,7 +553,7 @@ window.onload = function() {
     urlParam = new URLSearchParams(window.location.search); // TODO: make sure we call on window load
     selectedCalendarID = urlParam.get('calendarid'); // TODO: try to get calendarid
     document.getElementById("findCalendarID").addEventListener("submit", getEventDateTime)
-    document.getElementById('deleteButton').addEventListener("click", deleteButton)
+    // document.getElementById('deleteButton').addEventListener("click", deleteButton)
     fetchEventonDate();
     fetchDailyEvent();
 

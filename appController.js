@@ -311,7 +311,7 @@ router.get('/count-Eventtable', async (req, res) => {
 
 router.post("/delete-event", async (req, res) => {
    const { eventID } = req.body;
-    const deleteResult = await appService.deleteEvent();
+    const deleteResult = await appService.deleteEvent(eventID);
     if (deleteResult) {
         res.json({ success: true });
     } else {
