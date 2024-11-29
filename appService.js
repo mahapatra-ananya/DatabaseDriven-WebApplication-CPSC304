@@ -666,7 +666,7 @@ async function fetchAccountsFromDb() {
 
 async function fetchUserServersFromDb() {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute('SELECT distinct s.ServerID, ServerName FROM Server s, Joins j WHERE j.MemberUsername=:currentUser', [currentUser]);
+        const result = await connection.execute('SELECT distinct s.ServerID, s.ServerName FROM Server s, Joins j WHERE j.MemberUsername=:currentUser AND s.ServerID=j.ServerID', [currentUser]);
         console.log(result.rows);
         return result.rows;
     }).catch(() => {
