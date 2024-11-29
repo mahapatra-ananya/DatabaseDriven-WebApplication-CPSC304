@@ -555,6 +555,25 @@ async function insertEventtable(EventID, EventName, EventDateTime, Duration, Det
     });
 }
 
+//////////////////////////////////DELETE EVENT//////////////////////////////////////
+
+async function deleteEvent(eventID) {
+    return await withOracleDB(async (connection) => {
+        // console.log(region);
+
+        const result = await connection.execute(
+            'DELETE FROM Event where EventID=:eventID',
+            [eventID],
+            // { autoCommit: true }
+        );
+        const result2 = await connection.execute('commit');
+
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+
 module.exports = {
     testOracleConnection,
 
@@ -574,7 +593,7 @@ module.exports = {
     fetchMessageTableFromDb,
     fetchPostedToTableFromDb,
     fetchJoinsTableFromDb,
-
+    deleteEvent,
     insertServerTable,
     generateServerId,
     generateCalendarId,

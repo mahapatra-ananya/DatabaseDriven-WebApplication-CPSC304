@@ -279,7 +279,7 @@ async function deleteEvent(eventID) {
 
     if (responseData.success) {
         messageElement.textContent = "Event deleted successfully!";
-        //TODO: redirect back to calendar page if this is a separate event page, remove from page if same
+        //TODO: remove event from page
     } else {
         messageElement.textContent = "Error deleting event!";
     }

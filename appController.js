@@ -287,4 +287,17 @@ router.get('/count-Eventtable', async (req, res) => {
     }
 });
 
+
+////////////////////// Delete Event ///////////////////////
+
+router.post("/delete-event", async (req, res) => {
+   const { eventID } = req.body;
+    const deleteResult = await appService.deleteEvent();
+    if (deleteResult) {
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
 module.exports = router;
