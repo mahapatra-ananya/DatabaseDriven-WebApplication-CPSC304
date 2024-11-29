@@ -345,6 +345,15 @@ function displayReminders() {
             displayEditForm(listItem, eventID);
         };
 
+        let deleteButton =
+            document.createElement("button");
+        deleteButton.className = "delete-event";
+        deleteButton.textContent = "Delete";
+        // editButton.addEventListener('click', displayEditForm)
+        deleteButton.onclick = function () {
+            deleteButtonFunc(eventID);
+        };
+
         listItem.appendChild(editButton);
         reminderList.appendChild(listItem);
     }
@@ -364,7 +373,7 @@ function editEvent(eventID) {
 
 // below function executes upon clicking the delete button on the edit event page
 
-async function deleteButton(event) {
+async function deleteButtonFunc(eventID) {
     event.preventDefault();
     await deleteEvent(eventID); //TODO: pass in appropriate eventID + add eventlistener to the button in the window section
 }
