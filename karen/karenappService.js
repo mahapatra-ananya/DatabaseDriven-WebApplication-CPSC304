@@ -365,16 +365,16 @@ async function insertEventtable(EventID, EventName, EventDateTime, Duration, Det
 
 ///////////////////////////////////////////// MERGE BELOW INTO GLOBAL DIR /////////////////////////////////////////////
 
-// async function fetchBusyUser() {
-//     return await withOracleDB(async (connection) => {
-//         const result = await connection.execute(
-//             'SELECT DISTINCT COUNT(e.EventID) as EventCount, e.Username as Users ' +
-//             'FROM Event e GROUP BY e.Username');
-//         return result.rows[0][0];
-//     }).catch(() => {
-//         return -1;
-//     });
-// }
+async function fetchBusyUser() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            'SELECT DISTINCT COUNT(e.EventID) as EventCount, e.Username as Users ' +
+            'FROM Event e GROUP BY e.Username ORDER BY COUNT(e.EventID)');
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
 
 async function fetchBusyMonth(userLimit) {
     return await withOracleDB(async (connection) => {
@@ -431,7 +431,7 @@ module.exports = {
     // fetchPostedToTableFromDb,
     // fetchJoinsTableFromDb,
 
-    // fetchBusyUser, // TODO to uncomment
+    fetchBusyUser,
     fetchBusyMonth,
     fetchSharedEvents
 

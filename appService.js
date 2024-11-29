@@ -85,11 +85,7 @@ async function testOracleConnection() {
 /*Initializing All Tables*/
 async function initiateAllTables() {
 
-<<<<<<< HEAD
-    const scriptPath = path.resolve(__dirname, '../304_InitializeTablesDelete.sql');
-=======
     const scriptPath = path.resolve(__dirname, './304_InitializeTablesDelete.sql');
->>>>>>> origin/main
     return await withOracleDB(async (connection) => {
         try {
             // Get the SQL Script
@@ -257,27 +253,6 @@ async function fetchJoinsTableFromDb() {
         return [];
     });
 }
-
-
-///////////////////////////////////DELETE EVENT//////////////////////////////////////
-
-async function deleteEvent(eventID) {
-    return await withOracleDB(async (connection) => {
-        // console.log(region);
-
-        const result = await connection.execute(
-            'DELETE FROM Event where EventID=:eventID',
-            [eventID],
-            // { autoCommit: true }
-        );
-        const result2 = await connection.execute('commit');
-
-        return result.rowsAffected && result.rowsAffected > 0;
-    }).catch(() => {
-        return false;
-    });
-}
-
 
 ////////////////////////////////////////// ALLISON  //////////////////////////////////////////
 /***CREATE SERVER***/
@@ -613,11 +588,7 @@ module.exports = {
     isUserGeneralMember,
     fetchServerPageInfo,
     fetchServerPageChannels,
-<<<<<<< HEAD
-    deleteEvent,
-=======
     fetchEventDetails,
->>>>>>> origin/main
 
     insertCalendartable,
     updateNameCalendartable,

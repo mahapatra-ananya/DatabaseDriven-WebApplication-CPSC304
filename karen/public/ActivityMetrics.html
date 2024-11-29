@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- This meta tag ensures that the website renders correctly across different device sizes, enhancing mobile responsiveness. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Link to the external CSS stylesheet. Uncomment if you wish to customize or add styling. -->
+     <link rel="stylesheet" href="styles.css">
+
+    <title>Database Application</title>
+</head>
+<body>
+    <!-- ===================================================================================== -->
+    <!-- Display the current status of the database connection. 
+         !!HERE TO HELP U DEBUGGING, NOT REQUIRED IN YOUR OWN PROJECT!!
+         -->
+    <h1>Database Connection Status: 
+        <!-- An in-line placeholder to display connection status. -->
+        <span id="dbStatus"> </span>
+        <!-- A loading GIF, will be hided once get the status. -->
+        <img id="loadingGif" class="loading-gif" src="loading_100px.gif" alt="Loading...">
+    </h1>
+
+    <!--  TODO -->
+    <br><hr><br> <!-- ========================================================================= -->
+    <h2>Back to Calendar</h2>
+    <a href="Calendar.html">
+        <button id = "goToCalendar">Calendar </button> </a>
+
+    <br><br>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <form id="showUserTable">
+
+        <h2></h2>
+        <table id="UserTable" border="1">
+            <thead>
+            <tr>
+                <!--Table head, need to be adjusted accordingly to align with your own.-->
+                <th>EventCount</th>
+                <th>User</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+        <button type="submit"> View User Events Activity </button> <br>
+    </form>
+    <!-- Show 'Eventtable'.
+        Data will be fetched and inserted here dynamically using JavaScript. -->
+
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <h2> Select lower limit </h2>
+    <form id="insertLimit">
+        Monthly Limit: <input type="number" step="1" id="insertMonthlyLimit" required> <br><br>
+        <button type="submit"> filter </button> <br>
+    </form>
+
+    <h2>Monthly Event Activity</h2>
+    <table id="MonthTable" border="1">
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>TotalHours</th>
+            <th>Month</th>
+            <th>Year</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+
+    <h2>Get Shared Events</h2>
+    <form id="selectCalendarNum">
+        Calendar 1: <input type="number" step="1" id="calendar1" required> <br><br>
+        Calendar 2: <input type="number" step="1" id="calendar2" required> <br><br>
+        Calendar 3: <input type="number" step="1" id="calendar3" required> <br><br>
+        <button type="submit"> select </button> <br>
+    </form>
+    <div id="event-section">
+        <h3>List of common Shared Events</h3>
+        <!-- List to display reminders -->
+        <ul id="eventList">
+            <li data-event-id="1">
+                <strong>Event Title</strong>
+                - Event Description on Event Date
+<!--                <button class="edit-event"-->
+<!--                        onclick = "editEvent()">-->
+<!--                    Edit-->
+<!--                </button>-->
+            </li>
+        </ul>
+    </div>
+
+    <!-- ===================================================================================== -->
+    <!-- External JavaScript file that contains the functionality/logic for the operations above. -->
+    <script src="activityMetrics.js"></script>
+</body>
+</html>

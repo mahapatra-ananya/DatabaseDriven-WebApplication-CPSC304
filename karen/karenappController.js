@@ -121,10 +121,10 @@ router.get('/count-Eventtable', async (req, res) => {
 
 ///////////////////////////////////////////// MERGE BELOW INTO GLOBAL DIR /////////////////////////////////////////////
 
-// router.get('/fetch-BusyUser', async (req, res) => {
-//     const result = await karenappService.fetchBusyUser();
-//     res.json({ data: result });
-// });
+router.get('/fetch-BusyUser', async (req, res) => {
+    const result = await karenappService.fetchBusyUser();
+    res.json({ data: result });
+});
 
 router.post("/fetch-BusyMonth", async (req, res) => {
     const { userLimit } = req.body;
